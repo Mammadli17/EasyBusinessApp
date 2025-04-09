@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
-import { View, TextInput, Text, StyleSheet } from 'react-native';
+import { View, TextInput, Text, StyleSheet, Touchable, TouchableOpacity } from 'react-native';
 import { normalize } from '../../theme/metrics';
 import { SvgImage } from '../svgImage/SvgImage';
 
-const CustomInput = ({ label, icon, placeholder, value, onChangeText }: any) => {
+const CustomInput = ({ label, icon, placeholder, value, onChangeText, password }: any) => {
     const [isFocused, setIsFocused] = useState(false);
-
+    const [enable, setenable] = useState(false)
     const handleFocus = () => {
         setIsFocused(true);
     };
@@ -30,7 +30,31 @@ const CustomInput = ({ label, icon, placeholder, value, onChangeText }: any) => 
                     onChangeText={onChangeText}
                     onFocus={handleFocus}
                     onBlur={handleBlur}
+                    placeholderTextColor={"#B3B1B8"}
+                    secureTextEntry={password && !enable} 
+
                 />
+                {
+                    password &&
+                    <TouchableOpacity onPress={() => setenable(!enable)}>
+                        {
+                            enable ?
+                                <SvgImage
+                                    source={require("../../assets/svg/textInput/eyeOpen.svg")}
+                                    height={18}
+                                    width={18}
+                                    style={styles.eye}
+                                />
+                                :
+                                <SvgImage
+                                    source={require("../../assets/svg/textInput/eye.svg")}
+                                    height={18}
+                                    width={18}
+                                    style={styles.eye}
+                                />
+                        }
+                    </TouchableOpacity>
+                }
             </View>
         </View>
     );
@@ -47,21 +71,27 @@ const styles = StyleSheet.create({
         paddingLeft: normalize('width', 10),
         backgroundColor: '#fff',
         marginHorizontal: normalize("width", 20),
+        width: normalize('width', 327),
+        height: normalize('height', 48),
     },
     inputContainerFocused: {
-        borderColor: '#B3B1B8', 
-        borderWidth: 1, 
+        borderColor: '#B3B1B8',
+        borderWidth: 1,
     },
     icon: {
         marginLeft: normalize('width', 4),
     },
+    eye: {
+        marginRight: normalize('width', 15),
+    },
     input: {
         backgroundColor: '#FFFFFF',
         width: normalize('width', 327),
-        height: normalize('height', 48),
+        height: normalize('height', 40),
         paddingLeft: normalize('width', 10),
         flex: 1,
         borderRadius: normalize('width', 12),
+        fontSize: normalize("height", 14)
     },
 });
 

@@ -3,8 +3,12 @@ import React from 'react'
 import CustomButton from '../../../components/button/CustomButton'
 import { Routes } from '../../../navigations/routes'
 import { normalize } from '../../../theme/metrics'
+import { useTranslation } from 'react-i18next'
+
 
 const LoginScreen = ({navigation}:any) => {
+    const { t } = useTranslation();
+  
   return (
     <View>
        <CustomButton

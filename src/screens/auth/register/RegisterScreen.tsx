@@ -12,6 +12,8 @@ import {
 } from 'react-native';
 import { normalize } from '../../../theme/metrics';
 import { SvgImage } from '../../../components/svgImage/SvgImage';
+import { useTranslation } from 'react-i18next';
+import CustomInput from '../../../components/input/TextInput';
 
 interface ForumData {
     fullname: string;
@@ -28,6 +30,7 @@ const RegisterScreen = () => {
     const [step, setStep] = useState(1);
     const fadeAnim = useRef(new Animated.Value(1)).current;
     const translateAnim = useRef(new Animated.Value(0)).current;
+    const { t } = useTranslation();
 
     const [forumData, setForumData] = useState<ForumData>({
         fullname: '',
@@ -82,7 +85,13 @@ const RegisterScreen = () => {
     const handleBack = () => {
         if (step === 2) animateStepChange(1);
     };
+    const handleInputChange = (field: any, value: any) => {
 
+        setForumData(prevData => ({
+            ...prevData,
+            [field]: value
+        }));
+    };
     return (
         <ScrollView style={styles.container} contentContainerStyle={{ flexGrow: 1 }}>
             <StatusBar backgroundColor={"#F3F3F3"} />
@@ -94,9 +103,9 @@ const RegisterScreen = () => {
                         width={14}
                     />
                 </TouchableOpacity>
-                <Text style={[styles.title]}>Register.</Text>
+                <Text style={[styles.title]}>{t('Qeydiyyatdan keçin')} </Text>
             </View>
-            <View style={{ marginTop: normalize("height", 30) }}>
+            <View style={{ marginTop: normalize("height", 40) }}>
                 <View style={styles.stepsContainer}>
                     <View style={step === 1 ? styles.stepCircleActive : styles.stepCircleInactive}>
                         <Text style={step === 1 ? styles.stepNumber : styles.stepNumberInactive}>1</Text>
@@ -109,10 +118,10 @@ const RegisterScreen = () => {
 
                 <View style={styles.stepsLabelContainer}>
                     <Text style={step === 1 ? styles.stepLabelActive : styles.stepLabelInactive}>
-                        Account setup
+                        {t('Hesab qurulması')}
                     </Text>
                     <Text style={step === 2 ? styles.stepLabelActive : styles.stepLabelInactive}>
-                        Store details
+                        {t('Mağaza detalları')}
                     </Text>
                 </View>
             </View>
@@ -127,49 +136,121 @@ const RegisterScreen = () => {
                 ]}
             >
                 {step === 1 ? (
-                    <>
+                    <View style={{ gap: normalize("height", 15) }}>
                         <View style={styles.inputWrapper}>
-                            <TextInput placeholder="Full name" style={styles.input} placeholderTextColor="#8E8E93" />
+                            <CustomInput
+                                label={t("Tam ad")}
+                                icon={require('../../../assets/svg/textInput/profile.svg')}
+                                placeholder={t("Tam ad")}
+                                value={forumData.fullname}
+                                onChangeText={(value: any) => handleInputChange('fullname', value)}
+                            />
                         </View>
                         <View style={styles.inputWrapper}>
-                            <TextInput placeholder="FIN code" style={styles.input} placeholderTextColor="#8E8E93" />
+                            <CustomInput
+                                label={t("FIN kodu")}
+                                icon={require('../../../assets/svg/textInput/fin.svg')}
+                                placeholder={t("FIN kodu")}
+                                value={forumData.fin}
+                                onChangeText={(value: any) => handleInputChange('fin', value)}
+                            />
                         </View>
                         <View style={styles.inputWrapper}>
-                            <TextInput placeholder="Password" style={styles.input} secureTextEntry placeholderTextColor="#8E8E93" />
+                            <CustomInput
+                                label={t("Şifrə")}
+                                icon={require('../../../assets/svg/textInput/password.svg')}
+                                placeholder={t("Şifrə")}
+                                value={forumData.password}
+                                onChangeText={(value: any) => handleInputChange('password', password)}
+                                password={true}
+                            />
                         </View>
                         <View style={styles.inputWrapper}>
-                            <TextInput placeholder="Reenter password" style={styles.input} secureTextEntry placeholderTextColor="#8E8E93" />
+                            <CustomInput
+                                label={t("Şifrəni yenidən daxil edin")}
+                                icon={require('../../../assets/svg/textInput/password.svg')}
+                                placeholder={t("Şifrəni yenidən daxil edin")}
+                                value={forumData.cpassword}
+                                onChangeText={(value: any) => handleInputChange('cpassword', value)}
+                                password={true}
+                            />
                         </View>
-                    </>
+                    </View>
                 ) : (
-                    <>
+                    <View style={{ gap: normalize("height", 15) }}>
                         <View style={styles.inputWrapper}>
-                            <TextInput placeholder="Store name" style={styles.input} placeholderTextColor="#8E8E93" />
+                            <CustomInput
+                                label={t("Telefon nömrəsi")}
+                                icon={require('../../../assets/svg/textInput/phone.svg')}
+                                placeholder={t("Telefon nömrəsi")}
+                                value={forumData.number}
+                                onChangeText={(value: any) => handleInputChange('number', value)}
+                            />
                         </View>
                         <View style={styles.inputWrapper}>
-                            <TextInput placeholder="Store address" style={styles.input} placeholderTextColor="#8E8E93" />
+                            <CustomInput
+                                label={t("E-poçt")}
+                                icon={require('../../../assets/svg/textInput/email.svg')}
+                                placeholder={t("E-poçt")}
+                                value={forumData.email}
+                                onChangeText={(value: any) => handleInputChange('email', value)}
+                            />
                         </View>
-                    </>
+                        <View style={styles.inputWrapper}>
+                            <CustomInput
+                                label={t("İş yeri")}
+                                icon={require('../../../assets/svg/textInput/work.svg')}
+                                placeholder={t("İş yeri")}
+                                value={forumData.workplace}
+                                onChangeText={(value: any) => handleInputChange('workplace', password)}
+                            />
+                        </View>
+                        <View style={styles.inputWrapper}>
+                            <CustomInput
+                                label={t("Yer")}
+                                icon={require('../../../assets/svg/textInput/location.svg')}
+                                placeholder={t("Yer")}
+                                value={forumData.location}
+                                onChangeText={(value: any) => handleInputChange('location', value)}
+                            />
+                        </View>
+                        <View style={styles.inputWrapper}>
+                            <CustomInput
+                                label={t("VÖEN")}
+                                icon={require('../../../assets/svg/textInput/tin.svg')}
+                                placeholder={t("VÖEN")}
+                                value={forumData.tin}
+                                onChangeText={(value: any) => handleInputChange('tin', value)}
+                            />
+                        </View>
+                    </View>
                 )}
             </Animated.View>
 
             <TouchableOpacity style={styles.continueBtn} onPress={handleNext}>
-                <Text style={styles.continueText}>{step === 1 ? 'Continue' : 'Finish'}</Text>
+                <Text style={styles.continueText}>
+                    {step === 1 ? t('Davam et') : t('Qeydiyyatdan keçin')}
+                </Text>
             </TouchableOpacity>
 
-            {step === 1 && (
-                <>
-                    <TouchableOpacity style={styles.authOption}>
-                        <Text style={styles.authText}>Register with Asan İmza</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity style={styles.authOption}>
-                        <Text style={styles.authText}>Register with Sima</Text>
-                    </TouchableOpacity>
-                    <Text style={styles.footerText}>
-                        Already have an account? <Text style={styles.loginText}>Login</Text>
-                    </Text>
-                </>
-            )}
+
+            <View style={{position:"absolute",bottom:normalize("height",20)}}>
+
+            <TouchableOpacity style={styles.authOption}>
+                    <SvgImage
+                        source={require("../../../assets/svg/asan/asan.svg")}
+                        height={20}
+                        width={20}
+                    />
+                    <Text style={styles.authText}>{t('Asan İmza ilə qeydiyyatdan keçin')}</Text>
+                </TouchableOpacity>
+
+                <Text style={styles.footerText}>
+                    {t('Artıq hesabınız var?')} <Text style={styles.loginText}>{t('Daxil ol')}</Text>
+                </Text>
+            </View>
+            
+
         </ScrollView>
     );
 };
@@ -188,17 +269,6 @@ const styles = StyleSheet.create({
         flexDirection: "row",
         alignItems: "center",
         width: "100%"
-    },
-    backBtn: {
-        alignSelf: 'flex-start',
-        marginBottom: 10,
-    },
-
-    backText: {
-        fontSize: 16,
-        color: '#004D40',
-        fontWeight: '500',
-        fontFamily: 'Ubuntu-Regular',
     },
 
     title: {
@@ -268,60 +338,59 @@ const styles = StyleSheet.create({
 
     },
     inputContainer: {
-        marginTop: 20,
+        marginTop: normalize("horizontal", 20),
     },
     inputWrapper: {
-        flexDirection: 'row',
         alignItems: 'center',
-        borderWidth: 1,
-        borderColor: '#E0E0E0',
-        borderRadius: 10,
-        paddingHorizontal: 10,
-        marginBottom: 15,
-        backgroundColor: '#fff',
     },
-    input: {
-        flex: 1,
-        height: 48,
-        fontSize: 16,
-        fontFamily: 'Ubuntu-Regular',
-        color: '#000',
-    },
+
     continueBtn: {
-        backgroundColor: '#004D40',
-        paddingVertical: 14,
-        borderRadius: 10,
+        backgroundColor: '#015656',
+        paddingVertical: normalize("height", 14),
+        borderRadius: normalize("width", 12),
         alignItems: 'center',
-        marginTop: 10,
-        marginBottom: 20,
+        marginTop: normalize("height", 30),
+        width: normalize("width", 327),
+        height: normalize("height", 48),
     },
     continueText: {
         color: '#fff',
-        fontSize: 16,
+        fontSize: normalize("font", 16),
         fontWeight: '600',
+        fontFamily: "Onest-Medium",
+
     },
     authOption: {
         flexDirection: 'row',
         alignItems: 'center',
-        backgroundColor: '#fff',
-        paddingVertical: 14,
-        paddingHorizontal: 16,
-        borderRadius: 10,
-        marginBottom: 10,
+        backgroundColor: '#FFFFFF',
+        width: normalize("width", 327),
+        height: normalize("height", 48),
+        borderRadius: normalize("height", 12),
+        alignSelf: "center",
+        gap:normalize("width",10),
+        justifyContent:"center",
+        
     },
     authText: {
-        fontSize: 16,
-        fontFamily: 'Ubuntu-Regular',
+        fontSize: normalize("font", 16),
+        fontFamily: "Onest-Medium",
+        color:"#015656"
     },
     footerText: {
         textAlign: 'center',
-        marginTop: 20,
-        fontSize: 14,
-        color: '#8E8E93',
+        marginTop: normalize("height",24),
+        fontSize: normalize("font",14),
+        color: '#0000007A',
+        fontFamily: "Onest-Medium",
+
     },
     loginText: {
-        color: '#004D40',
-        fontWeight: '500',
+        textAlign: 'center',
+        marginTop: normalize("height",24),
+        fontSize: normalize("font",14),
+        color: '#015656',
+        fontFamily: "Onest-Medium",
     },
 });
 
