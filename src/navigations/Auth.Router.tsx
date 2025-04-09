@@ -6,6 +6,7 @@ import { defaultScreenOptions } from '../configs/navigationConfig';
 import { RootStackParamList } from '../types/navigation.type';
 import LanguageScreen from '../screens/auth/language/LanguageScreen';
 import OnboardingScreen from '../screens/auth/onboarding/OnboardingScreen';
+import RegisterScreen from '../screens/auth/register/RegisterScreen';
 
 
 
@@ -20,6 +21,8 @@ export const AuthRouter = () => {
             screenOptions={defaultScreenOptions}
 
         >
+            <AuthStack.Screen name={Routes.register} component={RegisterScreen} />
+
             <AuthStack.Screen name={Routes.language} component={LanguageScreen} />
             <AuthStack.Screen name={Routes.login} component={LoginScreen} />
             <AuthStack.Screen name={Routes.onboarding} component={OnboardingScreen} />

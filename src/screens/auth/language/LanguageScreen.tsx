@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { View, Text, TouchableOpacity, StyleSheet, Alert, SafeAreaView } from "react-native";
+import { View, Text, TouchableOpacity, StyleSheet, Alert, SafeAreaView, StatusBar } from "react-native";
 import i18n from "../../../locales/i18n";
 import { useTranslation } from "react-i18next";
 import { normalize } from "../../../theme/metrics";
@@ -29,6 +29,8 @@ const LanguageScreen = ({ navigation }: any) => {
 
     return (
         <SafeAreaView style={styles.container}>
+                  <StatusBar backgroundColor='#F3F3F3' />
+
             <View style={styles.down}>
                 <View >
                     <Text style={styles.title}>{t('Dil seçin')}</Text>
@@ -54,7 +56,7 @@ const LanguageScreen = ({ navigation }: any) => {
                     ))}
                 </View>
             </View>
-            <View >
+            <View style={{marginBottom:normalize("height",20)}} >
                 <CustomButton
                     onPress={() => navigation.navigate(Routes.onboarding)}
                     title={t('Davam et')}
@@ -110,7 +112,6 @@ const styles = StyleSheet.create({
         backgroundColor: "#015656",
         borderRadius: normalize("width", 10),
         alignItems: "center",
-
     },
     continueText: {
         fontSize: normalize("font", 16),

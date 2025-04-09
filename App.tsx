@@ -4,7 +4,6 @@ import Router from './src/navigations/Router'
 const App = () => {
   return (
     <View style={{ flex: 1 }}>
-      <StatusBar backgroundColor='transparent'/>
       <Router />
     </View>
   )

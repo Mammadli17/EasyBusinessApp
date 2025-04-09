@@ -2,5 +2,6 @@ export enum Routes {
     home = 'home',
     login = 'login',
     language='language',
-    onboarding='onboarding'
+    onboarding='onboarding',
+    register='register'
 }

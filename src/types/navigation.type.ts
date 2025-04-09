@@ -5,6 +5,8 @@ export type RootStackParamList = {
   [Routes.login]: undefined;
   [Routes.language]: undefined;
   [Routes.onboarding]: undefined;
+  [Routes.register]: undefined;
+
 
 
 
