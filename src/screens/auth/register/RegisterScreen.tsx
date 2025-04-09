@@ -234,9 +234,9 @@ const RegisterScreen = () => {
             </TouchableOpacity>
 
 
-            <View style={{position:"absolute",bottom:normalize("height",20)}}>
+            <View style={{ position: "absolute", bottom: normalize("height", 20) }}>
 
-            <TouchableOpacity style={styles.authOption}>
+                <TouchableOpacity style={styles.authOption}>
                     <SvgImage
                         source={require("../../../assets/svg/asan/asan.svg")}
                         height={20}
@@ -249,7 +249,7 @@ const RegisterScreen = () => {
                     {t('Artıq hesabınız var?')} <Text style={styles.loginText}>{t('Daxil ol')}</Text>
                 </Text>
             </View>
-            
+
 
         </ScrollView>
     );
@@ -368,27 +368,27 @@ const styles = StyleSheet.create({
         height: normalize("height", 48),
         borderRadius: normalize("height", 12),
         alignSelf: "center",
-        gap:normalize("width",10),
-        justifyContent:"center",
-        
+        gap: normalize("width", 10),
+        justifyContent: "center",
+
     },
     authText: {
         fontSize: normalize("font", 16),
         fontFamily: "Onest-Medium",
-        color:"#015656"
+        color: "#015656"
     },
     footerText: {
         textAlign: 'center',
-        marginTop: normalize("height",24),
-        fontSize: normalize("font",14),
+        marginTop: normalize("height", 24),
+        fontSize: normalize("font", 14),
         color: '#0000007A',
         fontFamily: "Onest-Medium",
 
     },
     loginText: {
         textAlign: 'center',
-        marginTop: normalize("height",24),
-        fontSize: normalize("font",14),
+        marginTop: normalize("height", 24),
+        fontSize: normalize("font", 14),
         color: '#015656',
         fontFamily: "Onest-Medium",
     },

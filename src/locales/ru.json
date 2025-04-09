@@ -9,8 +9,8 @@
   "Şirkət sorğularını tez və asanlıqla bir kliklə təsdiqləyin. Proseslərinizi sadələşdirin və vaxtınıza və enerjinizə qənaət edin.": "Быстро и легко утверждайте запросы компании одним нажатием. Оптимизируйте процессы и экономьте время и силы.",
   "Növbəti": "Далее",
   "Başla": "Начать",
-  "Keçmək":"Пропускать",
-  "Qeydiyyatdan keçin":"Зарегистрироваться",
+  "Keçmək": "Пропускать",
+  "Qeydiyyatdan keçin": "Зарегистрироваться",
   "Hesab qurulması": "Настройка аккаунта",
   "Mağaza detalları": "Детали магазина",
   "Tam ad": "Полное имя",
@@ -26,6 +26,13 @@
   "İş yeri": "Место работы",
   "Yer": "Местоположение",
   "VÖEN": "ИНН",
-  "Qeydiyyatdan keçin": "Зарегистрироваться"
+  "Qeydiyyatdan keçin": "Зарегистрироваться",
+  "Daxil ol": "Вход",
+  "Xoş gəlmisiniz. Hesabınıza daxil olun": "С возвращением. Войдите в свой аккаунт",
+  "Məni xatırla": "Запомнить меня",
+  "Şifrəni unutmusunuz?": "Забыли пароль?",
+  "Giriş et": "Войти",
+  "Hesabınız yoxdur?": "У вас нет аккаунта?",
+  "Asan İmza ilə daxil olun": "Войти с Asan İmza"
 
 }

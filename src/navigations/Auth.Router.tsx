@@ -21,9 +21,10 @@ export const AuthRouter = () => {
             screenOptions={defaultScreenOptions}
 
         >
+            <AuthStack.Screen name={Routes.language} component={LanguageScreen} />
+
             <AuthStack.Screen name={Routes.register} component={RegisterScreen} />
 
-            <AuthStack.Screen name={Routes.language} component={LanguageScreen} />
             <AuthStack.Screen name={Routes.login} component={LoginScreen} />
             <AuthStack.Screen name={Routes.onboarding} component={OnboardingScreen} />
 
