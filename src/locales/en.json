@@ -32,6 +32,19 @@
   "Şifrəni unutmusunuz?": "Forgot password?",
   "Giriş et": "Sign in",
   "Hesabınız yoxdur?": "Don’t have an account?",
-  "Asan İmza ilə daxil olun": "Login with Asan İmza"
+  "Asan İmza ilə daxil olun": "Login with Asan İmza",
+  "Şifrəni unutdun.": "Forgot password.",
+  "Şifrənizi unutmusunuz? Yeniləmə təlimatlarını almaq üçün e-poçtunuzu daxil edin": "Forgot your password? Enter your email address to receive reset instructions",
+  "Şifrə yeniləməyə ehtiyac yoxdur?": "Not needed reset password?",
+  "Girişə qayıt": "Back to Login",
+  "Şifrəni yenilə": "Reset Password",
+  "Şifrəni yenilə.": "Reset password.",
+  "Zəhmət olmasa sıfırlama prosesini tamamlamaq üçün yeni şifrənizi daxil edin.": "Please enter your new password to complete the reset process.",
+  "Yeni şifrə yarat": "Create new password",
+  "Yeni şifrəni yenilə": "Reset new password",
+  "Asan İmza identifikasiya seçimi ilə tez və təhlükəsiz daxil olun.": "Log in quickly and securely using the Asan İmza authentication option.",
+  "Mobil nömrə": "Mobile number",
+  "İstifadəçi ID": "User ID",
+  "E-poçt ilə daxil olun": "Login with email"
 
 }

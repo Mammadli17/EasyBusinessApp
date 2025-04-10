@@ -14,6 +14,7 @@ import { normalize } from '../../../theme/metrics';
 import { SvgImage } from '../../../components/svgImage/SvgImage';
 import { useTranslation } from 'react-i18next';
 import CustomInput from '../../../components/input/TextInput';
+import { Routes } from '../../../navigations/routes';
 
 interface ForumData {
     fullname: string;
@@ -26,7 +27,7 @@ interface ForumData {
     workplace: string;
     tin: string;
 }
-const RegisterScreen = () => {
+const RegisterScreen = ({ navigation }: any) => {
     const [step, setStep] = useState(1);
     const fadeAnim = useRef(new Animated.Value(1)).current;
     const translateAnim = useRef(new Animated.Value(0)).current;
@@ -84,6 +85,8 @@ const RegisterScreen = () => {
 
     const handleBack = () => {
         if (step === 2) animateStepChange(1);
+        if (step === 1) navigation.goBack();
+
     };
     const handleInputChange = (field: any, value: any) => {
 
@@ -161,7 +164,7 @@ const RegisterScreen = () => {
                                 icon={require('../../../assets/svg/textInput/password.svg')}
                                 placeholder={t("Şifrə")}
                                 value={forumData.password}
-                                onChangeText={(value: any) => handleInputChange('password', password)}
+                                onChangeText={(value: any) => handleInputChange('password', value)}
                                 password={true}
                             />
                         </View>
@@ -202,7 +205,7 @@ const RegisterScreen = () => {
                                 icon={require('../../../assets/svg/textInput/work.svg')}
                                 placeholder={t("İş yeri")}
                                 value={forumData.workplace}
-                                onChangeText={(value: any) => handleInputChange('workplace', password)}
+                                onChangeText={(value: any) => handleInputChange('workplace', value)}
                             />
                         </View>
                         <View style={styles.inputWrapper}>
@@ -245,9 +248,11 @@ const RegisterScreen = () => {
                     <Text style={styles.authText}>{t('Asan İmza ilə qeydiyyatdan keçin')}</Text>
                 </TouchableOpacity>
 
-                <Text style={styles.footerText}>
-                    {t('Artıq hesabınız var?')} <Text style={styles.loginText}>{t('Daxil ol')}</Text>
-                </Text>
+                <TouchableOpacity onPress={() => navigation.navigate(Routes.login)}>
+                    <Text style={styles.footerText}>
+                        {t('Artıq hesabınız var?')} <Text style={styles.loginText}>{t('Daxil ol')}</Text>
+                    </Text>
+                </TouchableOpacity>
             </View>
 
 

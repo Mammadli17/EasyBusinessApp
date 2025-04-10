@@ -28,8 +28,7 @@ interface ForumData {
   workplace: string;
   tin: string;
 }
-const LoginScreen = ({ navigation }: any) => {
-  const [isChecked, setIsChecked] = useState(false);
+const ResetPasswordScreen = ({ navigation }: any) => {
 
   const { t } = useTranslation();
 
@@ -66,13 +65,13 @@ const LoginScreen = ({ navigation }: any) => {
             width={14}
           />
         </TouchableOpacity>
-        <Text style={[styles.title]}>{t('Daxil ol')} </Text>
+        <Text style={[styles.title]}>{t('Şifrəni yenilə')} </Text>
       </View>
       <View style={{ marginTop: normalize("height", 40) }}>
 
 
         <Text style={styles.headert}>
-          {t('Xoş gəlmisiniz. Hesabınıza daxil olun')}
+          {t('Zəhmət olmasa sıfırlama prosesini tamamlamaq üçün yeni şifrənizi daxil edin.')}
         </Text>
       </View>
 
@@ -80,61 +79,37 @@ const LoginScreen = ({ navigation }: any) => {
 
         <View style={styles.inputWrapper}>
           <CustomInput
-            label={t("FIN kodu")}
-            icon={require('../../../assets/svg/textInput/fin.svg')}
-            placeholder={t("FIN kodu")}
-            value={forumData.fin}
-            onChangeText={(value: any) => handleInputChange('fin', value)}
-          />
-        </View>
-        <View style={styles.inputWrapper}>
-          <CustomInput
-            label={t("Şifrə")}
+            label={t("Yeni şifrə yarat")}
             icon={require('../../../assets/svg/textInput/password.svg')}
-            placeholder={t("Şifrə")}
+            placeholder={t("Yeni şifrə yarat")}
             value={forumData.password}
             onChangeText={(value: any) => handleInputChange('password', value)}
             password={true}
           />
         </View>
-        <View style={styles.check}>
-          <CustomCheckbox
-            label={t('Məni xatırla')}
-            checked={isChecked}
-            onChange={setIsChecked}
+        <View style={styles.inputWrapper}>
+          <CustomInput
+            label={t("Yeni şifrəni yenilə")}
+            icon={require('../../../assets/svg/textInput/password.svg')}
+            placeholder={t("Yeni şifrəni yenilə")}
+            value={forumData.password}
+            onChangeText={(value: any) => handleInputChange('password', value)}
+            password={true}
           />
-          <TouchableOpacity onPress={()=>navigation.navigate(Routes.forgot)}>
-            <Text style={styles.forgot}>
-              {t('Şifrəni unutmusunuz?')}
-            </Text>
-          </TouchableOpacity>
         </View>
       </View>
 
 
-      <TouchableOpacity style={styles.continueBtn} onPress={() => { }}>
+    
+
+      <View style={{ position: "absolute", bottom: normalize("height", 20), alignSelf: "center" }}>
+
+      <TouchableOpacity style={styles.continueBtn} onPress={() =>{}}>
         <Text style={styles.continueText}>
-          {t('Giriş et')}
+          {t('Şifrəni yenilə')}
         </Text>
       </TouchableOpacity>
 
-
-      <View style={{ position: "absolute", bottom: normalize("height", 20) }}>
-
-        <TouchableOpacity style={styles.authOption} onPress={()=>navigation.navigate(Routes.loginasan)}>
-          <SvgImage
-            source={require("../../../assets/svg/asan/asan.svg")}
-            height={20}
-            width={20}
-          />
-          <Text style={styles.authText}>{t('Asan İmza ilə daxil olun')}</Text>
-        </TouchableOpacity>
-
-        <TouchableOpacity onPress={() => navigation.navigate(Routes.register)}>
-          <Text style={styles.footerText}>
-            {t('Don’t have an account?')} <Text style={styles.loginText}>{t('Qeydiyyatdan keçin')}</Text>
-          </Text>
-        </TouchableOpacity>
       </View>
 
 
@@ -169,7 +144,8 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     color: "rgba(0, 0, 0, 0.48)",
     fontFamily: "Onest-Medium",
-    marginHorizontal: normalize("height", 60)
+    marginHorizontal: normalize("height", 60),
+    lineHeight: normalize("height", 26),
   },
   forgot: {
     fontSize: normalize("font", 12),
@@ -300,4 +276,7 @@ const styles = StyleSheet.create({
   },
 });
 
-export default LoginScreen;
+
+
+
+export default ResetPasswordScreen

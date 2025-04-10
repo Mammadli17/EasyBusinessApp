@@ -33,6 +33,19 @@
   "Şifrəni unutmusunuz?": "Забыли пароль?",
   "Giriş et": "Войти",
   "Hesabınız yoxdur?": "У вас нет аккаунта?",
-  "Asan İmza ilə daxil olun": "Войти с Asan İmza"
+  "Asan İmza ilə daxil olun": "Войти с Asan İmza",
+  "Şifrəni unutdun.": "Забыли пароль.",
+  "Şifrənizi unutmusunuz? Yeniləmə təlimatlarını almaq üçün e-poçtunuzu daxil edin": "Забыли пароль? Введите свою электронную почту, чтобы получить инструкции по сбросу",
+  "Şifrə yeniləməyə ehtiyac yoxdur?": "Не нужно сбрасывать пароль?",
+  "Girişə qayıt": "Вернуться ко входу",
+  "Şifrəni yenilə": "Сбросить пароль",
+  "Şifrəni yenilə.": "Сбросить пароль.",
+  "Zəhmət olmasa sıfırlama prosesini tamamlamaq üçün yeni şifrənizi daxil edin.": "Пожалуйста, введите новый пароль, чтобы завершить процесс сброса.",
+  "Yeni şifrə yarat": "Создать новый пароль",
+  "Yeni şifrəni yenilə": "Сбросить новый пароль",
+  "Asan İmza identifikasiya seçimi ilə tez və təhlükəsiz daxil olun.": "Быстро и безопасно войдите с помощью аутентификации Asan İmza.",
+  "Mobil nömrə": "Номер телефона",
+  "İstifadəçi ID": "Идентификатор пользователя",
+  "E-poçt ilə daxil olun": "Войти с электронной почтой"
 
 }

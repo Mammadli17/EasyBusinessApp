@@ -28,7 +28,7 @@ interface ForumData {
   workplace: string;
   tin: string;
 }
-const LoginScreen = ({ navigation }: any) => {
+const LoginEmailScreen = ({ navigation }: any) => {
   const [isChecked, setIsChecked] = useState(false);
 
   const { t } = useTranslation();
@@ -80,9 +80,9 @@ const LoginScreen = ({ navigation }: any) => {
 
         <View style={styles.inputWrapper}>
           <CustomInput
-            label={t("FIN kodu")}
-            icon={require('../../../assets/svg/textInput/fin.svg')}
-            placeholder={t("FIN kodu")}
+            label={t("E-poçt")}
+            icon={require('../../../assets/svg/textInput/email.svg')}
+            placeholder={t("E-poçt")}
             value={forumData.fin}
             onChangeText={(value: any) => handleInputChange('fin', value)}
           />
@@ -300,4 +300,6 @@ const styles = StyleSheet.create({
   },
 });
 
-export default LoginScreen;
+
+
+export default LoginEmailScreen
