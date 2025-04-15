@@ -18,7 +18,7 @@ const Router = () => {
         <RootStack.Navigator
           screenOptions={defaultScreenOptions}
         >
-          <RootStack.Screen name="Auth" component={AuthRouter} />
+          {/* <RootStack.Screen name="Auth" component={AuthRouter} /> */}
           <RootStack.Screen name="Main" component={MainRouter} />
         </RootStack.Navigator>
       </NavigationContainer>

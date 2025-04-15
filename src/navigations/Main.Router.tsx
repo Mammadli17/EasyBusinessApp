@@ -16,7 +16,6 @@ export const MainRouter = () => {
     return (
         <MainStack.Navigator
                   screenOptions={defaultScreenOptions}
-        
          >
             <MainStack.Screen name={Routes.home} component={HomeScreen} />
         </MainStack.Navigator>
