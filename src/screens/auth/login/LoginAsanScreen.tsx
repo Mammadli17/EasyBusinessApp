@@ -178,7 +178,6 @@ const styles = StyleSheet.create({
         fontFamily: "Onest-Medium",
         flex: 1,
         paddingRight: normalize("width", 14)
-
     },
     stepsContainer: {
         flexDirection: 'row',

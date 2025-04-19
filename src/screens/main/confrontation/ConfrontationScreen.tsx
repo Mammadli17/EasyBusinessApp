@@ -1,12 +1,155 @@
-import { View, Text } from 'react-native'
-import React from 'react'
+import {
+  View,
+  Text,
+  KeyboardAvoidingView,
+  StyleSheet,
+  Platform,
+  TouchableOpacity,
+  StatusBar,
+} from 'react-native';
+import React, { useState } from 'react';
+import { SvgImage } from '../../../components/svgImage/SvgImage';
+import { useTranslation } from 'react-i18next';
+import { useNavigation } from '@react-navigation/native';
+import SearchInput from './components/SearchInput';
 
 const ConfrontationScreen = () => {
-  return (
-    <View style={{ flex: 1, backgroundColor: '#F3F3F3', alignItems: 'center', justifyContent: 'center' }}>
-      <Text>ConfrontationScreen</Text>
-    </View>
-  )
-}
+  const { t } = useTranslation();
+  const navigation = useNavigation();
+  const [activeTab, setActiveTab] = useState('pending');
 
-export default ConfrontationScreen
+  return (
+    <View style={styles.wrapper}>
+      <StatusBar backgroundColor="#FFFFFF" barStyle="dark-content" />
+
+      <View style={styles.header}>
+        <View style={styles.headerTop}>
+          <TouchableOpacity
+            style={styles.backButton}
+            onPress={() => navigation.goBack()}
+          >
+            <SvgImage
+              source={require("../../../assets/svg/back/back.svg")}
+              height={14}
+              width={14}
+            />
+          </TouchableOpacity>
+
+          <Text style={styles.headerTitle}>{t("Üzləşmə")}</Text>
+
+          <View style={styles.rightPlaceholder} />
+        </View>
+
+        <View style={styles.searchContainer}>
+          <SearchInput />
+          <View style={styles.tabContainer}>
+            <TouchableOpacity 
+              style={[styles.tabButton, activeTab === 'pending' && styles.activeTabButton]}
+              onPress={() => setActiveTab('pending')}
+            >
+              <Text style={[styles.tabText, activeTab === 'pending' && styles.activeTabText]}>
+                {t('Təsdiq gözləyənlər')}
+              </Text>
+            </TouchableOpacity>
+            <TouchableOpacity 
+              style={[styles.tabButton, activeTab === 'approved' && styles.activeTabButton]}
+              onPress={() => setActiveTab('approved')}
+            >
+              <Text style={[styles.tabText, activeTab === 'approved' && styles.activeTabText]}>
+                {t('Təsdiqlənmiş')}
+              </Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      </View>
+
+      <KeyboardAvoidingView
+        style={styles.content}
+        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+        keyboardVerticalOffset={Platform.OS === 'ios' ? 0 : 20}
+      >
+        {activeTab === 'pending' ? (
+          // Pending screen content
+          <View />
+        ) : (
+          // Approved screen content
+          <View />
+        )}
+      </KeyboardAvoidingView>
+    </View>
+  );
+};
+
+const styles = StyleSheet.create({
+  wrapper: {
+    flex: 1,
+    backgroundColor: '#F3F3F3',
+  },
+  header: {
+    flexDirection: 'column',
+    alignItems: 'stretch',
+    paddingHorizontal: 20,
+    paddingTop: Platform.OS === 'ios' ? 70 : 50,
+    height: 260,
+    backgroundColor: '#FFFFFF',
+  },
+  headerTop: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    width: '100%',
+  },
+  backButton: {
+    width: 40,
+    height: 40,
+    justifyContent: 'center',
+    alignItems: 'flex-start',
+  },
+  rightPlaceholder: {
+    width: 40,
+    height: 40,
+  },
+  headerTitle: {
+    flex: 1,
+    textAlign: 'center',
+    fontSize: 26,
+    color: '#110C22',
+    fontFamily: 'Onest-Medium',
+    paddingRight: 14,
+  },
+  searchContainer: {
+    paddingTop: 24,
+    width: '100%', // Ensure full width
+  },
+  content: {
+    flex: 1,
+  },
+  tabContainer: {
+    flexDirection: 'row',
+    marginTop: 16,
+    gap: 8,
+  },
+  tabButton: {
+    flex: 1,
+    height: 48,
+    backgroundColor: '#FFFFFF',
+    borderRadius: 8,
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderWidth: 1,
+    borderColor: '#ECECED',
+  },
+  activeTabButton: {
+    backgroundColor: '#015656',
+    borderWidth: 0,
+  },
+  tabText: {
+    fontSize: 14,
+    fontFamily: 'Onest-Medium',
+    color: '#110C22',
+  },
+  activeTabText: {
+    color: '#FFFFFF',
+  },
+});
+
+export default ConfrontationScreen;

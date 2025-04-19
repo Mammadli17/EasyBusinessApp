@@ -16,7 +16,6 @@
     "FIN kodu": "FIN kodu",
     "Şifrə": "Şifrə",
     "Şifrəni yenidən daxil edin": "Şifrəni yenidən daxil edin",
-    "Davam et": "Davam et",
     "Asan İmza ilə qeydiyyatdan keçin": "Asan İmza ilə qeydiyyatdan keçin",
     "Artıq hesabınız var?": "Artıq hesabınız var?",
     "Daxil ol": "Daxil ol",
@@ -26,7 +25,6 @@
     "Yer": "Yer",
     "VÖEN": "VÖEN",
     "Qeydiyyatdan keçin": "Qeydiyyatdan keçin",
-    "Daxil ol": "Daxil ol",
     "Xoş gəlmisiniz. Hesabınıza daxil olun": "Xoş gəlmisiniz. Hesabınıza daxil olun",
     "Məni xatırla": "Məni xatırla",
     "Şifrəni unutmusunuz?": "Şifrəni unutmusunuz?",
@@ -45,8 +43,10 @@
     "Asan İmza identifikasiya seçimi ilə tez və təhlükəsiz daxil olun.": "Asan İmza identifikasiya seçimi ilə tez və təhlükəsiz daxil olun.",
     "Mobil nömrə": "Mobil nömrə",
     "İstifadəçi ID": "İstifadəçi ID",
-    "E-poçt ilə daxil olun": "E-poçt ilə daxil olun"
-
-
-  }
-  
+    "E-poçt ilə daxil olun": "E-poçt ilə daxil olun",
+    "Ana Səhifə": "Ana Səhifə",
+    "Üzləşmə": "Üzləşmə",
+    "Biletlər": "Biletlər",
+    "Profil": "Profil",
+    "Axtar...": "Axtar..."
+}

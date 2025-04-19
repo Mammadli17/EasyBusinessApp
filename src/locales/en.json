@@ -17,7 +17,6 @@
   "FIN kodu": "FIN code",
   "Şifrə": "Password",
   "Şifrəni yenidən daxil edin": "Reenter password",
-  "Davam et": "Continue",
   "Asan İmza ilə qeydiyyatdan keçin": "Register with \"Asan İmza\"",
   "Artıq hesabınız var?": "Already have an account?",
   "Daxil ol": "Login",
@@ -26,7 +25,6 @@
   "İş yeri": "Workplace",
   "Yer": "Location",
   "VÖEN": "TIN",
-  "Daxil ol": "Login",
   "Xoş gəlmisiniz. Hesabınıza daxil olun": "Welcome back. Log in to your account",
   "Məni xatırla": "Remember me",
   "Şifrəni unutmusunuz?": "Forgot password?",
@@ -45,6 +43,10 @@
   "Asan İmza identifikasiya seçimi ilə tez və təhlükəsiz daxil olun.": "Log in quickly and securely using the Asan İmza authentication option.",
   "Mobil nömrə": "Mobile number",
   "İstifadəçi ID": "User ID",
-  "E-poçt ilə daxil olun": "Login with email"
-
+  "E-poçt ilə daxil olun": "Login with email",
+  "Ana Səhifə": "Home",
+  "Üzləşmə": "Confrontation",
+  "Biletlər": "Tickets",
+  "Profil": "Profile",
+  "Axtar...": "Search..."
 }
