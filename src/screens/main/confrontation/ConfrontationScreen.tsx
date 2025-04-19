@@ -12,6 +12,8 @@ import { SvgImage } from '../../../components/svgImage/SvgImage';
 import { useTranslation } from 'react-i18next';
 import { useNavigation } from '@react-navigation/native';
 import SearchInput from './components/SearchInput';
+import PendingScreen from './components/PendingScreen';
+import ApprovedScreen from './components/ApprovedScreen';
 
 const ConfrontationScreen = () => {
   const { t } = useTranslation();
@@ -68,13 +70,7 @@ const ConfrontationScreen = () => {
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
         keyboardVerticalOffset={Platform.OS === 'ios' ? 0 : 20}
       >
-        {activeTab === 'pending' ? (
-          // Pending screen content
-          <View />
-        ) : (
-          // Approved screen content
-          <View />
-        )}
+        {activeTab === 'pending' ? <PendingScreen /> : <ApprovedScreen />}
       </KeyboardAvoidingView>
     </View>
   );
