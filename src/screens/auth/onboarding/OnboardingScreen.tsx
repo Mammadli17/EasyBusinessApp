@@ -7,15 +7,14 @@ import {
   Image,
   TouchableOpacity,
   Dimensions,
+  SafeAreaView,
 } from 'react-native';
 import { SvgImage } from '../../../components/svgImage/SvgImage';
-import { normalize } from '../../../theme/metrics';
 import { useTranslation } from 'react-i18next';
 import CustomButton from '../../../components/button/CustomButton';
 import { Routes } from '../../../navigations/routes';
 
 const { width, height } = Dimensions.get('window');
-
 
 export default function OnboardingScreen({ navigation }: any) {
   const flatListRef = useRef<any>(null);
@@ -46,7 +45,6 @@ export default function OnboardingScreen({ navigation }: any) {
     },
   ];
 
-
   const handleNext = () => {
     if (currentIndex < slides.length - 1) {
       flatListRef.current.scrollToIndex({ index: currentIndex + 1 });
@@ -70,7 +68,7 @@ export default function OnboardingScreen({ navigation }: any) {
   );
 
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container}>
       <View style={styles.icon}>
         <SvgImage
           source={require("../../../assets/svg/app/app.svg")}
@@ -78,7 +76,7 @@ export default function OnboardingScreen({ navigation }: any) {
           width={96}
         />
       </View>
-      <View style={[styles.slide, { marginTop: normalize("height", 40) }]}>
+      <View style={[styles.slide, { marginTop: 40 }]}>
         <FlatList
           data={slides}
           renderItem={renderItem}
@@ -105,32 +103,31 @@ export default function OnboardingScreen({ navigation }: any) {
       </View>
 
       <View style={styles.footer}>
-  {currentIndex === slides.length - 1 ? (
-    <CustomButton
-      onPress={() => navigation.navigate(Routes.login)} 
-      title={t('Başla')}
-      buttonStyle={[styles.continueButtonn, { backgroundColor: "#015656" }]}
-      textStyle={[styles.continueText]}
-    />
-  ) : (
-    <>
-      <CustomButton
-        onPress={() => navigation.navigate(Routes.login)}
-        title={t('Keçmək')}
-        buttonStyle={[styles.continueButton, { backgroundColor: "white" }]}
-        textStyle={[styles.continueText, { color: "#015656" }]}
-      />
-      <CustomButton
-        onPress={() => handleNext()}
-        title={t('Növbəti')}
-        buttonStyle={styles.continueButton}
-        textStyle={styles.continueText}
-      />
-    </>
-  )}
-</View>
-
-    </View>
+        {currentIndex === slides.length - 1 ? (
+          <CustomButton
+            onPress={() => navigation.navigate(Routes.login)}
+            title={t('Başla')}
+            buttonStyle={[styles.continueButtonFull, { backgroundColor: "#015656" }]}
+            textStyle={[styles.continueText]}
+          />
+        ) : (
+          <>
+            <CustomButton
+              onPress={() => navigation.navigate(Routes.login)}
+              title={t('Keçmək')}
+              buttonStyle={[styles.continueButtonHalf, { backgroundColor: "white" }]}
+              textStyle={[styles.continueText, { color: "#015656" }]}
+            />
+            <CustomButton
+              onPress={handleNext}
+              title={t('Növbəti')}
+              buttonStyle={styles.continueButtonHalf}
+              textStyle={styles.continueText}
+            />
+          </>
+        )}
+      </View>
+    </SafeAreaView>
   );
 }
 
@@ -141,79 +138,79 @@ const styles = StyleSheet.create({
   },
   icon: {
     alignItems: "center",
-    marginTop: normalize("height", 14)
   },
-
   slide: {
     width,
     alignItems: 'center',
-    height: normalize("height", 553),
+    height: 553,
     backgroundColor: "#FFFFFF",
-    borderRadius: normalize("width", 30),
+    borderRadius: 30,
   },
   image: {
     width,
-    height: normalize("height", 233),
+    height: 233,
     resizeMode: "contain",
-    marginTop: normalize("height", 30)
+    marginTop: 30,
   },
   title: {
-    fontSize: normalize("font", 26),
+    fontSize: 26,
     textAlign: 'center',
     color: '#000000',
     fontFamily: "Onest-Light",
-    marginHorizontal: normalize("width", 44),
-    marginTop: normalize("height", 35)
+    marginHorizontal: 44,
+    marginTop: 35,
   },
   description: {
-    fontSize: normalize("height", 14),
+    fontSize: 14,
     color: '#0000007A',
     textAlign: 'center',
-    marginTop: normalize("height", 30),
-    paddingHorizontal: normalize("width", 33),
+    marginTop: 30,
+    paddingHorizontal: 33,
     fontFamily: "Onest-Light",
-    lineHeight: normalize("height", 32),
+    lineHeight: 32,
   },
   dotsContainer: {
     flexDirection: 'row',
     justifyContent: 'center',
     position: "absolute",
     alignSelf: "center",
-    bottom: normalize("height", 170)
+    bottom: 100,
   },
   dot: {
-    height: normalize("height", 8),
-    width: normalize("height", 8),
-    borderRadius: normalize("height", 4),
-    marginHorizontal: normalize("height", 4)
+    height: 8,
+    width: 8,
+    borderRadius: 4,
+    marginHorizontal: 4,
   },
   footer: {
     flexDirection: 'row',
     position: 'absolute',
-    bottom: normalize("height", 20),
+    bottom: 20,
     width: '100%',
     alignSelf: 'center',
     alignItems: "center",
     justifyContent: 'center',
-    gap: normalize("width", 10),
+    gap: 10,
   },
-  continueButton: {
-    width: normalize("width", 160),
-    height: normalize("height", 48),
+  continueButtonHalf: {
+    width: 160,
+    height: 48,
     backgroundColor: "#015656",
-    borderRadius: normalize("width", 10),
+    borderRadius: 10,
     alignItems: "center",
+    justifyContent: "center",
+  },
+  continueButtonFull: {
+    width: 327,
+    height: 48,
+    backgroundColor: "#015656",
+    borderRadius: 10,
+    alignItems: "center",
+    justifyContent: "center",
   },
   continueText: {
-    fontSize: normalize("font", 16),
+    fontSize: 16,
     color: "#FFFFFF",
     fontWeight: "bold",
-  },
-  continueButtonn: {
-    width: normalize("width", 327),
-    height: normalize("height", 48),
-    backgroundColor: "#015656",
-    borderRadius: normalize("width", 10),
-    alignItems: "center",
   },
 });
