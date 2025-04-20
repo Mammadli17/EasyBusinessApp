@@ -19,6 +19,11 @@ const ConfrontationScreen = () => {
   const { t } = useTranslation();
   const navigation = useNavigation();
   const [activeTab, setActiveTab] = useState('pending');
+  const [searchQuery, setSearchQuery] = useState('');
+
+  const handleSearch = (query: string) => {
+    setSearchQuery(query);
+  };
 
   return (
     <View style={styles.wrapper}>
@@ -43,7 +48,7 @@ const ConfrontationScreen = () => {
         </View>
 
         <View style={styles.searchContainer}>
-          <SearchInput />
+          <SearchInput onSearch={handleSearch} value={searchQuery} />
           <View style={styles.tabContainer}>
             <TouchableOpacity
               style={[styles.tabButton, activeTab === 'pending' && styles.activeTabButton]}
@@ -70,7 +75,11 @@ const ConfrontationScreen = () => {
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
         keyboardVerticalOffset={Platform.OS === 'ios' ? 0 : 20}
       >
-        {activeTab === 'pending' ? <PendingScreen /> : <ApprovedScreen />}
+        {activeTab === 'pending' ? (
+          <PendingScreen searchQuery={searchQuery} />
+        ) : (
+          <ApprovedScreen searchQuery={searchQuery} />
+        )}
       </KeyboardAvoidingView>
     </View>
   );

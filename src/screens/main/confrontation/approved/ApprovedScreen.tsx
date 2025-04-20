@@ -1,8 +1,12 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { View, StyleSheet, FlatList, Platform } from 'react-native';
 import { ApprovedCard } from '../../../../components/productList/ApprovedCard';
 
-const ApprovedScreen = () => {
+interface ApprovedScreenProps {
+  searchQuery: string;
+}
+
+const ApprovedScreen = ({ searchQuery }: ApprovedScreenProps) => {
   const sampleData = [
     {
       id: '1',
@@ -61,10 +65,22 @@ const ApprovedScreen = () => {
     }
   ];
 
+  const filteredData = useMemo(() => {
+    if (!searchQuery) return sampleData;
+    const lowerCaseQuery = searchQuery.toLowerCase();
+    return sampleData.filter(item => 
+      item.name.toLowerCase().includes(lowerCaseQuery) ||
+      item.amount.toLowerCase().includes(lowerCaseQuery) ||
+      item.date.includes(lowerCaseQuery) ||
+      (item.approvedBy && item.approvedBy.toLowerCase().includes(lowerCaseQuery)) ||
+      (item.approvedDate && item.approvedDate.includes(lowerCaseQuery))
+    );
+  }, [searchQuery]);
+
   return (
     <View style={styles.container}>
       <FlatList
-        data={sampleData}
+        data={filteredData}
         renderItem={({ item }) => <ApprovedCard item={item} />}
         keyExtractor={(item) => item.id}
         contentContainerStyle={styles.listContainer}

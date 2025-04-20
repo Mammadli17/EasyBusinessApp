@@ -1,8 +1,12 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { View, StyleSheet, FlatList, Platform } from 'react-native';
 import { PendingCard } from '../../../../components/productList/PendingCard';
 
-const PendingScreen = () => {
+interface PendingScreenProps {
+  searchQuery: string;
+}
+
+const PendingScreen = ({ searchQuery }: PendingScreenProps) => {
   const sampleData = [
     {
       id: '1',
@@ -55,10 +59,20 @@ const PendingScreen = () => {
     }
   ];
 
+  const filteredData = useMemo(() => {
+    if (!searchQuery) return sampleData;
+    const lowerCaseQuery = searchQuery.toLowerCase();
+    return sampleData.filter(item => 
+      item.name.toLowerCase().includes(lowerCaseQuery) ||
+      item.amount.toLowerCase().includes(lowerCaseQuery) ||
+      item.date.includes(lowerCaseQuery)
+    );
+  }, [searchQuery]);
+
   return (
     <View style={styles.container}>
       <FlatList
-        data={sampleData}
+        data={filteredData}
         renderItem={({ item }) => <PendingCard item={item} />}
         keyExtractor={(item) => item.id}
         contentContainerStyle={styles.listContainer}

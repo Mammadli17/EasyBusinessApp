@@ -3,7 +3,12 @@ import { View, TextInput, StyleSheet, TouchableOpacity } from 'react-native';
 import { SvgImage } from '../../../../components/svgImage/SvgImage';
 import { useTranslation } from 'react-i18next';
 
-const SearchInput = () => {
+interface SearchInputProps {
+  onSearch: (query: string) => void;
+  value: string;
+}
+
+const SearchInput = ({ onSearch, value }: SearchInputProps) => {
   const { t } = useTranslation();
 
   return (
@@ -18,6 +23,8 @@ const SearchInput = () => {
         style={styles.input}
         placeholder={t('Axtar')}
         placeholderTextColor="#B3B1B8"
+        value={value}
+        onChangeText={onSearch}
       />
       <TouchableOpacity>
         <SvgImage
