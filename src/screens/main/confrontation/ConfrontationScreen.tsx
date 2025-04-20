@@ -6,6 +6,8 @@ import {
   Platform,
   TouchableOpacity,
   StatusBar,
+  TouchableWithoutFeedback,
+  Keyboard
 } from 'react-native';
 import React, { useState } from 'react';
 import { SvgImage } from '../../../components/svgImage/SvgImage';
@@ -26,62 +28,64 @@ const ConfrontationScreen = () => {
   };
 
   return (
-    <View style={styles.wrapper}>
-      <StatusBar backgroundColor="#FFFFFF" barStyle="dark-content" />
+    <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+      <View style={styles.wrapper}>
+        <StatusBar backgroundColor="#FFFFFF" barStyle="dark-content" />
 
-      <View style={styles.header}>
-        <View style={styles.headerTop}>
-          <TouchableOpacity
-            style={styles.backButton}
-            onPress={() => navigation.goBack()}
-          >
-            <SvgImage
-              source={require("../../../assets/svg/back/back.svg")}
-              height={14}
-              width={14}
-            />
-          </TouchableOpacity>
-
-          <Text style={styles.headerTitle}>{t("Üzləşmə")}</Text>
-
-          <View style={styles.rightPlaceholder} />
-        </View>
-
-        <View style={styles.searchContainer}>
-          <SearchInput onSearch={handleSearch} value={searchQuery} />
-          <View style={styles.tabContainer}>
+        <View style={styles.header}>
+          <View style={styles.headerTop}>
             <TouchableOpacity
-              style={[styles.tabButton, activeTab === 'pending' && styles.activeTabButton]}
-              onPress={() => setActiveTab('pending')}
+              style={styles.backButton}
+              onPress={() => navigation.goBack()}
             >
-              <Text style={[styles.tabText, activeTab === 'pending' && styles.activeTabText]}>
-                {t('Təsdiq gözləyənlər')}
-              </Text>
+              <SvgImage
+                source={require("../../../assets/svg/back/back.svg")}
+                height={14}
+                width={14}
+              />
             </TouchableOpacity>
-            <TouchableOpacity
-              style={[styles.tabButton, activeTab === 'approved' && styles.activeTabButton]}
-              onPress={() => setActiveTab('approved')}
-            >
-              <Text style={[styles.tabText, activeTab === 'approved' && styles.activeTabText]}>
-                {t('Təsdiqlənmiş')}
-              </Text>
-            </TouchableOpacity>
+
+            <Text style={styles.headerTitle}>{t("Üzləşmə")}</Text>
+
+            <View style={styles.rightPlaceholder} />
+          </View>
+
+          <View style={styles.searchContainer}>
+            <SearchInput onSearch={handleSearch} value={searchQuery} />
+            <View style={styles.tabContainer}>
+              <TouchableOpacity
+                style={[styles.tabButton, activeTab === 'pending' && styles.activeTabButton]}
+                onPress={() => setActiveTab('pending')}
+              >
+                <Text style={[styles.tabText, activeTab === 'pending' && styles.activeTabText]}>
+                  {t('Təsdiq gözləyənlər')}
+                </Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={[styles.tabButton, activeTab === 'approved' && styles.activeTabButton]}
+                onPress={() => setActiveTab('approved')}
+              >
+                <Text style={[styles.tabText, activeTab === 'approved' && styles.activeTabText]}>
+                  {t('Təsdiqlənmiş')}
+                </Text>
+              </TouchableOpacity>
+            </View>
           </View>
         </View>
-      </View>
 
-      <KeyboardAvoidingView
-        style={styles.content}
-        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-        keyboardVerticalOffset={Platform.OS === 'ios' ? 0 : 20}
-      >
-        {activeTab === 'pending' ? (
-          <PendingScreen searchQuery={searchQuery} />
-        ) : (
-          <ApprovedScreen searchQuery={searchQuery} />
-        )}
-      </KeyboardAvoidingView>
-    </View>
+        <KeyboardAvoidingView
+          style={styles.content}
+          behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+          keyboardVerticalOffset={Platform.OS === 'ios' ? 0 : 20}
+        >
+          {activeTab === 'pending' ? (
+            <PendingScreen searchQuery={searchQuery} />
+          ) : (
+            <ApprovedScreen searchQuery={searchQuery} />
+          )}
+        </KeyboardAvoidingView>
+      </View>
+    </TouchableWithoutFeedback>
   );
 };
 
