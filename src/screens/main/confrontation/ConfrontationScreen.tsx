@@ -12,8 +12,8 @@ import { SvgImage } from '../../../components/svgImage/SvgImage';
 import { useTranslation } from 'react-i18next';
 import { useNavigation } from '@react-navigation/native';
 import SearchInput from './components/SearchInput';
-import PendingScreen from './components/PendingScreen';
-import ApprovedScreen from './components/ApprovedScreen';
+import PendingScreen from './pending/PendingScreen';
+import ApprovedScreen from './approved/ApprovedScreen';
 
 const ConfrontationScreen = () => {
   const { t } = useTranslation();
@@ -45,7 +45,7 @@ const ConfrontationScreen = () => {
         <View style={styles.searchContainer}>
           <SearchInput />
           <View style={styles.tabContainer}>
-            <TouchableOpacity 
+            <TouchableOpacity
               style={[styles.tabButton, activeTab === 'pending' && styles.activeTabButton]}
               onPress={() => setActiveTab('pending')}
             >
@@ -53,7 +53,7 @@ const ConfrontationScreen = () => {
                 {t('Təsdiq gözləyənlər')}
               </Text>
             </TouchableOpacity>
-            <TouchableOpacity 
+            <TouchableOpacity
               style={[styles.tabButton, activeTab === 'approved' && styles.activeTabButton]}
               onPress={() => setActiveTab('approved')}
             >
@@ -110,11 +110,10 @@ const styles = StyleSheet.create({
     fontSize: 26,
     color: '#110C22',
     fontFamily: 'Onest-Medium',
-    paddingRight: 14,
+    fontWeight: 'bold',
   },
   searchContainer: {
     paddingTop: 24,
-    width: '100%', // Ensure full width
   },
   content: {
     flex: 1,
@@ -122,29 +121,36 @@ const styles = StyleSheet.create({
   tabContainer: {
     flexDirection: 'row',
     marginTop: 16,
-    gap: 8,
+    padding: 4,
+    backgroundColor: '#F8F8F8',
+    borderRadius: 24,
   },
   tabButton: {
     flex: 1,
-    height: 48,
-    backgroundColor: '#FFFFFF',
-    borderRadius: 8,
+    height: 40,
+    borderRadius: 24,
     justifyContent: 'center',
     alignItems: 'center',
-    borderWidth: 1,
-    borderColor: '#ECECED',
+    marginHorizontal: 2,
   },
   activeTabButton: {
-    backgroundColor: '#015656',
-    borderWidth: 0,
+    backgroundColor: '#FFFFFF',
+    shadowColor: '#015656',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.15,
+    shadowRadius: 3,
+    elevation: 3,
   },
   tabText: {
     fontSize: 14,
     fontFamily: 'Onest-Medium',
-    color: '#110C22',
+    color: '#B3B1B8',
   },
   activeTabText: {
-    color: '#FFFFFF',
+    color: '#015656',
   },
 });
 

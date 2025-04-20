@@ -16,7 +16,7 @@ export default function SearchBar<T>({ data, searchField, onSearch }: SearchBarP
             String(item[searchField]).toLowerCase().includes(query.toLowerCase())
         );
         onSearch(filtered);
-    }, [query]); // sadece query değişince çalışır
+    }, [query]);
 
     return (
         <View style={styles.container}>

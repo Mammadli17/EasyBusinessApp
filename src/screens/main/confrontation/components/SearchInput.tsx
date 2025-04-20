@@ -1,8 +1,11 @@
 import React from 'react';
 import { View, TextInput, StyleSheet, TouchableOpacity } from 'react-native';
 import { SvgImage } from '../../../../components/svgImage/SvgImage';
+import { useTranslation } from 'react-i18next';
 
 const SearchInput = () => {
+  const { t } = useTranslation();
+
   return (
     <View style={styles.container}>
       <SvgImage
@@ -13,7 +16,7 @@ const SearchInput = () => {
       />
       <TextInput
         style={styles.input}
-        placeholder="Axtar..."
+        placeholder={t('Axtar')}
         placeholderTextColor="#B3B1B8"
       />
       <TouchableOpacity>
