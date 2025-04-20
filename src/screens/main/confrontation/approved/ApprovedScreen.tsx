@@ -85,6 +85,7 @@ const ApprovedScreen = ({ searchQuery }: ApprovedScreenProps) => {
         keyExtractor={(item) => item.id}
         contentContainerStyle={styles.listContainer}
         showsVerticalScrollIndicator={false}
+        bounces={true}
       />
     </View>
   );
@@ -93,11 +94,10 @@ const ApprovedScreen = ({ searchQuery }: ApprovedScreenProps) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#F3F3F3',
   },
   listContainer: {
     padding: 20,
-    paddingBottom: Platform.OS === 'ios' ? 110 : 60,
+    paddingBottom: Platform.OS === 'ios' ? 200 : 160
   }
 });
 

@@ -77,6 +77,7 @@ const PendingScreen = ({ searchQuery }: PendingScreenProps) => {
         keyExtractor={(item) => item.id}
         contentContainerStyle={styles.listContainer}
         showsVerticalScrollIndicator={false}
+        bounces={true}
       />
     </View>
   );
@@ -85,11 +86,10 @@ const PendingScreen = ({ searchQuery }: PendingScreenProps) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#F3F3F3',
   },
   listContainer: {
     padding: 20,
-    paddingBottom: Platform.OS === 'ios' ? 110 : 60,
+    paddingBottom: 120
   }
 });
 

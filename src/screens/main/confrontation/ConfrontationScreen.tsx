@@ -28,64 +28,58 @@ const ConfrontationScreen = () => {
   };
 
   return (
-    <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-      <View style={styles.wrapper}>
-        <StatusBar backgroundColor="#FFFFFF" barStyle="dark-content" />
+    <View style={styles.wrapper}>
+      <StatusBar backgroundColor="#FFFFFF" barStyle="dark-content" />
 
-        <View style={styles.header}>
-          <View style={styles.headerTop}>
-            <TouchableOpacity
-              style={styles.backButton}
-              onPress={() => navigation.goBack()}
-            >
-              <SvgImage
-                source={require("../../../assets/svg/back/back.svg")}
-                height={14}
-                width={14}
-              />
-            </TouchableOpacity>
+      <View style={styles.header}>
+        <View style={styles.headerTop}>
+          <TouchableOpacity
+            style={styles.backButton}
+            onPress={() => navigation.goBack()}
+          >
+            <SvgImage
+              source={require("../../../assets/svg/back/back.svg")}
+              height={14}
+              width={14}
+            />
+          </TouchableOpacity>
 
-            <Text style={styles.headerTitle}>{t("Üzləşmə")}</Text>
+          <Text style={styles.headerTitle}>{t("Üzləşmə")}</Text>
 
-            <View style={styles.rightPlaceholder} />
-          </View>
-
-          <View style={styles.searchContainer}>
-            <SearchInput onSearch={handleSearch} value={searchQuery} />
-            <View style={styles.tabContainer}>
-              <TouchableOpacity
-                style={[styles.tabButton, activeTab === 'pending' && styles.activeTabButton]}
-                onPress={() => setActiveTab('pending')}
-              >
-                <Text style={[styles.tabText, activeTab === 'pending' && styles.activeTabText]}>
-                  {t('Təsdiq gözləyənlər')}
-                </Text>
-              </TouchableOpacity>
-              <TouchableOpacity
-                style={[styles.tabButton, activeTab === 'approved' && styles.activeTabButton]}
-                onPress={() => setActiveTab('approved')}
-              >
-                <Text style={[styles.tabText, activeTab === 'approved' && styles.activeTabText]}>
-                  {t('Təsdiqlənmiş')}
-                </Text>
-              </TouchableOpacity>
-            </View>
-          </View>
+          <View style={styles.rightPlaceholder} />
         </View>
 
-        <KeyboardAvoidingView
-          style={styles.content}
-          behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-          keyboardVerticalOffset={Platform.OS === 'ios' ? 0 : 20}
-        >
-          {activeTab === 'pending' ? (
-            <PendingScreen searchQuery={searchQuery} />
-          ) : (
-            <ApprovedScreen searchQuery={searchQuery} />
-          )}
-        </KeyboardAvoidingView>
+        <View style={styles.searchContainer}>
+          <SearchInput onSearch={handleSearch} value={searchQuery} />
+          <View style={styles.tabContainer}>
+            <TouchableOpacity
+              style={[styles.tabButton, activeTab === 'pending' && styles.activeTabButton]}
+              onPress={() => setActiveTab('pending')}
+            >
+              <Text style={[styles.tabText, activeTab === 'pending' && styles.activeTabText]}>
+                {t('Təsdiq gözləyənlər')}
+              </Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={[styles.tabButton, activeTab === 'approved' && styles.activeTabButton]}
+              onPress={() => setActiveTab('approved')}
+            >
+              <Text style={[styles.tabText, activeTab === 'approved' && styles.activeTabText]}>
+                {t('Təsdiqlənmiş')}
+              </Text>
+            </TouchableOpacity>
+          </View>
+        </View>
       </View>
-    </TouchableWithoutFeedback>
+
+      <View style={styles.content}>
+        {activeTab === 'pending' ? (
+          <PendingScreen searchQuery={searchQuery} />
+        ) : (
+          <ApprovedScreen searchQuery={searchQuery} />
+        )}
+      </View>
+    </View>
   );
 };
 
@@ -99,8 +93,8 @@ const styles = StyleSheet.create({
     alignItems: 'stretch',
     paddingHorizontal: 20,
     paddingTop: Platform.OS === 'ios' ? 70 : 50,
-    height: 260,
     backgroundColor: '#FFFFFF',
+    paddingBottom: 16,
   },
   headerTop: {
     flexDirection: 'row',
@@ -130,6 +124,7 @@ const styles = StyleSheet.create({
   },
   content: {
     flex: 1,
+    backgroundColor: '#F3F3F3',
   },
   tabContainer: {
     flexDirection: 'row',

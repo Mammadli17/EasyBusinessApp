@@ -20,7 +20,7 @@ const data = [
         balance: "209.29 AZN",
         customerCode: "231143109",
         creditLimit: "1990 AZN",
-        image: "https://i.imgur.com/UYiroysl.jpg", // örnek resim
+        image: "https://i.imgur.com/UYiroysl.jpg",
     },
     {
         id: "2",
