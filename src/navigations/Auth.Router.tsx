@@ -11,6 +11,8 @@ import ForgotPasswordScreen from '../screens/auth/forgot/ForgotPasswordScreen';
 import ReserPasswordScreen from '../screens/auth/reset/ResetPasswordScreen';
 import LoginAsanScreen from '../screens/auth/login/LoginAsanScreen';
 import LoginEmailScreen from '../screens/auth/login/LoginEmailScreen';
+import WaitScreen from '../screens/auth/waiting/WaitScreen';
+import OtpScreen from '../screens/auth/otp/OtpScreen';
 
 
 
@@ -32,10 +34,11 @@ export const AuthRouter = () => {
             <AuthStack.Screen name={Routes.login} component={LoginScreen} />
             <AuthStack.Screen name={Routes.onboarding} component={OnboardingScreen} />
             <AuthStack.Screen name={Routes.forgot} component={ForgotPasswordScreen} />
-            <AuthStack.Screen name={Routes.otp} component={ForgotPasswordScreen} />
+            <AuthStack.Screen name={Routes.otp} component={OtpScreen} />
             <AuthStack.Screen name={Routes.reset} component={ReserPasswordScreen} />
             <AuthStack.Screen name={Routes.loginasan} component={LoginAsanScreen} />
             <AuthStack.Screen name={Routes.loginemail} component={LoginEmailScreen} />
+            <AuthStack.Screen name={Routes.waiting} component={WaitScreen} />
 
 
         </AuthStack.Navigator>

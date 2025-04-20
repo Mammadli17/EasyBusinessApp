@@ -15,6 +15,12 @@ export type RootStackParamList = {
   [Routes.reset]: undefined;
   [Routes.loginasan]: undefined;
   [Routes.loginemail]: undefined;
+  [Routes.waiting]: undefined;
+  [Routes.detail]: undefined;
+  [Routes.order]: undefined;
+  [Routes.paymnet]: undefined;
+  [Routes.notfication]: undefined;
+  [Routes.notficationDetail]: undefined;
 };
 
 export type BottomTabParamList = {

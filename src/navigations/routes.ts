@@ -11,5 +11,11 @@ export enum Routes {
     otp = 'otp',
     reset='reset',
     loginasan='loginasan',
-    loginemail='loginemail'
+    loginemail='loginemail',
+    waiting = 'waiting',
+    detail='detail',
+    order='order',
+    paymnet='payment',
+    notfication='notfication',
+    notficationDetail='notficationDetail',
 }
