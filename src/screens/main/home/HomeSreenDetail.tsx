@@ -1,4 +1,4 @@
-import { View, Text, SafeAreaView, StyleSheet, StatusBar, TouchableOpacity } from 'react-native';
+import { View, Text, SafeAreaView, StyleSheet, StatusBar, TouchableOpacity, Dimensions } from 'react-native';
 import React from 'react';
 import { TabScreenProps } from '../../../types/navigation.type';
 import { SvgImage } from '../../../components/svgImage/SvgImage';
@@ -6,8 +6,10 @@ import Carousel from '../../../components/carusel/Carusel';
 import CustomerCardList from '../../../components/productList/ProductList';
 import { CustomerCard } from '../../../components/productList/Card';
 import { Routes } from '../../../navigations/routes';
+import { screenWidth } from '../../../theme/const.styles';
 
 const HomeScreenDetail: React.FC<TabScreenProps> = ({ navigation, route }: any) => {
+    const screenWidth = Dimensions.get('window').width;
 
     return (
         <>
@@ -107,7 +109,7 @@ const styles = StyleSheet.create({
         paddingHorizontal: 20,
     },
     orderCard: {
-        width: 176,
+        width: screenWidth*0.44,
         height: 96,
         borderRadius: 12,
         backgroundColor: "hsla(0, 0%, 100%, 1)",
