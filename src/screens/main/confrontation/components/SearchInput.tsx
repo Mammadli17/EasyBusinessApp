@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { View, TextInput, StyleSheet, TouchableOpacity } from 'react-native';
 import { SvgImage } from '../../../../components/svgImage/SvgImage';
 import { useTranslation } from 'react-i18next';
+import { FilterModalComponent, FilterOptions } from '../../../../components/modals/FilterModal';
 
 interface SearchInputProps {
   onSearch: (query: string) => void;
@@ -10,6 +11,28 @@ interface SearchInputProps {
 
 const SearchInput = ({ onSearch, value }: SearchInputProps) => {
   const { t } = useTranslation();
+  const [isFilterModalVisible, setFilterModalVisible] = useState(false);
+  const [appliedFilters, setAppliedFilters] = useState<FilterOptions>({
+    dateRange: {
+      start: null,
+      end: null,
+    },
+    status: '',
+  });
+
+  const handleOpenFilter = () => {
+    setFilterModalVisible(true);
+  };
+
+  const handleCloseFilter = () => {
+    setFilterModalVisible(false);
+  };
+
+  const handleApplyFilters = (filters: FilterOptions) => {
+    setAppliedFilters(filters);
+    setFilterModalVisible(false);
+    // Add your filter logic here
+  };
 
   return (
     <View style={styles.container}>
@@ -26,35 +49,41 @@ const SearchInput = ({ onSearch, value }: SearchInputProps) => {
         value={value}
         onChangeText={onSearch}
       />
-      <TouchableOpacity>
+      <TouchableOpacity onPress={handleOpenFilter}>
         <SvgImage
           source={require("../../../../assets/svg/textInput/filter.svg")}
           height={18}
           width={18}
-          stroke="#110C22"
+          stroke={appliedFilters.status || appliedFilters.dateRange?.start || appliedFilters.dateRange?.end ? "#007AFF" : "#110C22"}
         />
       </TouchableOpacity>
+
+      <FilterModalComponent
+        visible={isFilterModalVisible}
+        onClose={handleCloseFilter}
+        onApplyFilters={handleApplyFilters}
+      />
     </View>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    backgroundColor: '#FFFFFF',
-    borderRadius: 8,
-    paddingHorizontal: 16,
-    height: 48,
+    flexDirection: "row",
+    alignItems: "center",
+    backgroundColor: "#FFFFFF",
+    borderRadius: 12,
+    paddingHorizontal: 12,
+    height: 45,
     borderWidth: 1,
-    borderColor: '#ECECED',
+    borderColor: "#E5E7EB",
+    justifyContent: "space-between",
   },
   input: {
     flex: 1,
-    marginLeft: 8,
     fontSize: 14,
-    fontFamily: 'Onest-Medium',
-    color: '#110C22',
+    color: "#111827",
+    marginHorizontal: 8,
   },
 });
 
