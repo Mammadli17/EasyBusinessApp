@@ -13,7 +13,7 @@ import React, { useState } from 'react';
 import { SvgImage } from '../../../components/svgImage/SvgImage';
 import { useTranslation } from 'react-i18next';
 import { useNavigation } from '@react-navigation/native';
-import SearchInput from './components/SearchInput';
+import SearchInput from '../../../components/search/SearchInput';
 import PendingScreen from './pending/PendingScreen';
 import ApprovedScreen from './approved/ApprovedScreen';
 
