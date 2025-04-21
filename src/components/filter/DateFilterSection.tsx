@@ -19,7 +19,11 @@ export const DateFilterSection = ({ filters, onClear, onDateChange }: DateFilter
     setDatePickerVisible(true);
   };
 
-  const handleConfirmDate = (selectedDate: { month: number; day: number; year: number }) => {
+  const handleConfirmDate = (dates: { 
+    startDate: { month: number; day: number; year: number };
+    endDate: { month: number; day: number; year: number };
+  }) => {
+    const selectedDate = dateType === 'start' ? dates.startDate : dates.endDate;
     const date = new Date(selectedDate.year, selectedDate.month - 1, selectedDate.day);
     onDateChange?.(dateType, date);
     setDatePickerVisible(false);
