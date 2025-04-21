@@ -97,7 +97,7 @@ const styles = StyleSheet.create({
   },
   listContainer: {
     padding: 20,
-    paddingBottom: Platform.OS === 'ios' ? 200 : 160
+    paddingBottom: 120
   }
 });
 

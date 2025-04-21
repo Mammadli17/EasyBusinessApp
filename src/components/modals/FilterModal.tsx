@@ -7,9 +7,9 @@ import {
   Animated,
   Dimensions,
   Text,
-  Switch,
-  TextInput
 } from 'react-native';
+import { SvgImage } from '../svgImage/SvgImage';
+import { useTranslation } from 'react-i18next';
 
 export interface FilterOptions {
   dateRange?: {
@@ -17,6 +17,7 @@ export interface FilterOptions {
     end: Date | null;
   };
   status?: string;
+  companies?: string[];
 }
 
 interface FilterModalProps {
@@ -35,6 +36,7 @@ export const FilterModalComponent = ({ visible, onClose, onApplyFilters }: Filte
       end: null,
     },
     status: '',
+    companies: [],
   });
 
   React.useEffect(() => {
@@ -57,6 +59,26 @@ export const FilterModalComponent = ({ visible, onClose, onApplyFilters }: Filte
     onClose();
   };
 
+  const handleClear = () => {
+    setFilters({
+      dateRange: {
+        start: null,
+        end: null,
+      },
+      status: '',
+      companies: [],
+    });
+  };
+
+  const handleCompanyToggle = (company: string) => {
+    setFilters(prev => ({
+      ...prev,
+      companies: prev.companies?.includes(company)
+        ? prev.companies.filter(c => c !== company)
+        : [...(prev.companies || []), company],
+    }));
+  };
+
   return (
     <Modal
       visible={visible}
@@ -65,11 +87,7 @@ export const FilterModalComponent = ({ visible, onClose, onApplyFilters }: Filte
       onRequestClose={onClose}
     >
       <View style={styles.overlay}>
-        <TouchableOpacity
-          style={styles.dismissArea}
-          onPress={onClose}
-          activeOpacity={1}
-        />
+        <TouchableOpacity style={styles.dismissArea} onPress={onClose} activeOpacity={1} />
         <Animated.View
           style={[
             styles.modalContent,
@@ -78,106 +96,102 @@ export const FilterModalComponent = ({ visible, onClose, onApplyFilters }: Filte
             },
           ]}
         >
-          <View style={styles.header}>
-            <Text style={styles.headerText}>Filter</Text>
-            <TouchableOpacity onPress={onClose}>
-              <Text style={styles.closeButton}>✕</Text>
+          <View style={styles.contentContainer}>
+            {/* Header */}
+            <View style={styles.header}>
+              <View style={styles.headerLeft}>
+                <View style={{ width: 32 }} />
+              </View>
+              <Text style={styles.headerText}>Filter</Text>
+              <TouchableOpacity onPress={onClose} style={styles.headerRight}>
+                <Text style={styles.closeButton}>✕</Text>
+              </TouchableOpacity>
+            </View>
+
+            {/* Date Filter Section */}
+            <View style={styles.dateSection}>
+              <View style={styles.dateSectionHeader}>
+                <Text style={styles.sectionTitle}>Choose date</Text>
+                <TouchableOpacity onPress={handleClear}>
+                  <Text style={styles.clearButton}>Clear</Text>
+                </TouchableOpacity>
+              </View>
+
+              <View style={styles.dateButtons}>
+                <TouchableOpacity style={styles.dateButton}>
+                  <View style={styles.dateButtonHeader}>
+                    <Text style={styles.dateValue}>
+                      {filters.dateRange?.start ? filters.dateRange.start.toLocaleDateString() : 'Start date'}
+                    </Text>
+                    <SvgImage
+                      source={require('../../assets/svg/filter/calendar.svg')}
+                      height={24}
+                      width={24}
+                      stroke={'#8D8A95'}
+                      strokeWidth={1.5}
+                      fill="none"
+                    />
+                  </View>
+                </TouchableOpacity>
+
+                <TouchableOpacity style={styles.dateButton}>
+                  <View style={styles.dateButtonHeader}>
+                    <Text style={styles.dateValue}>
+                      {filters.dateRange?.end ? filters.dateRange.end.toLocaleDateString() : 'End date'}
+                    </Text>
+                    <SvgImage
+                      source={require('../../assets/svg/filter/calendar.svg')}
+                      height={24}
+                      width={24}
+                      stroke={'#8D8A95'}
+                      strokeWidth={1.5}
+                    />
+                  </View>
+                </TouchableOpacity>
+              </View>
+            </View>
+
+            {/* Company Filter Section */}
+            <View style={styles.companySection}>
+              <View style={styles.dateSectionHeader}>
+                <Text style={styles.sectionTitle}>Choose company</Text>
+                <TouchableOpacity onPress={handleClear}>
+                  <Text style={styles.clearButton}>Clear</Text>
+                </TouchableOpacity>
+              </View>
+
+              <View style={styles.companiesList}>
+                {[
+                  'Pepsi', 'Coca-Cola', 'Microsoft',
+                  'Xpyc Team', 'Apple', 'Samsung',
+                  'Google', 'Amazon', 'Tesla',
+                  'Nike', 'Intel', 'Oracle'
+                ].map((company) => (
+                  <View key={company} style={styles.companyRow}>
+                    <TouchableOpacity
+                      style={styles.companyItem}
+                      onPress={() => handleCompanyToggle(company)}
+                    >
+                      <View style={styles.checkbox}>
+                        {filters.companies?.includes(company) && (
+                          <View style={styles.checkboxInner} />
+                        )}
+                      </View>
+                      <Text style={styles.companyName}>{company}</Text>
+                    </TouchableOpacity>
+                  </View>
+                ))}
+              </View>
+            </View>
+
+            {/* Save Button */}
+            <TouchableOpacity style={styles.saveButton} onPress={handleApply}>
+              <Text style={styles.saveButtonText}>Save</Text>
             </TouchableOpacity>
           </View>
-          {/* Add your filter options here */}
-          <View>
-            <Text>Date Range:</Text>
-            <TextInput
-              placeholder="Start Date"
-              value={filters.dateRange?.start?.toString() || ''}
-              onChangeText={(text) =>
-                setFilters((prev) => ({
-                  ...prev,
-                  dateRange: { 
-                    start: new Date(text),
-                    end: prev.dateRange?.end ?? null
-                  },
-                }))
-              }
-            />
-            <TextInput
-              placeholder="End Date"
-              value={filters.dateRange?.end?.toString() || ''}
-              onChangeText={(text) =>
-                setFilters((prev) => ({
-                  ...prev,
-                  dateRange: {
-                    start: prev.dateRange?.start ?? null,
-                    end: new Date(text)
-                  },
-                }))
-              }
-            />
-            <Text>Status:</Text>
-            <TextInput
-              placeholder="Status"
-              value={filters.status}
-              onChangeText={(text) =>
-                setFilters((prev) => ({ ...prev, status: text }))
-              }
-            />
-          </View>
-          <TouchableOpacity onPress={handleApply}>
-            <Text>Apply Filters</Text>
-          </TouchableOpacity>
         </Animated.View>
       </View>
     </Modal>
-  );
-};
-
-const ConfrontationScreen = () => {
-  const [isFilterModalVisible, setFilterModalVisible] = useState(false);
-  const [appliedFilters, setAppliedFilters] = useState<FilterOptions>({
-    dateRange: {
-      start: null,
-      end: null,
-    },
-    status: '',
-  });
-
-  const handleOpenFilter = () => {
-    setFilterModalVisible(true);
-  };
-
-  const handleCloseFilter = () => {
-    setFilterModalVisible(false);
-  };
-
-  const handleApplyFilters = (filters: FilterOptions) => {
-    setAppliedFilters(filters);
-    setFilterModalVisible(false);
-    // Add your filter logic here using the appliedFilters
-  };
-
-  return (
-    <View style={styles.container}>
-      {/* Your existing screen content */}
-      
-      {/* Filter Button */}
-      <TouchableOpacity 
-        style={styles.filterButton}
-        onPress={handleOpenFilter}
-      >
-        <Text style={styles.filterButtonText}>Filter</Text>
-        {/* Show active filters indicator if filters are applied */}
-        {(appliedFilters.status || appliedFilters.dateRange?.start || appliedFilters.dateRange?.end) && (
-          <View style={styles.filterBadge} />
-        )}
-      </TouchableOpacity>
-
-      {/* Filter Modal */}
-      <FilterModalComponent
-        visible={isFilterModalVisible}
-        onClose={handleCloseFilter}
-        onApplyFilters={handleApplyFilters}
-      />
-    </View>
   );
 };
 
@@ -194,54 +208,136 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
     borderTopLeftRadius: 20,
     borderTopRightRadius: 20,
+    minHeight: height * 0.8,
+  },
+  contentContainer: {
+    flex: 1,
     padding: 20,
-    minHeight: height * 0.7,
+    justifyContent: 'space-between',
+    marginBottom: 24,
   },
   header: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
     alignItems: 'center',
-    marginBottom: 20,
+    justifyContent: 'space-between',
+    marginBottom: 24,
+  },
+  headerLeft: {
+    width: 32,
+  },
+  headerRight: {
+    width: 32,
+    alignItems: 'flex-end',
   },
   headerText: {
-    fontSize: 18,
-    fontWeight: 'bold',
+    fontSize: 26,
+    color: '#110C22',
+    fontFamily: 'Onest-Medium',
+    flex: 1,
+    textAlign: 'center',
   },
   closeButton: {
-    fontSize: 20,
-    padding: 5,
+    padding: 8,
+    fontSize: 16,
   },
-  container: {
-    flex: 1,
-    // ...your existing styles
+  dateSection: {
+    marginBottom: 24,
   },
-  filterButton: {
-    position: 'absolute',
-    backgroundColor: '#fff',
-    borderRadius: 8,
+  dateSectionHeader: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: 16,
+  },
+  sectionTitle: {
+    fontSize: 16,
+    color: '#00000052',
+    fontFamily: 'Onest-Medium',
+  },
+  clearButton: {
+    fontSize: 14,
+    color: '#015656',
+    fontFamily: 'Onest-Medium',
+  },
+  dateButtons: {
+    gap: 12,
+  },
+  dateButton: {
+    height: 56,
+    backgroundColor: '#F8F9FB',
+    borderRadius: 12,
+    padding: 12,
+    justifyContent: 'center',
+  },
+  dateButtonHeader: {
     flexDirection: 'row',
     alignItems: 'center',
-    elevation: 2,
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.25,
-    shadowRadius: 3.84,
+    justifyContent: 'space-between',
+    width: '100%',
   },
-  filterButtonText: {
+  dateButtonText: {
+    fontSize: 12,
+    color: '#9998A0',
+    marginBottom: 4,
+    fontFamily: 'Onest-Regular',
+  },
+  dateValue: {
+    fontSize: 14,
+    color: '#110C22',
+    fontFamily: 'Onest-Regular',
+  },
+  saveButton: {
+    height: 48,
+    backgroundColor: '#015656',
+    borderRadius: 12,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginTop: 'auto',
+  },
+  saveButtonText: {
     fontSize: 16,
-    fontWeight: '500',
-    color: '#333',
+    color: '#FFFFFF',
+    fontFamily: 'Onest-Medium',
+    fontWeight: '600',
   },
-  filterBadge: {
-    width: 8,
-    height: 8,
+  companySection: {
+    marginBottom: 24,
+  },
+  companiesList: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    justifyContent: 'space-between',
+  },
+  companyRow: {
+    width: '30%',
+    marginBottom: 16,
+  },
+  companyItem: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 12,
+    paddingVertical: 4,
+  },
+  checkbox: {
+    width: 20,
+    height: 20,
+    borderWidth: 2,
+    borderColor: '#015656',
     borderRadius: 4,
-    backgroundColor: '#007AFF',
-    marginLeft: 8,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  checkboxInner: {
+    width: 12,
+    height: 12,
+    backgroundColor: '#015656',
+    borderRadius: 2,
+  },
+  companyName: {
+    fontSize: 14,
+    color: '#110C22',
+    fontFamily: 'Onest-Regular',
   },
 });
 
-export default ConfrontationScreen;
+export default FilterModalComponent;

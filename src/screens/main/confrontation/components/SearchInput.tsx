@@ -31,7 +31,6 @@ const SearchInput = ({ onSearch, value }: SearchInputProps) => {
   const handleApplyFilters = (filters: FilterOptions) => {
     setAppliedFilters(filters);
     setFilterModalVisible(false);
-    // Add your filter logic here
   };
 
   return (
