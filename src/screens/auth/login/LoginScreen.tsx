@@ -18,6 +18,7 @@ import { useTranslation } from 'react-i18next';
 import CustomInput from '../../../components/input/TextInput';
 import { Routes } from '../../../navigations/routes';
 import CustomCheckbox from '../../../components/checkbox/CheckBox';
+import { useAuthStore } from '../../../stores/auth/authStore';
 
 interface ForumData {
   fullname: string;
@@ -34,6 +35,7 @@ interface ForumData {
 const LoginScreen = ({ navigation }: any) => {
   const [isChecked, setIsChecked] = useState(false);
   const { t } = useTranslation();
+  const { setToken } = useAuthStore();
 
   const [forumData, setForumData] = useState<ForumData>({
     fullname: '',
@@ -54,6 +56,16 @@ const LoginScreen = ({ navigation }: any) => {
     }));
   };
 
+  const handleToken=async()=>{
+    const tokenData = {
+      accessToken: "22e2e",
+      refreshToken: "2323",
+      role: 1,
+      userId: "1218923892323"
+    };
+
+    await setToken(JSON.stringify(tokenData));
+  }
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView  contentContainerStyle={{ flexGrow: 1 }}>
@@ -108,7 +120,7 @@ const LoginScreen = ({ navigation }: any) => {
           </View>
         </View>
 
-        <TouchableOpacity style={styles.continueBtn} onPress={() => navigation.navigate(Routes.waiting)}>
+        <TouchableOpacity style={styles.continueBtn} onPress={() => handleToken()}>
           <Text style={styles.continueText}>
             {t('Giriş et')}
           </Text>
