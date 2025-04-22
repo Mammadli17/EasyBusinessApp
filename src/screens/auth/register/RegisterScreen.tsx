@@ -86,7 +86,7 @@ const RegisterScreen = ({ navigation }: any) => {
     if (step === 1) animateStepChange(2);
     if (step === 2) {
       // Perform registration logic here
-      navigation.navigate(Routes.otp);
+      navigation.navigate(Routes.waiting);
     }
   };
 
