@@ -32,7 +32,9 @@ const OtpInput = () => {
         {otp.map((digit, index) => (
           <TextInput
             key={index}
-            ref={(ref) => (inputsRef.current[index] = ref)}
+            ref={(ref) => {
+              inputsRef.current[index] = ref;
+            }}
             style={[
               styles.input,
               digit ? styles.inputFilled : styles.inputEmpty,
@@ -64,7 +66,7 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 18,
     fontWeight: '600',
-    marginBottom: 8,
+    marginBottom: 15,
     color: 'hsla(180, 98%, 17%, 1)',
   },
   subtitle: {

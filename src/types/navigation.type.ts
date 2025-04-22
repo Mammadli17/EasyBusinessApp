@@ -23,6 +23,16 @@ export type RootStackParamList = {
   [Routes.notfication]: undefined;
   [Routes.notficationDetail]: undefined;
   [Routes.pendingDetails]: undefined;
+  [Routes.confrontationOtp]: {
+    item: {
+      id: string;
+      name: string;
+      amount: string;
+      date: string;
+      image: string;
+      message?: string;
+    };
+  };
 };
 
 export type BottomTabParamList = {

@@ -1,11 +1,29 @@
 import { View, Text, StyleSheet, SafeAreaView, StatusBar, TouchableOpacity, Image } from 'react-native'
-import React from 'react'
+import React, { useState } from 'react'
 import { SvgImage } from '../../../../../components/svgImage/SvgImage';
 import { useTranslation } from 'react-i18next';
+import { Routes } from '../../../../../navigations/routes';
+import { DeclineReasonModal } from '../../../../../components/modals/DeclineReasonModal';
 
 const PendingDetails = ({ navigation, route }: any) => {
   const { t } = useTranslation();
   const item = route?.params?.item;
+  const [declineModalVisible, setDeclineModalVisible] = useState(false);
+  const [declineReason, setDeclineReason] = useState('');
+
+  const handleApprove = () => {
+    navigation.navigate(Routes.confrontationOtp, { item });
+  };
+
+  const handleCloseDecline = () => {
+    setDeclineModalVisible(false);
+    setDeclineReason('');
+  };
+
+  const handleConfirmDecline = (reason: string) => {
+    handleCloseDecline();
+    navigation.goBack();
+  };
 
   return (
     <>
@@ -26,10 +44,10 @@ const PendingDetails = ({ navigation, route }: any) => {
           <View style={styles.card}>
             <View style={styles.topRow}>
               <Image 
-                source={{ uri: 'https://i.imgur.com/UYiroysl.jpg' }} 
+                source={{ uri: item?.image || 'https://i.imgur.com/UYiroysl.jpg' }} 
                 style={styles.avatar} 
               />
-              <Text style={styles.name}>Pepsi</Text>
+              <Text style={styles.name}>{item?.name || 'Pepsi'}</Text>
               <View style={styles.statusBadge}>
                 <Text style={styles.statusText}>Pending Approval</Text>
               </View>
@@ -38,23 +56,37 @@ const PendingDetails = ({ navigation, route }: any) => {
             <Text style={styles.notificationTitle}>Confrontation Notification</Text>
             
             <Text style={styles.message}>
-              Hello. It's a message for you. Please confirm that you owe Pepsi 90 Azn.
+              {item?.message || 'Hello. It\'s a message for you. Please confirm that you owe Pepsi 90 Azn.'}
             </Text>
 
             <View style={styles.buttonContainer}>
-              <TouchableOpacity style={[styles.button, styles.approveButton]} onPress={() => {}}>
-                <Text style={[styles.buttonText, styles.approveButtonText]}>Approve</Text>
+              <TouchableOpacity 
+                style={[styles.button, styles.approveButton]} 
+                onPress={handleApprove}
+              >
+                <Text style={[styles.buttonText, styles.approveButtonText]}>{t('Approve')}</Text>
               </TouchableOpacity>
-              <TouchableOpacity style={[styles.button, styles.declineButton]} onPress={() => {}}>
-                <Text style={[styles.buttonText, styles.declineButtonText]}>Decline</Text>
+              <TouchableOpacity 
+                style={[styles.button, styles.declineButton]} 
+                onPress={() => setDeclineModalVisible(true)}
+              >
+                <Text style={[styles.buttonText, styles.declineButtonText]}>{t('Decline')}</Text>
               </TouchableOpacity>
             </View>
           </View>
         </View>
+
+        <DeclineReasonModal
+          visible={declineModalVisible}
+          onClose={handleCloseDecline}
+          onConfirm={handleConfirmDecline}
+          reason={declineReason}
+          onReasonChange={setDeclineReason}
+        />
       </SafeAreaView>
     </>
-  )
-}
+  );
+};
 
 const styles = StyleSheet.create({
   container: {
@@ -126,40 +158,6 @@ const styles = StyleSheet.create({
     marginBottom: 16,
     fontFamily: "Onest-Medium",
   },
-  infoRow: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    marginBottom: 16,
-  },
-  label: {
-    color: "hsla(257, 5%, 71%, 1)",
-    fontSize: 14,
-    fontFamily: "Onest-Medium",
-  },
-  value: {
-    fontSize: 14,
-    color: "hsla(254, 48%, 9%, 0.74)",
-    fontFamily: "Onest-Medium",
-  },
-  valueGreen: {
-    fontSize: 16,
-    color: "hsla(180, 98%, 17%, 1)",
-    fontWeight: "700",
-    fontFamily: "Onest-Medium",
-  },
-  statusBadge: {
-    backgroundColor: "#FFFFFFF",
-    paddingHorizontal: 10,
-    paddingVertical: 8,
-    borderRadius: 8,
-    borderWidth: 1,
-    borderColor: "#FFDD86",
-  },
-  statusText: {
-    color: "#D97706",
-    fontSize: 12,
-    fontFamily: "Onest-Medium",
-  },
   buttonContainer: {
     marginTop: 20,
     gap: 12,
@@ -189,6 +187,19 @@ const styles = StyleSheet.create({
   declineButtonText: {
     color: '#EF4444',
   },
+  statusBadge: {
+    backgroundColor: "#FFFFFFF",
+    paddingHorizontal: 10,
+    paddingVertical: 8,
+    borderRadius: 8,
+    borderWidth: 1,
+    borderColor: "#FFDD86",
+  },
+  statusText: {
+    color: "#D97706",
+    fontSize: 12,
+    fontFamily: "Onest-Medium",
+  },
 });
 
-export default PendingDetails
+export default PendingDetails;

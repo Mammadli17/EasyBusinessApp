@@ -10,6 +10,7 @@ import PaymentsScreen from '../screens/main/payments/PaymentsScreen';
 import NotficationsScreen from '../screens/main/notfications/NotficationsScreen';
 import NotficationDetail from '../screens/main/notfications/NotficationDetail';
 import PendingDetails from '../screens/main/confrontation/pending/pendingDetails/PendingDetails';
+import ConfrontationOtpScreen from '../screens/main/confrontation/pending/pendingDetails/ConfrontationOtpScreen';
 
 const MainStack = createNativeStackNavigator<RootStackParamList>();
 
@@ -23,6 +24,7 @@ export const MainRouter = () => {
             <MainStack.Screen name={Routes.notfication} component={NotficationsScreen} />
             <MainStack.Screen name={Routes.notficationDetail} component={NotficationDetail} />
             <MainStack.Screen name={Routes.pendingDetails} component={PendingDetails} />
+            <MainStack.Screen name={Routes.confrontationOtp} component={ConfrontationOtpScreen} />
         </MainStack.Navigator>
     );
 };
