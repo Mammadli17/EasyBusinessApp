@@ -18,4 +18,6 @@ export enum Routes {
     paymnet='payment',
     notfication='notfication',
     notficationDetail='notficationDetail',
+    pendingDetails = 'pendingDetails',
+    confrontationOtp = 'confrontationOtp'
 }

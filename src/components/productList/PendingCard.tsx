@@ -1,59 +1,35 @@
-// CustomerCardList.tsx
-
 import { useNavigation } from "@react-navigation/native";
-import React from "react";
-import {
-    View,
-    Text,
-    Image,
-    FlatList,
-    TouchableOpacity,
-    StyleSheet,
-} from "react-native";
+import { Image, StyleSheet, Text, View } from "react-native";
+import { TouchableOpacity } from "react-native";
 import { Routes } from "../../navigations/routes";
-import { CustomerCard } from "./Card";
 
-const data = [
-    {
-        id: "1",
-        name: "Pepsi",
-        balance: "209.29 AZN",
-        customerCode: "231143109",
-        creditLimit: "1990 AZN",
-        image: "https://i.imgur.com/UYiroysl.jpg",
-    },
-    {
-        id: "2",
-        name: "Coca-Cola",
-        balance: "320.00 AZN",
-        customerCode: "231143110",
-        creditLimit: "1500 AZN",
-        image: "https://i.imgur.com/UPrs1EWl.jpg",
-    },
-    {
-        id: "3",
-        name: "Red Bull",
-        balance: "150.50 AZN",
-        customerCode: "231143111",
-        creditLimit: "1800 AZN",
-        image: "https://i.imgur.com/MABUbpDl.jpg",
-    },
-];
-
-
-
-export default function CustomerCardList() {
+export const PendingCard: React.FC<{ item: any, detail?: any }> = ({ item, detail }) => {
+    const navigation = useNavigation();
     return (
-        <FlatList
-            data={data}
-            keyExtractor={(item) => item.id}
-            renderItem={({ item }) => <CustomerCard item={item} />}
-            contentContainerStyle={{ padding: 20,paddingBottom: 80 }}
-            showsVerticalScrollIndicator={false}
+        <View style={styles.card}>
 
-            />
-    )
-}
+            <View style={styles.topRow}>
+                <Image source={{ uri: item.image }} style={styles.avatar} />
+                <Text style={styles.name}>{item.name}</Text>
+                {
+                    !detail &&
+                    <TouchableOpacity style={styles.detailButton} onPress={() => navigation.navigate(Routes.pendingDetails, { item })}>
+                        <Text style={styles.detailText}>View details ▸</Text>
+                    </TouchableOpacity>
+                }
+            </View>
+
+            <View style={styles.infoRow}>
+                <Text style={styles.label}>Debt:</Text>
+                <Text style={styles.valueOrange}>209.29 AZN</Text>
+            </View>
+            <View style={styles.infoRow}>
+                <Text style={styles.label}>Confrontation Date:</Text>
+                <Text style={styles.value}>15 Dec 2023</Text>
+            </View>
+        </View>
+    );
+};
 
 const styles = StyleSheet.create({
     card: {
@@ -61,12 +37,6 @@ const styles = StyleSheet.create({
         borderRadius: 12,
         padding: 20,
         marginBottom: 16,
-        shadowColor: "#000",
-        shadowOpacity: 0.05,
-        shadowOffset: { width: 0, height: 4 },
-        shadowRadius: 12,
-        elevation: 3,
-
     },
     warningRow: {
         flexDirection: "row",
@@ -130,6 +100,10 @@ const styles = StyleSheet.create({
         fontSize: 16,
         color: "hsla(180, 98%, 17%, 1)",
         fontWeight: "700",
-
+    },
+    valueOrange: {
+        fontSize: 18,
+        color: "#E09400",
+        fontWeight: "700",
     },
 });

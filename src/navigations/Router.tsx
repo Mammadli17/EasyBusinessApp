@@ -1,41 +1,34 @@
-// src/navigation/Router.tsx
 import React, { useEffect, useState } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { View } from 'react-native';
-
-import { AuthRouter } from './Auth.Router';
+import { StyleSheet, View } from 'react-native';
 import { MainRouter } from './Main.Router';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import { useAuthStore } from '../stores/auth/authStore';
+import { AuthRouter } from './Auth.Router';
+import { defaultScreenOptions } from '../configs/navigationConfig';
+import { I18nextProvider } from 'react-i18next';
+import i18n from '../locales/i18n';
 
 const RootStack = createNativeStackNavigator();
 
 const Router = () => {
-  const [isSplashVisible, setIsSplashVisible] = useState(true);
-  const { token, checkToken } = useAuthStore();
-
-
-  useEffect(() => {
-    checkToken();
-  }, []);
-
   return (
-    <View style={{ flex: 1 }}>
-
+    <I18nextProvider i18n={i18n}>
       <NavigationContainer>
-        <RootStack.Navigator screenOptions={{ headerShown: false }}>
-          {token ? (
-            <RootStack.Screen name="Main" component={MainRouter} />
-          ) : (
-            <RootStack.Screen name="Auth" component={AuthRouter} />
-          )}
-
+        <RootStack.Navigator
+          screenOptions={defaultScreenOptions}
+        >
+          <RootStack.Screen name="Auth" component={AuthRouter} />
+          <RootStack.Screen name="Main" component={MainRouter} />
         </RootStack.Navigator>
       </NavigationContainer>
-
-    </View>
+    </I18nextProvider>
   );
 };
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+  },
+});
 
 export default Router;

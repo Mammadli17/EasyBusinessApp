@@ -1,63 +1,90 @@
-import React, { useState, useEffect } from "react";
-import { View, TextInput, StyleSheet } from "react-native";
-import { SvgImage } from "../svgImage/SvgImage";
+import React, { useState } from 'react';
+import { View, TextInput, StyleSheet, TouchableOpacity } from 'react-native';
+import { SvgImage } from '../svgImage/SvgImage';
+import { useTranslation } from 'react-i18next';
+import { FilterModalComponent, FilterOptions } from '../modals/FilterModal';
 
-type SearchBarProps<T> = {
-    data: T[];
-    searchField: keyof T;
-    onSearch: (filteredData: T[]) => void;
-};
-
-export default function SearchBar<T>({ data, searchField, onSearch }: SearchBarProps<T>) {
-    const [query, setQuery] = useState("");
-
-    useEffect(() => {
-        const filtered = data.filter(item =>
-            String(item[searchField]).toLowerCase().includes(query.toLowerCase())
-        );
-        onSearch(filtered);
-    }, [query]); // sadece query değişince çalışır
-
-    return (
-        <View style={styles.container}>
-            <SvgImage
-                source={require("../../assets/svg/search/search.svg")}
-                height={18}
-                width={18}
-            />
-            <TextInput
-                style={styles.input}
-                placeholder="Search"
-                placeholderTextColor="#9CA3AF"
-                value={query}
-                onChangeText={setQuery}
-            />
-            <SvgImage
-                source={require("../../assets/svg/filter/filter.svg")}
-                height={18}
-                width={18}
-            />
-        </View>
-    );
+interface SearchInputProps {
+  onSearch: (query: string) => void;
+  value: string;
 }
 
+const SearchInput = ({ onSearch, value }: SearchInputProps) => {
+  const { t } = useTranslation();
+  const [isFilterModalVisible, setIsFilterModalVisible] = useState(false);
+  const [appliedFilters, setAppliedFilters] = useState<FilterOptions>({});
+  const [isFocused, setIsFocused] = useState(false);
+
+  const handleOpenFilter = () => {
+    setIsFilterModalVisible(true);
+  };
+
+  const handleCloseFilter = () => {
+    setIsFilterModalVisible(false);
+  };
+
+  const handleApplyFilters = (filters: FilterOptions) => {
+    setAppliedFilters(filters);
+    setIsFilterModalVisible(false);
+  };
+
+  return (
+    <View style={[styles.container, isFocused && styles.containerFocused]}>
+      <SvgImage
+        source={require("../../assets/svg/textInput/search.svg")}
+        height={18}
+        width={18}
+        stroke="#C6C5CA"
+      />
+      <TextInput
+        style={styles.input}
+        placeholder={t('Axtar')}
+        placeholderTextColor="#B3B1B8"
+        value={value}
+        onChangeText={onSearch}
+        onFocus={() => setIsFocused(true)}
+        onBlur={() => setIsFocused(false)}
+      />
+      <TouchableOpacity onPress={handleOpenFilter}>
+        <SvgImage
+          source={require("../../assets/svg/textInput/filter.svg")}
+          height={18}
+          width={18}
+          stroke={'#110C22BD'}
+        />
+      </TouchableOpacity>
+
+      <FilterModalComponent
+        visible={isFilterModalVisible}
+        onClose={handleCloseFilter}
+        onApplyFilters={handleApplyFilters}
+      />
+    </View>
+  );
+};
+
 const styles = StyleSheet.create({
-    container: {
-        flexDirection: "row",
-        alignItems: "center",
-        backgroundColor: "#FFFFFF",
-        borderRadius: 12,
-        paddingHorizontal: 12,
-        height: 40,
-        borderWidth: 1,
-        borderColor: "#E5E7EB",
-        justifyContent: "space-between",
-        marginHorizontal: 20
-    },
-    input: {
-        flex: 1,
-        fontSize: 14,
-        color: "#111827",
-        marginHorizontal: 8,
-    },
+  container: {
+    flexDirection: "row",
+    alignItems: "center",
+    backgroundColor: "#FFFFFF",
+    borderRadius: 12,
+    paddingHorizontal: 12,
+    height: 48,
+    borderWidth: 1,
+    borderColor: "#E5E7EB",
+    justifyContent: "space-between",
+  },
+  containerFocused: {
+    borderWidth: 2,
+    borderColor: "#015656",
+  },
+  input: {
+    flex: 1,
+    fontSize: 14,
+    color: "#111827",
+    marginHorizontal: 8,
+  },
 });
+
+export default SearchInput;

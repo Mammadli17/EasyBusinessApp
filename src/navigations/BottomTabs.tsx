@@ -1,4 +1,5 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { Platform, StyleSheet, Dimensions } from 'react-native';
 import HomeScreen from '../screens/main/home/HomeScreen';
@@ -35,6 +36,8 @@ const tabIcons = {
 };
 
 export const BottomTabs = () => {
+  const { t } = useTranslation();
+
   return (
     <Tab.Navigator
       screenOptions={{
@@ -49,7 +52,7 @@ export const BottomTabs = () => {
         name={Routes.home}
         component={HomeScreen}
         options={{
-          tabBarLabel: 'Home',
+          tabBarLabel: t('Ana səhifə'),
           tabBarIcon: ({ focused, color }) => (
             <TabIcon focused={focused} color={color} icon={tabIcons.home} />
           ),
@@ -59,7 +62,7 @@ export const BottomTabs = () => {
         name={Routes.confrontation}
         component={ConfrontationScreen}
         options={{
-          tabBarLabel: 'Confrontation',
+          tabBarLabel: t('Üzləşmə'),
           tabBarIcon: ({ focused, color }) => (
             <TabIcon focused={focused} color={color} icon={tabIcons.confrontation} />
           ),
@@ -69,7 +72,7 @@ export const BottomTabs = () => {
         name={Routes.tickets}
         component={TicketsScreen}
         options={{
-          tabBarLabel: 'Tickets',
+          tabBarLabel: t('Biletlər'),
           tabBarIcon: ({ focused, color }) => (
             <TabIcon focused={focused} color={color} icon={tabIcons.tickets} />
           ),
@@ -79,7 +82,7 @@ export const BottomTabs = () => {
         name={Routes.profile}
         component={ProfileScreen}
         options={{
-          tabBarLabel: 'Profile',
+          tabBarLabel: t('Profil'),
           tabBarIcon: ({ focused, color }) => (
             <TabIcon focused={focused} color={color} icon={tabIcons.profile} />
           ),
@@ -98,7 +101,6 @@ const styles = StyleSheet.create({
     height: 72,
     paddingHorizontal: 20,
     marginBottom: Platform.OS === 'ios' ? 35 : 45,
-    width: width - 24,
     ...Platform.select({
       ios: {
         shadowColor: '#000',
@@ -114,6 +116,8 @@ const styles = StyleSheet.create({
   tabBarLabel: {
     ...TypographyStyles.TinyNoneMedium,
     marginTop: 6,
-    fontSize: 11,
+    fontSize: 9,
+    textAlign: 'center',
+    paddingHorizontal: 4, 
   },
 });

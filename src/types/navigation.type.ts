@@ -2,6 +2,7 @@ import { BottomTabScreenProps } from '@react-navigation/bottom-tabs';
 import { Routes } from "../navigations/routes";
 
 export type RootStackParamList = {
+  BottomTabs: undefined;
   [Routes.home]: undefined;
   [Routes.confrontation]: undefined;
   [Routes.tickets]: undefined;
@@ -21,6 +22,17 @@ export type RootStackParamList = {
   [Routes.paymnet]: undefined;
   [Routes.notfication]: undefined;
   [Routes.notficationDetail]: undefined;
+  [Routes.pendingDetails]: undefined;
+  [Routes.confrontationOtp]: {
+    item: {
+      id: string;
+      name: string;
+      amount: string;
+      date: string;
+      image: string;
+      message?: string;
+    };
+  };
 };
 
 export type BottomTabParamList = {
@@ -30,4 +42,4 @@ export type BottomTabParamList = {
   [Routes.profile]: undefined;
 };
 
-export type TabScreenProps = BottomTabScreenProps<BottomTabParamList>;
+export type TabScreenProps<T extends keyof BottomTabParamList> = BottomTabScreenProps<BottomTabParamList, T>;
