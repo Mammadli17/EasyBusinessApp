@@ -39,7 +39,7 @@ export const DatePickerModal: React.FC<DatePickerModalProps> = ({
     const [selectedDay, setSelectedDay] = useState(toPickerDay(initialDate.getDate()));
     const [selectedYear, setSelectedYear] = useState(initialDate.getFullYear());
     const [isInitialRender, setIsInitialRender] = useState(true);
-    
+
     const slideAnim = useRef(new Animated.Value(height)).current;
     const fadeAnim = useRef(new Animated.Value(0)).current;
 
@@ -186,7 +186,7 @@ export const DatePickerModal: React.FC<DatePickerModalProps> = ({
                         style={styles.confirmButton}
                         onPress={handleConfirm}
                     >
-                        <Text style={styles.confirmButtonText}>Confirm</Text>
+                        <Text style={styles.confirmButtonText}>Save</Text>
                     </TouchableOpacity>
                 </Animated.View>
             </Animated.View>
