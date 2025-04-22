@@ -12,6 +12,11 @@ import { PickerColumn } from '../filter/PickerColumn';
 
 const { height } = Dimensions.get('window');
 
+const toPickerMonth = (monthNumber: number) => monthNumber - 1;
+const fromPickerMonth = (monthIndex: number) => monthIndex + 1;
+const toPickerDay = (dayNumber: number) => dayNumber - 1;
+const fromPickerDay = (dayIndex: number) => dayIndex + 1;
+
 interface DatePickerModalProps {
     visible: boolean;
     onClose: () => void;
@@ -30,22 +35,37 @@ export const DatePickerModal: React.FC<DatePickerModalProps> = ({
 }) => {
     const [isStartDate, setIsStartDate] = useState(true);
     const [startDate, setStartDate] = useState<{ month: number; day: number; year: number } | null>(null);
-    const [selectedMonth, setSelectedMonth] = useState(initialDate.getMonth());
-    const [selectedDay, setSelectedDay] = useState(initialDate.getDate() - 1);
+    const [selectedMonth, setSelectedMonth] = useState(toPickerMonth(initialDate.getMonth() + 1));
+    const [selectedDay, setSelectedDay] = useState(toPickerDay(initialDate.getDate()));
     const [selectedYear, setSelectedYear] = useState(initialDate.getFullYear());
+    const [isInitialRender, setIsInitialRender] = useState(true);
+    
     const slideAnim = useRef(new Animated.Value(height)).current;
     const fadeAnim = useRef(new Animated.Value(0)).current;
 
+    // Handle modal visibility changes
     useEffect(() => {
         if (visible) {
+            // Reset selections when modal opens
+            if (!isInitialRender) {
+                setSelectedMonth(toPickerMonth(initialDate.getMonth() + 1));
+                setSelectedDay(toPickerDay(initialDate.getDate()));
+                setSelectedYear(initialDate.getFullYear());
+            }
+            setIsInitialRender(false);
+
+            // Start animations
             Animated.parallel([
                 Animated.spring(slideAnim, {
                     toValue: 0,
                     useNativeDriver: true,
+                    damping: 20,
+                    mass: 1.2,
+                    stiffness: 100,
                 }),
                 Animated.timing(fadeAnim, {
                     toValue: 1,
-                    duration: 300,
+                    duration: 200,
                     useNativeDriver: true,
                 })
             ]).start();
@@ -53,17 +73,22 @@ export const DatePickerModal: React.FC<DatePickerModalProps> = ({
             Animated.parallel([
                 Animated.timing(slideAnim, {
                     toValue: height,
-                    duration: 300,
+                    duration: 250,
                     useNativeDriver: true,
                 }),
                 Animated.timing(fadeAnim, {
                     toValue: 0,
-                    duration: 300,
+                    duration: 200,
                     useNativeDriver: true,
                 })
-            ]).start();
+            ]).start(() => {
+                if (!visible) {
+                    setIsStartDate(true);
+                    setStartDate(null);
+                }
+            });
         }
-    }, [visible]);
+    }, [visible, initialDate]);
 
     const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
     const years = Array.from({ length: 201 }, (_, i) => 1900 + i);
@@ -75,12 +100,12 @@ export const DatePickerModal: React.FC<DatePickerModalProps> = ({
         );
     };
 
-    const daysInMonth = getDaysInMonth(selectedMonth, selectedYear);
+    const daysInMonth = getDaysInMonth(fromPickerMonth(selectedMonth) - 1, selectedYear);
 
     const handleConfirm = () => {
         const currentDate = {
-            month: selectedMonth + 1,
-            day: selectedDay + 1,
+            month: fromPickerMonth(selectedMonth),
+            day: fromPickerDay(selectedDay),
             year: selectedYear,
         };
 
@@ -92,8 +117,6 @@ export const DatePickerModal: React.FC<DatePickerModalProps> = ({
                 startDate: startDate!,
                 endDate: currentDate,
             });
-            setIsStartDate(true);
-            setStartDate(null);
             onClose();
         }
     };
@@ -136,7 +159,7 @@ export const DatePickerModal: React.FC<DatePickerModalProps> = ({
                                 data={months}
                                 selected={selectedMonth}
                                 onSelect={setSelectedMonth}
-                                visibleItems={5}
+                                itemHeight={50}
                             />
                         </View>
 
@@ -145,7 +168,7 @@ export const DatePickerModal: React.FC<DatePickerModalProps> = ({
                                 data={daysInMonth}
                                 selected={selectedDay}
                                 onSelect={setSelectedDay}
-                                visibleItems={5}
+                                itemHeight={50}
                             />
                         </View>
 
@@ -154,7 +177,7 @@ export const DatePickerModal: React.FC<DatePickerModalProps> = ({
                                 data={years}
                                 selected={years.indexOf(selectedYear)}
                                 onSelect={(index) => setSelectedYear(years[index])}
-                                visibleItems={5}
+                                itemHeight={50}
                             />
                         </View>
                     </View>
@@ -197,6 +220,7 @@ const styles = StyleSheet.create({
         flex: 1,
         alignItems: 'center',
         justifyContent: 'center',
+        margin: 18,
     },
     title: {
         fontSize: 20,
@@ -218,11 +242,9 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'space-between',
         height: 200,
-        marginBottom: 20,
     },
     pickerWrapper: {
         flex: 1,
-        marginHorizontal: 5,
     },
     confirmButton: {
         backgroundColor: '#015656',

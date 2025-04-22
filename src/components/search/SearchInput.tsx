@@ -50,7 +50,7 @@ const SearchInput = ({ onSearch, value }: SearchInputProps) => {
           source={require("../../assets/svg/textInput/filter.svg")}
           height={18}
           width={18}
-          stroke={appliedFilters.status || appliedFilters.dateRange?.start || appliedFilters.dateRange?.end ? "#007AFF" : "#110C22"}
+          stroke={'#110C22BD'}
         />
       </TouchableOpacity>
 
