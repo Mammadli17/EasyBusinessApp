@@ -82,8 +82,8 @@ export const DeclineReasonModal: React.FC<DeclineReasonModalProps> = ({
     >
       <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
         <Animated.View style={[styles.overlay, { opacity: fadeAnim }]}>
-          <TouchableOpacity 
-            style={styles.dismissArea} 
+          <TouchableOpacity
+            style={styles.dismissArea}
             onPress={onClose}
             activeOpacity={1}
           />
@@ -95,42 +95,46 @@ export const DeclineReasonModal: React.FC<DeclineReasonModalProps> = ({
               style={[
                 styles.modalContent,
                 {
-                  transform: [{ translateY: slideAnim }]
+                  transform: [{ translateY: slideAnim }],
+                  maxHeight: height * 0.6
                 }
               ]}
             >
               <View style={styles.modalContainer}>
-                <TouchableOpacity onPress={onClose} style={styles.closeButton}>
-                  <Text style={styles.closeButtonText}>✕</Text>
-                </TouchableOpacity>
-                
-                <Text style={styles.modalTitle}>{t('Decline Reason')}</Text>
-                
+                <View style={styles.headerContainer}>
+                  <TouchableOpacity onPress={onClose} style={styles.closeButton}>
+                    <Text style={styles.closeButtonText}>✕</Text>
+                  </TouchableOpacity>
+
+                  <Text style={styles.modalTitle}>{t('Decline Reason')}</Text>
+                </View>
+
                 <Text style={styles.modalDescription}>
                   {t('Please provide the reason for declining the confrontation. By clicking decline, you will reject the confrontation.')}
                 </Text>
-                
-                <TextInput
-                  style={styles.reasonInput}
-                  placeholder={t('Enter decline reason')}
-                  placeholderTextColor="#B3B1B8"
-                  value={reason}
-                  onChangeText={onReasonChange}
-                  multiline
-                  numberOfLines={4}
-                  returnKeyType="done"
-                  onSubmitEditing={Keyboard.dismiss}
-                />
+                <View style={styles.inputContainer}>
+                  <TextInput
+                    style={styles.reasonInput}
+                    placeholder={t('Decline reason')}
+                    placeholderTextColor="#B3B1B8"
+                    value={reason}
+                    onChangeText={onReasonChange}
+                    multiline
+                    numberOfLines={4}
+                    returnKeyType="done"
+                    onSubmitEditing={Keyboard.dismiss}
+                  />
 
-                <TouchableOpacity 
-                  style={[styles.button, styles.confirmButton, !reason.trim() && styles.disabledButton]}
-                  onPress={handleConfirm}
-                  disabled={!reason.trim()}
-                >
-                  <Text style={[styles.confirmButtonText, !reason.trim() && styles.disabledButtonText]}>
-                    {t('Confirm Decline')}
-                  </Text>
-                </TouchableOpacity>
+                  <TouchableOpacity
+                    style={[styles.button, styles.confirmButton, !reason.trim() && styles.disabledButton]}
+                    onPress={handleConfirm}
+                    disabled={!reason.trim()}
+                  >
+                    <Text style={[styles.confirmButtonText, !reason.trim() && styles.disabledButtonText]}>
+                      {t('Submit Decline')}
+                    </Text>
+                  </TouchableOpacity>
+                </View>
               </View>
             </Animated.View>
           </KeyboardAvoidingView>
@@ -150,41 +154,49 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   modalContent: {
-    backgroundColor: '#FFFFFF',
+    backgroundColor: '#F3F3F3',
     borderTopLeftRadius: 16,
     borderTopRightRadius: 16,
   },
   modalContainer: {
     padding: 20,
     paddingBottom: Platform.OS === 'ios' ? 34 : 20,
+    backgroundColor: '#F3F3F3',
+    borderRadius: 12,
   },
   closeButton: {
     position: 'absolute',
-    right: 20,
-    top: 20,
-    zIndex: 1,
+    right: 0,
     padding: 8,
+    zIndex: 1,
   },
   closeButtonText: {
     fontSize: 18,
     color: '#B3B1B8',
   },
+  headerContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    position: 'relative',
+  },  
   modalTitle: {
-    fontSize: 18,
+    fontSize: 26,
     fontWeight: '700',
     fontFamily: "Onest-Medium",
     color: 'hsla(254, 48%, 9%, 1)',
     textAlign: 'center',
-    marginBottom: 8,
-    marginTop: 8,
+    marginBottom: 10,
+    marginTop: 10,
   },
   modalDescription: {
-    fontSize: 14,
-    color: 'hsla(254, 48%, 9%, 0.74)',
+    fontSize: 16,
+    color: 'rgba(0, 0, 0, 0.48)',
     textAlign: 'center',
-    marginBottom: 20,
-    fontFamily: "Onest-Medium",
+    marginBottom: 25,
+    fontFamily: "Onest-Light",
     lineHeight: 20,
+    margin: 20
   },
   reasonInput: {
     height: 120,
@@ -192,7 +204,6 @@ const styles = StyleSheet.create({
     borderColor: '#E5E5E5',
     borderRadius: 8,
     padding: 10,
-    textAlignVertical: 'top',
     marginBottom: 16,
     fontFamily: "Onest-Medium",
     fontSize: 14,
@@ -224,4 +235,10 @@ const styles = StyleSheet.create({
   disabledButtonText: {
     color: '#B3B1B8',
   },
+  inputContainer: {
+    backgroundColor: '#FFFFFF',
+    borderRadius: 12,
+    padding: 12,
+    gap: 10,
+  }
 });
