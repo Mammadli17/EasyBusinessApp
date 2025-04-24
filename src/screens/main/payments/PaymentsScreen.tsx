@@ -5,34 +5,34 @@ import { SvgImage } from '../../../components/svgImage/SvgImage';
 import { PaymentCard } from '../../../components/productList/PaymentCard';
 
 const mockData = [
-  {
-    id: '1',
-    name: 'Pepsi',
-    balance: '209.29 AZN',
-    customerCode: '231143109',
-    creditLimit: '1990 AZN',
-    image: 'https://i.imgur.com/UYiroysl.jpg',
-    date: '10.10.2023',
-  },
-  {
-    id: '2',
-    name: 'Coca-Cola',
-    balance: '320.00 AZN',
-    customerCode: '231143110',
-    creditLimit: '1500 AZN',
-    image: 'https://i.imgur.com/UPrs1EWl.jpg',
-    date: '10.10.2023',
-  },
-  {
-    id: '3',
-    name: 'Red Bull',
-    balance: '150.50 AZN',
-    customerCode: '231143111',
-    creditLimit: '1800 AZN',
-    image: 'https://i.imgur.com/MABUbpDl.jpg',
-    date: '10.10.2023',
-  },
-  // Add more items here...
+    {
+        id: '1',
+        name: 'Pepsi',
+        balance: '209.29 AZN',
+        customerCode: '231143109',
+        creditLimit: '1990 AZN',
+        image: 'https://i.imgur.com/UYiroysl.jpg',
+        date: '10.10.2023',
+    },
+    {
+        id: '2',
+        name: 'Coca-Cola',
+        balance: '320.00 AZN',
+        customerCode: '231143110',
+        creditLimit: '1500 AZN',
+        image: 'https://i.imgur.com/UPrs1EWl.jpg',
+        date: '10.10.2023',
+    },
+    {
+        id: '3',
+        name: 'Red Bull',
+        balance: '150.50 AZN',
+        customerCode: '231143111',
+        creditLimit: '1800 AZN',
+        image: 'https://i.imgur.com/MABUbpDl.jpg',
+        date: '10.10.2023',
+    },
+    // Add more items here...
 ];
 
 const PaymentsScreen: React.FC<TabScreenProps> = ({ navigation, route }: any) => {
@@ -53,7 +53,7 @@ const PaymentsScreen: React.FC<TabScreenProps> = ({ navigation, route }: any) =>
                     </TouchableOpacity>
                 </View>
 
-                <View style={{marginHorizontal: 20}}>
+                <View style={{ marginHorizontal: 20 }}>
                     <FlatList
                         data={mockData}
                         renderItem={({ item }) => (

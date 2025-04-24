@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "203832560624",
+    "project_id": "easy-business-7239f",
+    "storage_bucket": "easy-business-7239f.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:203832560624:android:6759844ee8b20b38982b35",
+        "android_client_info": {
+          "package_name": "easy.business"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDTKSfwU6roiYZkm4t94Ax_tBvhZv_4Lho"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -1,4 +1,4 @@
-package com.easybusinessapp
+package easy.business
 
 import com.facebook.react.ReactActivity
 import com.facebook.react.ReactActivityDelegate

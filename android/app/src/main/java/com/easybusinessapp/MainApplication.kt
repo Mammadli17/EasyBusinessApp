@@ -1,4 +1,4 @@
-package com.easybusinessapp
+package easy.business
 
 import android.app.Application
 import com.facebook.react.PackageList
