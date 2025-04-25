@@ -15,7 +15,6 @@ import Router from './src/navigations/Router';
 import messaging from '@react-native-firebase/messaging';
 
 const App = () => {
-  const appState = useRef(AppState.currentState);
 
   useEffect(() => {
     if (Platform.OS === 'android') {
