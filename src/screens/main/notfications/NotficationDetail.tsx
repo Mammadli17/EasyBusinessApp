@@ -15,7 +15,7 @@ import { NotificationCard } from "../../../components/productList/NotficationCar
 
 
 
-const NotficationDetail: React.FC<TabScreenProps> = ({ navigation, route }: any) => {
+const NotficationDetail: React.FC<any> = ({ navigation, route }: any) => {
     const item = route?.params?.item;
     return (
         <>
