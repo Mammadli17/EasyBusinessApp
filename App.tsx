@@ -1,86 +1,63 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect } from 'react';
+import { View, StyleSheet, Platform, PermissionsAndroid, StatusBar } from 'react-native';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
-import {
-  View,
-  StyleSheet,
-  Platform,
-  PermissionsAndroid,
-  AppState,
-  LogBox,
-  StatusBar,
-} from 'react-native';
 import { gestureHandlerRootHOC } from 'react-native-gesture-handler';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import Router from './src/navigations/Router';
 import messaging from '@react-native-firebase/messaging';
+import Router from './src/navigations/Router';
 
 const App = () => {
-
   useEffect(() => {
-    if (Platform.OS === 'android') {
-      requestAndroidNotificationPermission();
-    }
-
-    // Request user permission and get token
-    requestUserPermissionAndToken();
-
-    // Handle background messages
-    messaging().setBackgroundMessageHandler(async remoteMessage => {
-      console.log('📦 Background message received:', JSON.stringify(remoteMessage));
-    });
-
-    // Handle initial notification
-    messaging()
-      .getInitialNotification()
-      .then(remoteMessage => {
-        if (remoteMessage) {
-          console.log('🟡 Initial notification:', remoteMessage);
-        }
-      });
-
-    // Foreground messages
-    const unsubscribe = messaging().onMessage(async remoteMessage => {
-      console.log('🟢 Foreground notification:', remoteMessage);
-    });
-
-    return unsubscribe;
+    setupNotifications();
   }, []);
 
-  const requestAndroidNotificationPermission = async () => {
+  const setupNotifications = async () => {
     try {
-      const granted = await PermissionsAndroid.request(
-        PermissionsAndroid.PERMISSIONS.POST_NOTIFICATIONS,
-      );
-      if (granted !== PermissionsAndroid.RESULTS.GRANTED) {
-        console.warn('🚫 Android notification permission denied');
+      if (Platform.OS === 'android') {
+        const permission = await PermissionsAndroid.request(
+          PermissionsAndroid.PERMISSIONS.POST_NOTIFICATIONS
+        );
+        if (permission !== PermissionsAndroid.RESULTS.GRANTED) {
+          console.warn('🚫 Android bildiriş icazəsi rədd edildi.');
+        }
       }
-    } catch (err) {
-      console.warn('❌ Error requesting Android notification permission:', err);
-    }
-  };
 
-  const requestUserPermissionAndToken = async () => {
-    const authStatus = await messaging().requestPermission();
-    const enabled =
-      authStatus === messaging.AuthorizationStatus.AUTHORIZED ||
-      authStatus === messaging.AuthorizationStatus.PROVISIONAL;
+      const authStatus = await messaging().requestPermission();
+      const enabled =
+        authStatus === messaging.AuthorizationStatus.AUTHORIZED ||
+        authStatus === messaging.AuthorizationStatus.PROVISIONAL;
 
-    console.log('🔐 Notification permission status:', enabled);
+      console.log('🔐 Notification permission status:', enabled);
 
-    if (enabled) {
-      try {
+      if (enabled) {
         const token = await messaging().getToken();
         if (token) {
-          console.log('✅ Firebase token:', token);
+          console.log('✅ Firebase Token:', token);
           await AsyncStorage.setItem('FirebaseToken', token);
         } else {
           console.warn('⚠️ Token boş gəldi');
         }
-      } catch (error: any) {
-        console.log('❌ Token alma zamanı xəta:', error?.message || error);
       }
-    } else {
-      console.warn('❗İstifadəçi icazə vermədi, token alınmayacaq.');
+
+      const unsubscribeOnMessage = messaging().onMessage(async remoteMessage => {
+        console.log('🟢 Foreground bildirişi:', remoteMessage);
+      });
+
+      messaging().setBackgroundMessageHandler(async remoteMessage => {
+        console.log('📦 Background bildirişi:', remoteMessage);
+      });
+
+      const initialNotification = await messaging().getInitialNotification();
+      if (initialNotification) {
+        console.log('🟡 App açılarkən bildiriş:', initialNotification);
+      }
+
+      return () => {
+        unsubscribeOnMessage();
+      };
+
+    } catch (error: any) {
+      console.error('❌ Notification setup zamanı xəta:', error?.message || error);
     }
   };
 
