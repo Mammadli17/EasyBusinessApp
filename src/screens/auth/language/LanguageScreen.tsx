@@ -75,7 +75,7 @@ const styles = StyleSheet.create({
     },
     down: {
         alignItems: "center",
-        marginTop: 10,
+        marginTop: 30,
     },
     title: {
         fontSize: 26,
@@ -107,7 +107,7 @@ const styles = StyleSheet.create({
         fontFamily: "Onest-Light",
     },
     buttonWrapper: {
-        marginBottom: 20,
+        marginBottom: 40,
         width: "100%",
         paddingHorizontal: 20,
     },

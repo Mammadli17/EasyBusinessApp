@@ -10,7 +10,7 @@ const App = () => {
   useEffect(() => {
     setupNotifications();
   }, []);
-
+// AsyncStorage.clear()
   const setupNotifications = async () => {
     try {
       if (Platform.OS === 'android') {
