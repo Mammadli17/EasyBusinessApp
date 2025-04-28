@@ -19,7 +19,6 @@ import { useTranslation } from 'react-i18next';
 import CustomInput from '../../../components/input/TextInput';
 import { Routes } from '../../../navigations/routes';
 import { screenWidth } from '../../../theme/const.styles';
-import axiosInstance from '../../../services/axiosInstance';
 
 const RegisterScreen = ({ navigation }: any) => {
   const [step, setStep] = useState(1);
@@ -42,9 +41,6 @@ const RegisterScreen = ({ navigation }: any) => {
     fin: '',
     password: '',
     cpassword: '',
-    number: '',
-    email: '',
-
   });
 
   const [keyboardVisible, setKeyboardVisible] = useState(false);
@@ -55,8 +51,6 @@ const RegisterScreen = ({ navigation }: any) => {
       fin: '',
       password: '',
       cpassword: '',
-      number: '',
-      email: '',
     })
     const keyboardDidShowListener = Keyboard.addListener(
       'keyboardDidShow',
@@ -88,8 +82,6 @@ const RegisterScreen = ({ navigation }: any) => {
       fin: '',
       password: '',
       cpassword: '',
-      number: '',
-      email: '',
     };
 
     if (!fullname) {
@@ -115,36 +107,6 @@ const RegisterScreen = ({ navigation }: any) => {
     }
 
     setErrors(newErrors);
-    return isValid;
-  };
-  // Əlavə et: validateStep2 funksiyası
-  const validateStep2 = () => {
-    const { number, email } = forumData;
-    let isValid = true;
-    let newErrors = {
-      number: '',
-      email: '',
-    };
-
-    // Telefon nömrəsi yalnız 10 rəqəm olmalıdır
-    const numberPattern = /^[0-9]{10}$/;
-    if (!number || !numberPattern.test(number)) {
-      newErrors.number = t('Nömrə 10 rəqəmdən ibarət olmalıdır');
-      isValid = false;
-    }
-
-    // Email düzgün formatda olmalıdır
-    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!email || !emailPattern.test(email)) {
-      newErrors.email = t('Email düzgün formatda deyil');
-      isValid = false;
-    }
-
-    setErrors((prevErrors) => ({
-      ...prevErrors,
-      ...newErrors,
-    }));
-
     return isValid;
   };
 
@@ -183,36 +145,13 @@ const RegisterScreen = ({ navigation }: any) => {
     });
   };
 
-  const handleNext = async () => {
+  const handleNext = () => {
     if (step === 1) {
       if (validateStep1()) {
         animateStepChange(2);
       }
     } else if (step === 2) {
-      if (validateStep2()) {
-        // navigation.navigate(Routes.waiting);
-        try {
-          const res = await axiosInstance.post("/customer", {
-
-            "name": forumData.fullname,
-            "surname": forumData.fullname,
-            "finCode":forumData.fin,
-            "password": forumData.password,
-            "phone": forumData.number,
-            "email": forumData.email,
-            "workPlace": "Baku statix",
-            "tin": "3699170417",
-            "location": "11",
-            "latitude": 1,
-            "longitude": 1,
-            "regNum": 1
-          })
-          navigation.navigate(Routes.login)
-        } catch (error) {
-          console.log(error);
-
-        }
-      }
+      navigation.navigate(Routes.waiting);
     }
   };
 
@@ -325,7 +264,7 @@ const RegisterScreen = ({ navigation }: any) => {
                   placeholder={t('Telefon nömrəsi')}
                   value={forumData.number}
                   onChangeText={(val: any) => handleInputChange('number', val)}
-                  error={errors.number}
+                  error={true}
                 />
                 <CustomInput
                   label={t('E-poçt')}
@@ -333,8 +272,6 @@ const RegisterScreen = ({ navigation }: any) => {
                   placeholder={t('E-poçt')}
                   value={forumData.email}
                   onChangeText={(val: any) => handleInputChange('email', val)}
-                  error={errors.email}
-
                 />
                 <CustomInput
                   label={t('İş yeri')}
@@ -486,7 +423,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: '500',
   },
-
+ 
   footer: {
     position: 'absolute',
     bottom: 20,

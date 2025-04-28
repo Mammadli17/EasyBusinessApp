@@ -3,7 +3,7 @@ import { View, TextInput, Text, StyleSheet, Touchable, TouchableOpacity } from '
 import { normalize } from '../../theme/metrics';
 import { SvgImage } from '../svgImage/SvgImage';
 
-const CustomInput = ({ label, icon, placeholder, value, onChangeText, password }: any) => {
+const CustomInput = ({ label, icon, placeholder, value, onChangeText, password,error }: any) => {
     const [isFocused, setIsFocused] = useState(false);
     const [enable, setenable] = useState(false)
     const handleFocus = () => {
@@ -16,7 +16,7 @@ const CustomInput = ({ label, icon, placeholder, value, onChangeText, password }
 
     return (
         <View style={styles.container}>
-            <View style={[styles.inputContainer, isFocused && styles.inputContainerFocused]}>
+            <View style={[styles.inputContainer, isFocused && styles.inputContainerFocused,error&&{borderColor:"hsla(0, 86%, 59%, 1)",borderWidth:1}]}>
                 <SvgImage
                     source={icon}
                     height={18}

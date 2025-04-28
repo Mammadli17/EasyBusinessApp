@@ -26,7 +26,7 @@ const CustomButton = ({ onPress, title, buttonStyle, textStyle, disabled }: Cust
 const styles = StyleSheet.create({
     button: {
         width: "90%",
-        paddingVertical: normalize("height", 15),
+        // paddingVertical: normalize("height", 15),
         backgroundColor: "#005F56",
         borderRadius: normalize("width", 10),
         alignItems: "center",
