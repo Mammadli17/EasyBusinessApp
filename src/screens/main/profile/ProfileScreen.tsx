@@ -26,10 +26,25 @@ const ProfileScreen = () => {
   const [editingLocation, setEditingLocation] = useState(false);
   const [emailValue, setEmailValue] = useState(user.email);
   const [locationValue, setLocationValue] = useState(store.location);
+  const [editingProfile, setEditingProfile] = useState(false);
   const { t } = useTranslation();
 
   const handleAccordion = (section: 'account' | 'store' | 'settings') => {
     setOpenSection(openSection === section ? undefined : section);
+  };
+
+  const toggleEditProfile = () => {
+    setEditingProfile(!editingProfile);
+  };
+
+  const handleChangePhoto = () => {
+    console.log('Change photo pressed');
+    // Here you would implement photo selection logic
+  };
+
+  const handleDeletePhoto = () => {
+    console.log('Delete photo pressed');
+    // Here you would implement photo deletion logic
   };
 
   const handleEditEmail = () => {
@@ -39,7 +54,7 @@ const ProfileScreen = () => {
       // Here you would typically call an API to update the email
     }
     setEditingEmail(!editingEmail);
-    
+
     if (!editingEmail) {
       setOpenSection('account');
     }
@@ -52,7 +67,7 @@ const ProfileScreen = () => {
       // Here you would typically call an API to update the location
     }
     setEditingLocation(!editingLocation);
-    
+
     // Auto-expand store section when editing starts
     if (!editingLocation) {
       setOpenSection('store');
@@ -138,17 +153,55 @@ const ProfileScreen = () => {
         </View>
         <ScrollView contentContainerStyle={styles.scrollContent} showsVerticalScrollIndicator={false}>
           {/* Header */}
-          <View style={styles.headerBox}>
-            <View style={styles.avatarWrapper}>
-              <SvgImage source={require('../../../assets/svg/textInput/profile.svg')} width={64} height={64} />
+          <View style={[
+            styles.headerBox,
+            editingProfile && styles.headerBoxEditing
+          ]}>
+            {editingProfile && (
+              <View style={styles.warningContainer}>
+                <SvgImage
+                  source={require('../../../assets/svg/profile/union.svg')}
+                  width={16}
+                  height={16}
+                />
+                <Text style={styles.warningText}>Image size must be 200x200</Text>
+              </View>
+            )}
+            <View style={[styles.avatarWrapper, editingProfile && styles.avatarWrapperEditing]}>
+              <SvgImage
+                source={require('../../../assets/svg/profile/profile.svg')}
+                width={48}
+                height={48}
+              />
             </View>
-            <Text style={styles.name}>{user.name}</Text>
-            <CustomButton 
-              title="Edit Profile" 
-              onPress={() => console.log('Edit profile pressed')} 
-              buttonStyle={styles.editProfileBtn} 
-              textStyle={styles.editProfileBtnText} 
-            />
+            {/* Hide name and surname when editingProfile is true */}
+            {!editingProfile && (
+              <Text style={styles.name}>{user.name}</Text>
+            )}
+
+            {!editingProfile ? (
+              <CustomButton
+                title="Edit Profile"
+                onPress={toggleEditProfile}
+                buttonStyle={styles.editProfileBtn}
+                textStyle={styles.editProfileBtnText}
+              />
+            ) : (
+              <View style={styles.photoButtonsContainer}>
+                <CustomButton
+                  title="Change Photo"
+                  onPress={handleChangePhoto}
+                  buttonStyle={styles.changePhotoBtn}
+                  textStyle={styles.changePhotoBtnText}
+                />
+                <CustomButton
+                  title="Delete Photo"
+                  onPress={handleDeletePhoto}
+                  buttonStyle={styles.deletePhotoBtn}
+                  textStyle={styles.deletePhotoBtnText}
+                />
+              </View>
+            )}
           </View>
 
           {/* Accordions */}
@@ -215,14 +268,20 @@ const styles = StyleSheet.create({
     paddingVertical: 24,
     marginBottom: 8,
   },
+  headerBoxEditing: {
+    borderWidth: 1,
+    borderColor: '#FF3B30',
+  },
   avatarWrapper: {
     width: 72,
     height: 72,
     borderRadius: 36,
-    backgroundColor: '#E6E6E6',
     alignItems: 'center',
     justifyContent: 'center',
     marginBottom: 12,
+  },
+  avatarWrapperEditing: {
+    marginTop: 12,
   },
   name: {
     ...TypographyStyles.LargeNoneMedium,
@@ -267,6 +326,53 @@ const styles = StyleSheet.create({
   logoutBtnText: {
     color: '#FF3B30',
     fontSize: 16,
+    fontWeight: '500',
+  },
+  warningContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: 8,
+  },
+  warningText: {
+    color: '#FF3B30',
+    fontSize: 14,
+  },
+  photoButtonsContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginTop: 8,
+    width: '100%',
+    paddingHorizontal: 16,
+  },
+  changePhotoBtn: {
+    flex: 1,
+    marginRight: 8,
+    backgroundColor: '#fff',
+    borderWidth: 1,
+    borderColor: '#ECECED',
+    borderRadius: 8,
+    paddingVertical: 6,
+  },
+  changePhotoBtnText: {
+    textAlign: 'center',
+    color: '#4F4B5C',
+    fontSize: 15,
+    fontWeight: '500',
+  },
+  deletePhotoBtn: {
+    flex: 1,
+    marginLeft: 8,
+    backgroundColor: '#fff',
+    borderWidth: 1,
+    borderColor: '#FFC7C7',
+    borderRadius: 8,
+    paddingVertical: 6,
+  },
+  deletePhotoBtnText: {
+    textAlign: 'center',
+    color: '#F03D3D',
+    fontSize: 15,
     fontWeight: '500',
   },
 });
