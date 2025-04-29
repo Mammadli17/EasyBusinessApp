@@ -20,4 +20,5 @@ export enum Routes {
     notficationDetail='notficationDetail',
     pendingDetails = 'pendingDetails',
     confrontationOtp = 'confrontationOtp',
+    changePassword = 'changePassword',
 }

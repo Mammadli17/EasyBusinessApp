@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
-import { FilterOptions } from '../modals/FilterModal';
+import { FilterOptions } from '../modals/ConfirmationModal';
 
 interface CompanyFilterSectionProps {
   filters: FilterOptions;
@@ -37,7 +37,7 @@ export const CompanyFilterSection = ({
               onPress={() => onCompanyToggle(company)}
             >
               <View style={styles.checkbox}>
-                {filters.companies?.includes(company) && (
+                {filters.selectedCompanies?.includes(company) && (
                   <View style={styles.checkboxInner} />
                 )}
               </View>

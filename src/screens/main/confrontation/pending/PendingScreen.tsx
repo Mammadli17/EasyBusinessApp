@@ -1,12 +1,14 @@
 import React, { useMemo } from 'react';
 import { View, StyleSheet, FlatList, Platform } from 'react-native';
 import { PendingCard } from '../../../../components/productList/PendingCard';
+import { FilterOptions } from '../../../../components/modals/FilterModal';
 
 interface PendingScreenProps {
   searchQuery: string;
+  filters: FilterOptions;
 }
 
-const PendingScreen = ({ searchQuery }: PendingScreenProps) => {
+const PendingScreen = ({ searchQuery, filters }: PendingScreenProps) => {
   const sampleData = [
     {
       id: '1',
@@ -60,14 +62,44 @@ const PendingScreen = ({ searchQuery }: PendingScreenProps) => {
   ];
 
   const filteredData = useMemo(() => {
-    if (!searchQuery) return sampleData;
-    const lowerCaseQuery = searchQuery.toLowerCase();
-    return sampleData.filter(item => 
-      item.name.toLowerCase().includes(lowerCaseQuery) ||
-      item.amount.toLowerCase().includes(lowerCaseQuery) ||
-      item.date.includes(lowerCaseQuery)
-    );
-  }, [searchQuery]);
+    let filtered = [...sampleData];
+
+    // Apply text search filter
+    if (searchQuery) {
+      const lowerCaseQuery = searchQuery.toLowerCase();
+      filtered = filtered.filter(item => 
+        item.name.toLowerCase().includes(lowerCaseQuery) ||
+        item.amount.toLowerCase().includes(lowerCaseQuery) ||
+        item.date.includes(lowerCaseQuery)
+      );
+    }
+
+    // Apply company filters
+    if (filters.selectedCompanies && filters.selectedCompanies.length > 0) {
+      filtered = filtered.filter(item =>
+        filters.selectedCompanies!.includes(item.name)
+      );
+    }
+
+    // Apply date range filter
+    if (filters.dateRange) {
+      filtered = filtered.filter(item => {
+        const itemDate = new Date(item.date.split('.').reverse().join('-'));
+        
+        if (filters.dateRange?.start && itemDate < filters.dateRange.start) {
+          return false;
+        }
+        
+        if (filters.dateRange?.end && itemDate > filters.dateRange.end) {
+          return false;
+        }
+        
+        return true;
+      });
+    }
+
+    return filtered;
+  }, [searchQuery, filters]);
 
   return (
     <View style={styles.container}>

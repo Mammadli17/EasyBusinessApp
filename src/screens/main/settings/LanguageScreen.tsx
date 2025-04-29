@@ -26,17 +26,19 @@ const LanguageScreen = ({ navigation }: any) => {
         setSelectedLanguage(i18n.language);
     }, []);
 
-    const handleLanguageSelect = async (langId: string) => {
+    const handleLanguageSelect = (langId: string) => {
         setSelectedLanguage(langId);
-        try {
-            await i18n.changeLanguage(langId);
-        } catch (error) {
-            console.error("Language change error:", error);
-        }
     };
 
-    const handleSave = () => {
-        navigation.goBack();
+    const handleSave = async () => {
+        if (selectedLanguage) {
+            try {
+                await i18n.changeLanguage(selectedLanguage);
+                navigation.goBack();
+            } catch (error) {
+                console.error("Language change error:", error);
+            }
+        }
     };
 
     return (
@@ -51,12 +53,12 @@ const LanguageScreen = ({ navigation }: any) => {
                             width={14}
                         />
                     </TouchableOpacity>
-                    <Text style={styles.headerTitle}>{t("Change Language")}</Text>
+                    <Text style={styles.headerTitle}>{t("Dili dəyiş")}</Text>
                     <View style={styles.rightPlaceholder} />
                 </View>
                 
                 <View style={styles.mainContent}>
-                    <Text style={styles.title}>{t("Select Language")}</Text>
+                    <Text style={styles.title}>{t("Dil seçin")}</Text>
                     <View style={styles.languageList}>
                         {languages.map((lang) => (
                             <TouchableOpacity

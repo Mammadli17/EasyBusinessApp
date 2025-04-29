@@ -30,9 +30,10 @@ export type RootStackParamList = {
       amount: string;
       date: string;
       image: string;
-      message?: string;
+      message: string;
     };
   };
+  [Routes.changePassword]: undefined;
 };
 
 export type BottomTabParamList = {

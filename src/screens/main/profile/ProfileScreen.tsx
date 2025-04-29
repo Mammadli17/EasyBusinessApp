@@ -9,6 +9,7 @@ import { useNavigation } from '@react-navigation/native';
 import { Routes } from '../../../navigations/routes';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../../../types/navigation.type';
+import { ConfirmationModal } from '../../../components/modals/ConfirmationModal';
 
 type ProfileScreenNavigationProp = NativeStackNavigationProp<RootStackParamList>;
 
@@ -33,12 +34,19 @@ const ProfileScreen = () => {
   const [emailValue, setEmailValue] = useState(user.email);
   const [locationValue, setLocationValue] = useState(store.location);
   const [editingProfile, setEditingProfile] = useState(false);
-  const { t } = useTranslation();
+  const [deleteModalVisible, setDeleteModalVisible] = useState(false);
+  const [logoutModalVisible, setLogoutModalVisible] = useState(false);
+  const { t, i18n } = useTranslation();
   const navigation = useNavigation<ProfileScreenNavigationProp>();
 
   const handleAccordion = (section: 'account' | 'store' | 'settings') => {
     setOpenSection(openSection === section ? undefined : section);
   };
+
+  // Get current language
+  const currentLanguage = i18n.language;
+
+  const editProfileBtnWidth = currentLanguage === 'ru' ? 200 : 140;
 
   const toggleEditProfile = () => {
     setEditingProfile(!editingProfile);
@@ -50,8 +58,12 @@ const ProfileScreen = () => {
   };
 
   const handleDeletePhoto = () => {
-    console.log('Delete photo pressed');
-    // Here you would implement photo deletion logic
+    setDeleteModalVisible(true);
+  };
+
+  const handleConfirmDelete = () => {
+    console.log('Photo deleted');
+    // Here implement the actual photo deletion logic
   };
 
   const handleEditEmail = () => {
@@ -84,25 +96,25 @@ const ProfileScreen = () => {
     {
       icon: require('../../../assets/svg/textInput/profile.svg'),
       value: user.username,
-      placeholder: "Username",
+      placeholder: t("İstifadəçi adı"),
       editable: false
     },
     {
       icon: require('../../../assets/svg/textInput/fin.svg'),
       value: user.id,
-      placeholder: "ID",
+      placeholder: t("Şəxsiyyət vəsiqəsinin FİN kodu"),
       editable: false
     },
     {
       icon: require('../../../assets/svg/textInput/phone.svg'),
       value: user.phone,
-      placeholder: "Phone",
+      placeholder: t("Telefon nömrəsi"),
       editable: false
     },
     {
       icon: require('../../../assets/svg/textInput/email.svg'),
       value: emailValue,
-      placeholder: "Email",
+      placeholder: t("Elektron poçt"),
       editable: editingEmail,
       withEditButton: true,
       onEditPress: handleEditEmail,
@@ -114,13 +126,13 @@ const ProfileScreen = () => {
     {
       icon: require('../../../assets/svg/textInput/work.svg'),
       value: store.name,
-      placeholder: "Store Name",
+      placeholder: t("Mağaza adı"),
       editable: false
     },
     {
       icon: require('../../../assets/svg/textInput/location.svg'),
       value: locationValue,
-      placeholder: "Location",
+      placeholder: t("Məkan"),
       editable: editingLocation,
       withEditButton: true,
       onEditPress: handleEditLocation,
@@ -129,47 +141,46 @@ const ProfileScreen = () => {
     {
       icon: require('../../../assets/svg/textInput/tin.svg'),
       value: store.id,
-      placeholder: "Store ID",
+      placeholder: t("Mağaza identifikatoru"),
       editable: false
     }
   ];
 
   const settingsButtonFields: ButtonField[] = [
     {
-      title: "Change Password",
-      onPress: () => console.log('Change password pressed')
+      title: t("Şifrəni dəyiş"),
+      onPress: () => navigation.navigate(Routes.changePassword)
     },
     {
-      title: "Change Language",
+      title: t("Dili dəyiş"),
       onPress: () => navigation.navigate(Routes.language),
     },
     {
-      title: "Log out",
-      onPress: () => console.log('Log out pressed'),
+      title: t("Çıxış"),
+      onPress: () => setLogoutModalVisible(true),
       style: 'logout'
     }
   ];
+
+  const handleLogout = () => {
+    // Here implement logout logic
+    navigation.navigate(Routes.login);
+  };
 
   return (
     <>
       <StatusBar backgroundColor="hsla(0, 0%, 100%, 1)" barStyle="dark-content" />
       <SafeAreaView style={styles.container}>
         <View style={styles.header}>
-          <Text style={styles.title}>{t('Profile')}</Text>
+          <Text style={styles.title}>{t('Profil')}</Text>
         </View>
+
         <ScrollView contentContainerStyle={styles.scrollContent} showsVerticalScrollIndicator={false}>
-          {/* Header */}
-          <View style={[
-            styles.headerBox,
-            editingProfile && styles.headerBoxEditing
-          ]}>
+          <View style={[styles.headerBox, editingProfile && styles.headerBoxEditing]}>
             {editingProfile && (
               <>
                 <View style={styles.headerItems}>
-                  <TouchableOpacity 
-                    style={styles.backButton} 
-                    onPress={toggleEditProfile}
-                  >
+                  <TouchableOpacity style={styles.backButton} onPress={toggleEditProfile}>
                     <SvgImage
                       source={require('../../../assets/svg/back/back.svg')}
                       width={14}
@@ -182,7 +193,7 @@ const ProfileScreen = () => {
                       width={16}
                       height={16}
                     />
-                    <Text style={styles.warningText}>Image size must be 200x200</Text>
+                    <Text style={styles.warningText}>{t('Şəklin ölçüsü 200x200 olmalıdır')}</Text>
                   </View>
                 </View>
               </>
@@ -194,28 +205,28 @@ const ProfileScreen = () => {
                 height={48}
               />
             </View>
-            {/* Hide name and surname when editingProfile is true */}
+
             {!editingProfile && (
               <Text style={styles.name}>{user.name}</Text>
             )}
 
             {!editingProfile ? (
               <CustomButton
-                title="Edit Profile"
+                title={t('Profili redaktə et')}
                 onPress={toggleEditProfile}
-                buttonStyle={styles.editProfileBtn}
+                buttonStyle={[styles.editProfileBtn, { width: editProfileBtnWidth }]}
                 textStyle={styles.editProfileBtnText}
               />
             ) : (
               <View style={styles.photoButtonsContainer}>
                 <CustomButton
-                  title="Change Photo"
+                  title={t('Şəkli dəyiş')}
                   onPress={handleChangePhoto}
                   buttonStyle={styles.changePhotoBtn}
                   textStyle={styles.changePhotoBtnText}
                 />
                 <CustomButton
-                  title="Delete Photo"
+                  title={t('Şəkli sil')}
                   onPress={handleDeletePhoto}
                   buttonStyle={styles.deletePhotoBtn}
                   textStyle={styles.deletePhotoBtnText}
@@ -224,9 +235,8 @@ const ProfileScreen = () => {
             )}
           </View>
 
-          {/* Accordions */}
           <Accordion
-            title="Account details"
+            title={t('Hesab məlumatları')}
             open={openSection === 'account'}
             onPress={() => handleAccordion('account')}
             chevronStroke="#232323"
@@ -235,7 +245,7 @@ const ProfileScreen = () => {
           />
 
           <Accordion
-            title="Store details"
+            title={t('Mağaza məlumatları')}
             open={openSection === 'store'}
             onPress={() => handleAccordion('store')}
             chevronStroke="#232323"
@@ -244,7 +254,7 @@ const ProfileScreen = () => {
           />
 
           <Accordion
-            title="Settings"
+            title={t('Tənzimləmələr')}
             open={openSection === 'settings'}
             onPress={() => handleAccordion('settings')}
             chevronStroke="#232323"
@@ -252,6 +262,27 @@ const ProfileScreen = () => {
             buttonFields={settingsButtonFields}
           />
         </ScrollView>
+        <ConfirmationModal
+          visible={deleteModalVisible}
+          onClose={() => setDeleteModalVisible(false)}
+          onConfirm={handleConfirmDelete}
+          title={t('Şəkli sil')}
+          description={t('Profil şəklinizi silmək istədiyinizə əminsiniz?')}
+          confirmText={t('Sil')}
+          cancelText={t('Ləğv et')}
+          type="danger"
+        />
+
+        <ConfirmationModal
+          visible={logoutModalVisible}
+          onClose={() => setLogoutModalVisible(false)}
+          onConfirm={handleLogout}
+          title={t('Çıxış')}
+          description={t('Çıxış etmək istədiyinizə əminsiniz? Yenidən daxil olmaq üçün hesab məlumatlarınızı daxil etməlisiniz.')}
+          confirmText={t('Çıxış')}
+          cancelText={t('Ləğv et')}
+          type="danger"
+        />
       </SafeAreaView>
     </>
   );
@@ -314,13 +345,13 @@ const styles = StyleSheet.create({
     borderColor: '#ECECED',
     borderRadius: 8,
     paddingVertical: 6,
-    width: 140,
     marginTop: 4,
   },
   editProfileBtnText: {
     color: '#4F4B5C',
     fontSize: 15,
     fontWeight: '500',
+    textAlign: 'center',
   },
   settingsBtn: {
     backgroundColor: '#fff',

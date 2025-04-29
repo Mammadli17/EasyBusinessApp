@@ -16,15 +16,21 @@ import { useNavigation } from '@react-navigation/native';
 import SearchInput from '../../../components/search/SearchInput';
 import PendingScreen from './pending/PendingScreen';
 import ApprovedScreen from './approved/ApprovedScreen';
+import { FilterOptions } from '../../../components/modals/FilterModal';
 
 const ConfrontationScreen = () => {
   const { t } = useTranslation();
   const navigation = useNavigation();
   const [activeTab, setActiveTab] = useState('pending');
   const [searchQuery, setSearchQuery] = useState('');
+  const [filters, setFilters] = useState<FilterOptions>({});
 
   const handleSearch = (query: string) => {
     setSearchQuery(query);
+  };
+
+  const handleFilter = (newFilters: FilterOptions) => {
+    setFilters(newFilters);
   };
 
   return (
@@ -50,7 +56,11 @@ const ConfrontationScreen = () => {
         </View>
 
         <View style={styles.searchContainer}>
-          <SearchInput onSearch={handleSearch} value={searchQuery} />
+          <SearchInput 
+            onSearch={handleSearch} 
+            value={searchQuery} 
+            onFilter={handleFilter}
+          />
           <View style={styles.tabContainer}>
             <TouchableOpacity
               style={[styles.tabButton, activeTab === 'pending' && styles.activeTabButton]}
@@ -74,9 +84,9 @@ const ConfrontationScreen = () => {
 
       <View style={styles.content}>
         {activeTab === 'pending' ? (
-          <PendingScreen searchQuery={searchQuery} />
+          <PendingScreen searchQuery={searchQuery} filters={filters} />
         ) : (
-          <ApprovedScreen searchQuery={searchQuery} />
+          <ApprovedScreen searchQuery={searchQuery} filters={filters} />
         )}
       </View>
     </View>
