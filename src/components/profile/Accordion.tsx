@@ -4,6 +4,7 @@ import { SvgImage } from '../svgImage/SvgImage';
 import { TypographyStyles } from '../../theme/typography';
 import CustomInput from '../input/TextInput';
 import CustomButton from '../button/CustomButton';
+import { Routes } from '../../navigations/routes';
 
 if (Platform.OS === 'android' && UIManager.setLayoutAnimationEnabledExperimental) {
   UIManager.setLayoutAnimationEnabledExperimental(true);

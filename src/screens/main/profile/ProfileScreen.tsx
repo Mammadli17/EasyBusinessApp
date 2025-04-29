@@ -1,10 +1,16 @@
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, ScrollView, StatusBar, SafeAreaView } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, StatusBar, SafeAreaView, TouchableOpacity } from 'react-native';
 import Accordion, { InputField, ButtonField } from '../../../components/profile/Accordion';
 import CustomButton from '../../../components/button/CustomButton';
 import { SvgImage } from '../../../components/svgImage/SvgImage';
 import { TypographyStyles } from '../../../theme/typography';
 import { useTranslation } from 'react-i18next';
+import { useNavigation } from '@react-navigation/native';
+import { Routes } from '../../../navigations/routes';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { RootStackParamList } from '../../../types/navigation.type';
+
+type ProfileScreenNavigationProp = NativeStackNavigationProp<RootStackParamList>;
 
 const user = {
   name: 'Jamal Jahangirov',
@@ -28,6 +34,7 @@ const ProfileScreen = () => {
   const [locationValue, setLocationValue] = useState(store.location);
   const [editingProfile, setEditingProfile] = useState(false);
   const { t } = useTranslation();
+  const navigation = useNavigation<ProfileScreenNavigationProp>();
 
   const handleAccordion = (section: 'account' | 'store' | 'settings') => {
     setOpenSection(openSection === section ? undefined : section);
@@ -49,7 +56,6 @@ const ProfileScreen = () => {
 
   const handleEditEmail = () => {
     if (editingEmail) {
-      // Save changes when toggling from edit mode to view mode
       console.log('Saving email:', emailValue);
       // Here you would typically call an API to update the email
     }
@@ -135,7 +141,7 @@ const ProfileScreen = () => {
     },
     {
       title: "Change Language",
-      onPress: () => console.log('Change language pressed')
+      onPress: () => navigation.navigate(Routes.language),
     },
     {
       title: "Log out",
@@ -158,14 +164,28 @@ const ProfileScreen = () => {
             editingProfile && styles.headerBoxEditing
           ]}>
             {editingProfile && (
-              <View style={styles.warningContainer}>
-                <SvgImage
-                  source={require('../../../assets/svg/profile/union.svg')}
-                  width={16}
-                  height={16}
-                />
-                <Text style={styles.warningText}>Image size must be 200x200</Text>
-              </View>
+              <>
+                <View style={styles.headerItems}>
+                  <TouchableOpacity 
+                    style={styles.backButton} 
+                    onPress={toggleEditProfile}
+                  >
+                    <SvgImage
+                      source={require('../../../assets/svg/back/back.svg')}
+                      width={14}
+                      height={14}
+                    />
+                  </TouchableOpacity>
+                  <View style={styles.warningContainer}>
+                    <SvgImage
+                      source={require('../../../assets/svg/profile/union.svg')}
+                      width={16}
+                      height={16}
+                    />
+                    <Text style={styles.warningText}>Image size must be 200x200</Text>
+                  </View>
+                </View>
+              </>
             )}
             <View style={[styles.avatarWrapper, editingProfile && styles.avatarWrapperEditing]}>
               <SvgImage
@@ -265,8 +285,8 @@ const styles = StyleSheet.create({
     borderRadius: 16,
     margin: 16,
     alignItems: 'center',
-    paddingVertical: 24,
-    marginBottom: 8,
+    paddingVertical: 16,
+    position: 'relative',
   },
   headerBoxEditing: {
     borderWidth: 1,
@@ -328,11 +348,18 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: '500',
   },
+  headerItems: {
+    width: '100%',
+    paddingHorizontal: 16,
+    flexDirection: 'column',
+    gap: 12,
+  },
   warningContainer: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
     gap: 8,
+    alignSelf: 'center',
   },
   warningText: {
     color: '#FF3B30',
@@ -374,6 +401,14 @@ const styles = StyleSheet.create({
     color: '#F03D3D',
     fontSize: 15,
     fontWeight: '500',
+  },
+  backButton: {
+    position: 'absolute',
+    left: 16,
+    height: '100%',
+    justifyContent: 'center',
+    alignItems: 'center',
+    zIndex: 1,
   },
 });
 
