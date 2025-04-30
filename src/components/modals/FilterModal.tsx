@@ -7,6 +7,7 @@ import {
   Text,
   Animated,
   Dimensions,
+  StatusBar,
 } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { FilterModalHeader } from './FilterModalHeader';
@@ -53,7 +54,7 @@ export const FilterModal: React.FC<FilterModalProps> = ({
         }),
         Animated.timing(fadeAnim, {
           toValue: 1,
-          duration: 200,
+          duration: 250,
           useNativeDriver: true,
         })
       ]).start();
@@ -110,13 +111,17 @@ export const FilterModal: React.FC<FilterModalProps> = ({
     onClose();
   };
 
+  if (!visible) return null;
+
   return (
     <Modal
       visible={visible}
       transparent
+      statusBarTranslucent
       animationType="none"
       onRequestClose={onClose}
     >
+      <StatusBar backgroundColor="rgba(0, 0, 0, 0.5)" barStyle="light-content" />
       <Animated.View style={[styles.overlay, { opacity: fadeAnim }]}>
         <TouchableOpacity 
           style={styles.dismissArea} 

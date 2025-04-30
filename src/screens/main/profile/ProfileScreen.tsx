@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, ScrollView, StatusBar, SafeAreaView, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, StatusBar, TouchableOpacity, Platform } from 'react-native';
 import Accordion, { InputField, ButtonField } from '../../../components/profile/Accordion';
 import CustomButton from '../../../components/button/CustomButton';
 import { SvgImage } from '../../../components/svgImage/SvgImage';
@@ -43,7 +43,6 @@ const ProfileScreen = () => {
     setOpenSection(openSection === section ? undefined : section);
   };
 
-  // Get current language
   const currentLanguage = i18n.language;
 
   const editProfileBtnWidth = currentLanguage === 'ru' ? 200 : 140;
@@ -168,145 +167,155 @@ const ProfileScreen = () => {
   };
 
   return (
-    <>
-      <StatusBar backgroundColor="hsla(0, 0%, 100%, 1)" barStyle="dark-content" />
-      <SafeAreaView style={styles.container}>
-        <View style={styles.header}>
-          <Text style={styles.title}>{t('Profil')}</Text>
+    <View style={styles.wrapper}>
+      <StatusBar backgroundColor="#FFFFFF" barStyle="dark-content" />
+      
+      <View style={styles.header}>
+        <View style={styles.headerTop}>
+          <Text style={styles.headerTitle}>{t('Profil')}</Text>
         </View>
+      </View>
 
-        <ScrollView contentContainerStyle={styles.scrollContent} showsVerticalScrollIndicator={false}>
-          <View style={[styles.headerBox, editingProfile && styles.headerBoxEditing]}>
-            {editingProfile && (
-              <>
-                <View style={styles.headerItems}>
-                  <TouchableOpacity style={styles.backButton} onPress={toggleEditProfile}>
-                    <SvgImage
-                      source={require('../../../assets/svg/back/back.svg')}
-                      width={14}
-                      height={14}
-                    />
-                  </TouchableOpacity>
-                  <View style={styles.warningContainer}>
-                    <SvgImage
-                      source={require('../../../assets/svg/profile/union.svg')}
-                      width={16}
-                      height={16}
-                    />
-                    <Text style={styles.warningText}>{t('Şəklin ölçüsü 200x200 olmalıdır')}</Text>
-                  </View>
+      <ScrollView style={styles.content} contentContainerStyle={styles.scrollContent} showsVerticalScrollIndicator={false}>
+        <View style={[styles.headerBox, editingProfile && styles.headerBoxEditing]}>
+          {editingProfile && (
+            <>
+              <View style={styles.headerItems}>
+                <TouchableOpacity style={styles.backButton} onPress={toggleEditProfile}>
+                  <SvgImage
+                    source={require('../../../assets/svg/back/back.svg')}
+                    width={14}
+                    height={14}
+                  />
+                </TouchableOpacity>
+                <View style={styles.warningContainer}>
+                  <SvgImage
+                    source={require('../../../assets/svg/profile/union.svg')}
+                    width={16}
+                    height={16}
+                  />
+                  <Text style={styles.warningText}>{t('Şəklin ölçüsü 200x200 olmalıdır')}</Text>
                 </View>
-              </>
-            )}
-            <View style={[styles.avatarWrapper, editingProfile && styles.avatarWrapperEditing]}>
-              <SvgImage
-                source={require('../../../assets/svg/profile/profile.svg')}
-                width={48}
-                height={48}
-              />
-            </View>
-
-            {!editingProfile && (
-              <Text style={styles.name}>{user.name}</Text>
-            )}
-
-            {!editingProfile ? (
-              <CustomButton
-                title={t('Profili redaktə et')}
-                onPress={toggleEditProfile}
-                buttonStyle={[styles.editProfileBtn, { width: editProfileBtnWidth }]}
-                textStyle={styles.editProfileBtnText}
-              />
-            ) : (
-              <View style={styles.photoButtonsContainer}>
-                <CustomButton
-                  title={t('Şəkli dəyiş')}
-                  onPress={handleChangePhoto}
-                  buttonStyle={styles.changePhotoBtn}
-                  textStyle={styles.changePhotoBtnText}
-                />
-                <CustomButton
-                  title={t('Şəkli sil')}
-                  onPress={handleDeletePhoto}
-                  buttonStyle={styles.deletePhotoBtn}
-                  textStyle={styles.deletePhotoBtnText}
-                />
               </View>
-            )}
+            </>
+          )}
+          <View style={[styles.avatarWrapper, editingProfile && styles.avatarWrapperEditing]}>
+            <SvgImage
+              source={require('../../../assets/svg/profile/profile.svg')}
+              width={48}
+              height={48}
+            />
           </View>
 
-          <Accordion
-            title={t('Hesab məlumatları')}
-            open={openSection === 'account'}
-            onPress={() => handleAccordion('account')}
-            chevronStroke="#232323"
-            textColor="#C6C5CA"
-            inputFields={accountInputFields}
-          />
+          {!editingProfile && (
+            <Text style={styles.name}>{user.name}</Text>
+          )}
 
-          <Accordion
-            title={t('Mağaza məlumatları')}
-            open={openSection === 'store'}
-            onPress={() => handleAccordion('store')}
-            chevronStroke="#232323"
-            textColor="#C6C5CA"
-            inputFields={storeInputFields}
-          />
+          {!editingProfile ? (
+            <CustomButton
+              title={t('Profili redaktə et')}
+              onPress={toggleEditProfile}
+              buttonStyle={[styles.editProfileBtn, { width: editProfileBtnWidth }]}
+              textStyle={styles.editProfileBtnText}
+            />
+          ) : (
+            <View style={styles.photoButtonsContainer}>
+              <CustomButton
+                title={t('Şəkli dəyiş')}
+                onPress={handleChangePhoto}
+                buttonStyle={styles.changePhotoBtn}
+                textStyle={styles.changePhotoBtnText}
+              />
+              <CustomButton
+                title={t('Şəkli sil')}
+                onPress={handleDeletePhoto}
+                buttonStyle={styles.deletePhotoBtn}
+                textStyle={styles.deletePhotoBtnText}
+              />
+            </View>
+          )}
+        </View>
 
-          <Accordion
-            title={t('Tənzimləmələr')}
-            open={openSection === 'settings'}
-            onPress={() => handleAccordion('settings')}
-            chevronStroke="#232323"
-            textColor="#C6C5CA"
-            buttonFields={settingsButtonFields}
-          />
-        </ScrollView>
-        <ConfirmationModal
-          visible={deleteModalVisible}
-          onClose={() => setDeleteModalVisible(false)}
-          onConfirm={handleConfirmDelete}
-          title={t('Şəkli sil')}
-          description={t('Profil şəklinizi silmək istədiyinizə əminsiniz?')}
-          confirmText={t('Sil')}
-          cancelText={t('Ləğv et')}
-          type="danger"
+        <Accordion
+          title={t('Hesab məlumatları')}
+          open={openSection === 'account'}
+          onPress={() => handleAccordion('account')}
+          chevronStroke="#232323"
+          textColor="#C6C5CA"
+          inputFields={accountInputFields}
         />
 
-        <ConfirmationModal
-          visible={logoutModalVisible}
-          onClose={() => setLogoutModalVisible(false)}
-          onConfirm={handleLogout}
-          title={t('Çıxış')}
-          description={t('Çıxış etmək istədiyinizə əminsiniz? Yenidən daxil olmaq üçün hesab məlumatlarınızı daxil etməlisiniz.')}
-          confirmText={t('Çıxış')}
-          cancelText={t('Ləğv et')}
-          type="danger"
+        <Accordion
+          title={t('Mağaza məlumatları')}
+          open={openSection === 'store'}
+          onPress={() => handleAccordion('store')}
+          chevronStroke="#232323"
+          textColor="#C6C5CA"
+          inputFields={storeInputFields}
         />
-      </SafeAreaView>
-    </>
+
+        <Accordion
+          title={t('Tənzimləmələr')}
+          open={openSection === 'settings'}
+          onPress={() => handleAccordion('settings')}
+          chevronStroke="#232323"
+          textColor="#C6C5CA"
+          buttonFields={settingsButtonFields}
+        />
+      </ScrollView>
+      <ConfirmationModal
+        visible={deleteModalVisible}
+        onClose={() => setDeleteModalVisible(false)}
+        onConfirm={handleConfirmDelete}
+        title={t('Şəkli sil')}
+        description={t('Profil şəklinizi silmək istədiyinizə əminsiniz?')}
+        confirmText={t('Sil')}
+        cancelText={t('Ləğv et')}
+        type="danger"
+      />
+
+      <ConfirmationModal
+        visible={logoutModalVisible}
+        onClose={() => setLogoutModalVisible(false)}
+        onConfirm={handleLogout}
+        title={t('Çıxış')}
+        description={t('Çıxış etmək istədiyinizə əminsiniz? Yenidən daxil olmaq üçün hesab məlumatlarınızı daxil etməlisiniz.')}
+        confirmText={t('Çıxış')}
+        cancelText={t('Ləğv et')}
+        type="danger"
+      />
+    </View>
   );
 };
 
 const styles = StyleSheet.create({
-  container: {
+  wrapper: {
     flex: 1,
     backgroundColor: '#F3F3F3',
   },
   header: {
+    flexDirection: 'column',
+    alignItems: 'stretch',
+    paddingHorizontal: 20,
+    paddingTop: Platform.OS === 'ios' ? 70 : 50,
+    backgroundColor: '#FFFFFF',
+    paddingBottom: 16,
+  },
+  headerTop: {
     flexDirection: 'row',
     alignItems: 'center',
+    width: '100%',
     justifyContent: 'center',
-    paddingHorizontal: 20,
-    position: 'relative',
-    backgroundColor: "hsla(0, 0%, 100%, 1)",
-    height: 60,
   },
-  title: {
+  headerTitle: {
     fontSize: 26,
-    fontWeight: '700',
-    color: 'hsla(254, 48%, 9%, 1)',
+    fontWeight: '600',
+    color: '#110C22',
     fontFamily: "Onest-Medium",
+  },
+  content: {
+    flex: 1,
+    backgroundColor: '#F3F3F3',
   },
   scrollContent: {
     paddingBottom: 32,

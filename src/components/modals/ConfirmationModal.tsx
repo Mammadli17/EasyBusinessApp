@@ -7,6 +7,7 @@ import {
   Text,
   Animated,
   Dimensions,
+  StatusBar,
 } from 'react-native';
 
 const { height } = Dimensions.get('window');
@@ -55,7 +56,7 @@ export const ConfirmationModal: React.FC<ConfirmationModalProps> = ({
         }),
         Animated.timing(fadeAnim, {
           toValue: 1,
-          duration: 200,
+          duration: 250,
           useNativeDriver: true,
         })
       ]).start();
@@ -102,13 +103,17 @@ export const ConfirmationModal: React.FC<ConfirmationModalProps> = ({
 
   const buttonStyles = getButtonStyles();
 
+  if (!visible) return null;
+
   return (
     <Modal
       visible={visible}
       transparent
+      statusBarTranslucent
       animationType="none"
       onRequestClose={onClose}
     >
+      <StatusBar backgroundColor="rgba(0, 0, 0, 0.5)" barStyle="light-content" />
       <Animated.View style={[styles.overlay, { opacity: fadeAnim }]}>
         <TouchableOpacity 
           style={styles.dismissArea} 
@@ -124,11 +129,12 @@ export const ConfirmationModal: React.FC<ConfirmationModalProps> = ({
           ]}
         >
           <View style={styles.modalContainer}>
-            <TouchableOpacity onPress={onClose} style={styles.closeButton}>
-              <Text style={styles.closeButtonText}>✕</Text>
-            </TouchableOpacity>
-            
-            <Text style={styles.modalTitle}>{title}</Text>
+            <View style={styles.headerContainer}>
+              <Text style={styles.modalTitle}>{title}</Text>
+              <TouchableOpacity onPress={onClose} style={styles.closeButton}>
+                <Text style={styles.closeButtonText}>×</Text>
+              </TouchableOpacity>
+            </View>
             
             <Text style={styles.modalDescription}>
               {description}
@@ -171,32 +177,43 @@ const styles = StyleSheet.create({
     backgroundColor: '#FFFFFF',
     borderTopLeftRadius: 16,
     borderTopRightRadius: 16,
+    paddingBottom: 10,
   },
   modalContainer: {
-    padding: 20,
+    padding: 25,
+  },
+  headerContainer: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginBottom: 40,
+    position: 'relative',
   },
   closeButton: {
     position: 'absolute',
-    right: 20,
-    top: 20,
-    padding: 8,
+    right: 0,
+    width: 44,
+    height: 44,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   closeButtonText: {
-    fontSize: 18,
+    fontSize: 26,
     color: '#B3B1B8',
+    textAlign: 'center',
+    lineHeight: 26,
   },
   modalTitle: {
-    fontSize: 18,
-    fontWeight: '700',
+    fontSize: 26,
+    fontWeight: '600',
     fontFamily: "Onest-Medium",
     color: 'hsla(254, 48%, 9%, 1)',
     textAlign: 'center',
-    marginBottom: 8,
-    marginTop: 8,
+    maxWidth: '80%',
   },
   modalDescription: {
     fontSize: 14,
-    color: 'hsla(254, 48%, 9%, 0.74)',
+    color: '#0000007A',
     textAlign: 'center',
     marginBottom: 20,
     fontFamily: "Onest-Medium",
