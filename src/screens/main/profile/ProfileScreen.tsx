@@ -269,7 +269,7 @@ const ProfileScreen = () => {
         onConfirm={handleConfirmDelete}
         title={t('Şəkli sil')}
         description={t('Profil şəklinizi silmək istədiyinizə əminsiniz?')}
-        confirmText={t('Sil')}
+        confirmText={t('Şəkli sil')}
         cancelText={t('Ləğv et')}
         type="danger"
       />

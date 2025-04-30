@@ -2,9 +2,13 @@ import { useNavigation } from "@react-navigation/native";
 import { Image, StyleSheet, Text, View } from "react-native";
 import { TouchableOpacity } from "react-native";
 import { Routes } from "../../navigations/routes";
+import { NativeStackNavigationProp } from "@react-navigation/native-stack";
+import { RootStackParamList } from "../../types/navigation.type";
+
+type NavigationProp = NativeStackNavigationProp<RootStackParamList>;
 
 export const ApprovedCard: React.FC<{ item: any, detail?: any }> = ({ item, detail }) => {
-    const navigation = useNavigation();
+    const navigation = useNavigation<NavigationProp>();
     return (
         <View style={styles.card}>
             <View style={styles.topRow}>

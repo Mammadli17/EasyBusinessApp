@@ -39,7 +39,7 @@ const SearchInput = ({ onSearch, value, onFilter }: SearchInputProps) => {
       />
       <TextInput
         style={styles.input}
-        placeholder={t('Axtar')}
+        placeholder={t('Axtar...')}
         placeholderTextColor="#B3B1B8"
         value={value}
         onChangeText={onSearch}

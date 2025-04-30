@@ -17,12 +17,20 @@ export type RootStackParamList = {
   [Routes.loginasan]: undefined;
   [Routes.loginemail]: undefined;
   [Routes.waiting]: undefined;
-  [Routes.detail]: undefined;
+  [Routes.detail]: {
+    item: any;
+  };
   [Routes.order]: undefined;
-  [Routes.paymnet]: undefined;
+  [Routes.paymnet]: {
+    item: any;
+  };
   [Routes.notfication]: undefined;
-  [Routes.notficationDetail]: undefined;
-  [Routes.pendingDetails]: undefined;
+  [Routes.notficationDetail]: {
+    item: any;
+  };
+  [Routes.pendingDetails]: {
+    item: any;
+  };
   [Routes.confrontationOtp]: {
     item: {
       id: string;
