@@ -6,7 +6,7 @@ import {
   StyleSheet,
   ScrollView,
   StatusBar,
-  SafeAreaView,
+  Platform,
 } from 'react-native';
 import { SvgImage } from '../../../components/svgImage/SvgImage';
 import { useTranslation } from 'react-i18next';
@@ -88,116 +88,146 @@ const ChangePasswordScreen = ({ navigation }: any) => {
   };
 
   return (
-    <SafeAreaView style={styles.container}>
-      <ScrollView style={styles.container} contentContainerStyle={{ flexGrow: 1 }}>
-        <StatusBar backgroundColor="#F3F3F3" />
-        <View style={styles.innerContainer}>
-          <View style={styles.header}>
-            <TouchableOpacity style={{ paddingRight: 0 }} onPress={() => navigation.goBack()}>
-              <SvgImage
-                source={require("../../../assets/svg/back/back.svg")}
-                height={14}
-                width={14}
-              />
-            </TouchableOpacity>
-            <Text style={styles.title}>{t('Şifrəni dəyiş')}</Text>
-          </View>
+    <View style={styles.wrapper}>
+      <StatusBar backgroundColor="#FFFFFF" barStyle="dark-content" />
+      
+      <View style={styles.header}>
+        <View style={styles.headerTop}>
+          <TouchableOpacity 
+            style={styles.backButton}
+            onPress={() => navigation.goBack()}
+          >
+            <SvgImage
+              source={require("../../../assets/svg/back/back.svg")}
+              height={14}
+              width={14}
+            />
+          </TouchableOpacity>
+          <Text style={styles.headerTitle}>{t('Şifrəni dəyiş')}</Text>
+        </View>
+      </View>
 
-          <View style={{ marginTop: 40 }}>
-            <Text style={styles.headert}>
+      <View style={styles.content}>
+        <ScrollView style={styles.scrollContent}>
+          <View style={styles.mainContent}>
+            <Text style={styles.description}>
               {step === 1 
                 ? t('Yeni şifrə təyin etməzdən əvvəl şəxsiyyətinizi təsdiqləmək üçün mövcud şifrənizi daxil edin.')
                 : t('Şifrənizi dəyişmək üçün mövcud şifrənizi və yeni şifrənizi daxil edin.')}
             </Text>
-          </View>
 
-          <View style={{ gap: 15, marginTop: 30 }}>
-            {step === 1 ? (
-              <View>
-                <CustomInput
-                  label={t('Mövcud şifrə')}
-                  icon={require('../../../assets/svg/textInput/password.svg')}
-                  placeholder={t('Mövcud şifrə')}
-                  value={passwordData.currentPassword}
-                  onChangeText={(value) => handleInputChange('currentPassword', value)}
-                  password={true}
-                  error={errors.currentPassword}
-                />
-              </View>
-            ) : (
-              <>
+            <View style={styles.inputContainer}>
+              {step === 1 ? (
                 <View>
                   <CustomInput
-                    label={t('Yeni şifrə')}
+                    label={t('Mövcud şifrə')}
                     icon={require('../../../assets/svg/textInput/password.svg')}
-                    placeholder={t('Yeni şifrə')}
-                    value={passwordData.newPassword}
-                    onChangeText={(value) => handleInputChange('newPassword', value)}
+                    placeholder={t('Mövcud şifrə')}
+                    value={passwordData.currentPassword}
+                    onChangeText={(value) => handleInputChange('currentPassword', value)}
                     password={true}
-                    error={errors.newPassword}
+                    error={errors.currentPassword}
                   />
                 </View>
-                <View>
-                  <CustomInput
-                    label={t('Yeni şifrəni təsdiqlə')}
-                    icon={require('../../../assets/svg/textInput/password.svg')}
-                    placeholder={t('Yeni şifrəni təsdiqlə')}
-                    value={passwordData.confirmNewPassword}
-                    onChangeText={(value) => handleInputChange('confirmNewPassword', value)}
-                    password={true}
-                    error={errors.confirmNewPassword}
-                  />
-                </View>
-              </>
-            )}
-          </View>
+              ) : (
+                <>
+                  <View>
+                    <CustomInput
+                      label={t('Yeni şifrə')}
+                      icon={require('../../../assets/svg/textInput/password.svg')}
+                      placeholder={t('Yeni şifrə')}
+                      value={passwordData.newPassword}
+                      onChangeText={(value) => handleInputChange('newPassword', value)}
+                      password={true}
+                      error={errors.newPassword}
+                    />
+                  </View>
+                  <View style={{ marginTop: 15 }}>
+                    <CustomInput
+                      label={t('Yeni şifrəni təsdiqlə')}
+                      icon={require('../../../assets/svg/textInput/password.svg')}
+                      placeholder={t('Yeni şifrəni təsdiqlə')}
+                      value={passwordData.confirmNewPassword}
+                      onChangeText={(value) => handleInputChange('confirmNewPassword', value)}
+                      password={true}
+                      error={errors.confirmNewPassword}
+                    />
+                  </View>
+                </>
+              )}
+            </View>
 
-          <TouchableOpacity style={styles.continueBtn} onPress={handleContinue}>
-            <Text style={styles.continueText}>
-              {step === 1 ? t('Davam et') : t('Şifrəni yenilə')}
-            </Text>
-          </TouchableOpacity>
-        </View>
-      </ScrollView>
-    </SafeAreaView>
+            <TouchableOpacity style={styles.continueBtn} onPress={handleContinue}>
+              <Text style={styles.continueText}>
+                {step === 1 ? t('Davam et') : t('Şifrəni yenilə')}
+              </Text>
+            </TouchableOpacity>
+          </View>
+        </ScrollView>
+      </View>
+    </View>
   );
 };
 
 const styles = StyleSheet.create({
-  container: {
+  wrapper: {
     flex: 1,
     backgroundColor: '#F3F3F3',
   },
-  innerContainer: {
-    flex: 1,
-    paddingHorizontal: 20,
-  },
   header: {
+    flexDirection: 'column',
+    alignItems: 'stretch',
+    paddingHorizontal: 20,
+    paddingTop: Platform.OS === 'ios' ? 70 : 50,
+    paddingBottom: 16,
+  },
+  headerTop: {
     flexDirection: 'row',
     alignItems: 'center',
+    width: '100%',
+    justifyContent: 'center',
+    position: 'relative',
   },
-  headert: {
+  headerTitle: {
+    fontSize: 26,
+    fontWeight: '600',
+    color: '#110C22',
+    fontFamily: "Onest-Medium",
+  },
+  backButton: {
+    position: 'absolute',
+    left: 0,
+    height: '100%',
+    justifyContent: 'center',
+    alignItems: 'center',
+    zIndex: 1,
+  },
+  content: {
+    flex: 1,
+    backgroundColor: '#F3F3F3',
+  },
+  scrollContent: {
+    flex: 1,
+  },
+  mainContent: {
+    padding: 20,
+  },
+  description: {
     fontSize: 16,
     textAlign: 'center',
     color: 'rgba(0, 0, 0, 0.48)',
     fontFamily: 'Onest-Medium',
-    marginHorizontal: 20,
+    marginBottom: 30,
     lineHeight: 26,
   },
-  title: {
-    fontSize: 26,
-    textAlign: 'center',
-    color: '#110C22',
-    fontFamily: 'Onest-Medium',
-    flex: 1,
-    paddingRight: 14,
+  inputContainer: {
+    marginBottom: 30,
   },
   continueBtn: {
     backgroundColor: '#015656',
     paddingVertical: 14,
     borderRadius: 12,
     alignItems: 'center',
-    marginTop: 40,
     height: 48,
   },
   continueText: {

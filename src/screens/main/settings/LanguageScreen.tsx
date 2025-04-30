@@ -6,6 +6,7 @@ import {
     StyleSheet,
     SafeAreaView,
     StatusBar,
+    Platform,
 } from "react-native";
 import i18n from "../../../locales/i18n";
 import { useTranslation } from "react-i18next";
@@ -42,11 +43,15 @@ const LanguageScreen = ({ navigation }: any) => {
     };
 
     return (
-        <SafeAreaView style={styles.container}>
-            <StatusBar backgroundColor="#F3F3F3" barStyle="dark-content" />
-            <View style={styles.contentContainer}>
-                <View style={styles.header}>
-                    <TouchableOpacity style={styles.backButton} onPress={() => navigation.goBack()}>
+        <View style={styles.wrapper}>
+            <StatusBar backgroundColor="#FFFFFF" barStyle="dark-content" />
+            
+            <View style={styles.header}>
+                <View style={styles.headerTop}>
+                    <TouchableOpacity 
+                        style={styles.backButton}
+                        onPress={() => navigation.goBack()}
+                    >
                         <SvgImage
                             source={require("../../../assets/svg/back/back.svg")}
                             height={14}
@@ -54,11 +59,11 @@ const LanguageScreen = ({ navigation }: any) => {
                         />
                     </TouchableOpacity>
                     <Text style={styles.headerTitle}>{t("Dili dəyiş")}</Text>
-                    <View style={styles.rightPlaceholder} />
                 </View>
-                
+            </View>
+
+            <View style={styles.content}>
                 <View style={styles.mainContent}>
-                    <Text style={styles.title}>{t("Dil seçin")}</Text>
                     <View style={styles.languageList}>
                         {languages.map((lang) => (
                             <TouchableOpacity
@@ -86,51 +91,52 @@ const LanguageScreen = ({ navigation }: any) => {
                     />
                 </View>
             </View>
-        </SafeAreaView>
+        </View>
     );
 };
 
 const styles = StyleSheet.create({
-    container: {
+    wrapper: {
         flex: 1,
-        backgroundColor: "#F3F3F3",
-    },
-    contentContainer: {
-        flex: 1,
-        paddingTop: 10,
+        backgroundColor: '#F3F3F3',
     },
     header: {
+        flexDirection: 'column',
+        alignItems: 'stretch',
+        paddingHorizontal: 20,
+        paddingTop: Platform.OS === 'ios' ? 70 : 50,
+        paddingBottom: 16,
+    },
+    headerTop: {
         flexDirection: 'row',
         alignItems: 'center',
-        justifyContent: 'space-between',
-        paddingHorizontal: 20,
-        marginBottom: 20,
+        width: '100%',
+        justifyContent: 'center',
+        position: 'relative',
     },
     headerTitle: {
-        fontSize: 18,
+        fontSize: 26,
         fontWeight: '600',
         color: '#110C22',
         fontFamily: "Onest-Medium",
     },
     backButton: {
-        padding: 8,
+        position: 'absolute',
+        left: 0,
+        height: '100%',
+        justifyContent: 'center',
+        alignItems: 'center',
+        zIndex: 1,
     },
-    rightPlaceholder: {
-        width: 30,
+    content: {
+        flex: 1,
+        backgroundColor: '#F3F3F3',
     },
     mainContent: {
-        alignItems: "center",
+        flex: 1,
         paddingTop: 20,
     },
-    title: {
-        fontSize: 26,
-        fontWeight: "500",
-        color: "#110C22",
-        fontFamily: "Onest-Light",
-        marginBottom: 30,
-    },
     languageList: {
-        width: "100%",
         paddingHorizontal: 20,
     },
     languageButton: {
@@ -160,17 +166,14 @@ const styles = StyleSheet.create({
         fontFamily: "Onest-Light",
     },
     buttonWrapper: {
-        position: 'absolute',
-        bottom: 40,
-        left: 0,
-        right: 0,
         paddingHorizontal: 20,
+        paddingBottom: 40,
     },
     saveButton: {
         width: "100%",
         height: 48,
         backgroundColor: "#015656",
-        borderRadius: 10,
+        borderRadius: 12,
         alignItems: "center",
         justifyContent: "center",
     },

@@ -127,7 +127,7 @@ const styles = StyleSheet.create({
     fontSize: 26,
     color: '#110C22',
     fontFamily: 'Onest-Medium',
-    fontWeight: 'bold',
+    fontWeight: '600',
   },
   searchContainer: {
     paddingTop: 24,

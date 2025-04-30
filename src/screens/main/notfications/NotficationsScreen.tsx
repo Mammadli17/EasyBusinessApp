@@ -3,21 +3,22 @@ import {
     View,
     Text,
     StyleSheet,
-    SafeAreaView,
     StatusBar,
     FlatList,
     TouchableOpacity,
+    Platform,
 } from "react-native";
 import { SvgImage } from "../../../components/svgImage/SvgImage";
 import { TabScreenProps } from "../../../types/navigation.type";
 import { NotificationCard } from "../../../components/productList/NotficationCard.";
+import { Routes } from "../../../navigations/routes";
 
 const notifications = [
     {
         id: "1",
         name: "Pepsi",
         date: "19.05.2024",
-        message: "Hello. It’s message for you. Please confirm that you owe Pepsi 90 Azn.",
+        message: "Hello. It's message for you. Please confirm that you owe Pepsi 90 Azn.",
         image: "https://i.imgur.com/UYiroysl.jpg",
         isRead: false,
     },
@@ -26,10 +27,9 @@ const notifications = [
         name: "Red Bull",
         date: "20.04.2024",
         message:
-            "This is a longer notification message just to test if it truncates after two lines. Let’s see what happens when it overflows.",
+            "This is a longer notification message just to test if it truncates after two lines. Let's see what happens when it overflows.",
         image: "https://i.imgur.com/MABUbpDl.jpg",
         isRead: true,
-
     },
     {
         id: "3",
@@ -38,71 +38,86 @@ const notifications = [
         message: "New invoice available for review. Please take necessary actions.",
         image: "https://i.imgur.com/UPrs1EWl.jpg",
         isRead: true,
-
     },
 ];
 
-const NotificationsScreen: React.FC<TabScreenProps> = ({ navigation }) => {
+const NotificationsScreen: React.FC<TabScreenProps<Routes.home>> = ({ navigation }) => {
     return (
-        <>
-            <StatusBar backgroundColor="hsla(0, 0%, 100%, 1)" barStyle="dark-content" />
-            <SafeAreaView style={styles.container}>
-                <View style={styles.header}>
-                    <Text style={styles.title}>Notifications</Text>
-                    <TouchableOpacity onPress={() => navigation.goBack()} style={styles.notificationIcon}>
+        <View style={styles.wrapper}>
+            <StatusBar backgroundColor="#FFFFFF" barStyle="dark-content" />
+            
+            <View style={styles.header}>
+                <View style={styles.headerTop}>
+                    <TouchableOpacity 
+                        style={styles.backButton}
+                        onPress={() => navigation.goBack()}
+                    >
                         <SvgImage
                             source={require("../../../assets/svg/back/back.svg")}
                             height={14}
                             width={14}
                         />
                     </TouchableOpacity>
+                    <Text style={styles.headerTitle}>Notifications</Text>
                 </View>
+            </View>
 
-                <View style={styles.contentWrapper}>
-                    <FlatList
-                        data={notifications}
-                        keyExtractor={(item) => item.id}
-                        renderItem={({ item }) => (
-                            <NotificationCard
-                               item={item}
-                            />
-                        )}
-                        showsVerticalScrollIndicator={false}
-                    />
-                </View>
-            </SafeAreaView>
-        </>
+            <View style={styles.content}>
+                <FlatList
+                    data={notifications}
+                    keyExtractor={(item) => item.id}
+                    renderItem={({ item }) => (
+                        <NotificationCard item={item} />
+                    )}
+                    showsVerticalScrollIndicator={false}
+                    contentContainerStyle={styles.listContainer}
+                />
+            </View>
+        </View>
     );
 };
 
 const styles = StyleSheet.create({
-    container: {
+    wrapper: {
         flex: 1,
-        backgroundColor: "hsla(240, 4%, 95%, 1)",
+        backgroundColor: '#F3F3F3',
     },
     header: {
-        flexDirection: "row",
-        alignItems: "center",
-        justifyContent: "center",
+        flexDirection: 'column',
+        alignItems: 'stretch',
         paddingHorizontal: 20,
-        marginBottom: 16,
-        position: "relative",
-        backgroundColor: "hsla(0, 0%, 100%, 1)",
-        height: 60,
+        paddingTop: Platform.OS === 'ios' ? 70 : 50,
+        backgroundColor: '#FFFFFF',
+        paddingBottom: 16,
     },
-    title: {
+    headerTop: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        width: '100%',
+        justifyContent: 'center',
+        position: 'relative',
+    },
+    headerTitle: {
         fontSize: 26,
-        fontWeight: "700",
-        color: "hsla(254, 48%, 9%, 1)",
+        fontWeight: '600',
+        color: '#110C22',
         fontFamily: "Onest-Medium",
     },
-    notificationIcon: {
-        position: "absolute",
-        left: 20,
+    content: {
+        flex: 1,
+        backgroundColor: '#F3F3F3',
     },
-    contentWrapper: {
-        paddingHorizontal: 20,
-        paddingBottom: 20,
+    listContainer: {
+        padding: 20,
+        paddingBottom: 80,
+    },
+    backButton: {
+        position: 'absolute',
+        left: 0,
+        height: '100%',
+        justifyContent: 'center',
+        alignItems: 'center',
+        zIndex: 1,
     },
 });
 
