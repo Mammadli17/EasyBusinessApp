@@ -162,7 +162,6 @@ const ProfileScreen = () => {
   ];
 
   const handleLogout = () => {
-    // Here implement logout logic
     navigation.navigate(Routes.login);
   };
 
