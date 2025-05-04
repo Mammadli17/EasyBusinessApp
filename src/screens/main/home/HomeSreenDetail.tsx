@@ -1,31 +1,33 @@
-import { View, Text, SafeAreaView, StyleSheet, StatusBar, TouchableOpacity, Dimensions } from 'react-native';
+import { View, Text, StyleSheet, StatusBar, TouchableOpacity, Platform } from 'react-native';
 import React from 'react';
 import { TabScreenProps } from '../../../types/navigation.type';
 import { SvgImage } from '../../../components/svgImage/SvgImage';
-import Carousel from '../../../components/carusel/Carusel';
-import CustomerCardList from '../../../components/productList/ProductList';
 import { CustomerCard } from '../../../components/productList/Card';
 import { Routes } from '../../../navigations/routes';
 import { screenWidth } from '../../../theme/const.styles';
 
-const HomeScreenDetail: React.FC<TabScreenProps> = ({ navigation, route }: any) => {
-    const screenWidth = Dimensions.get('window').width;
-
+const HomeScreenDetail: React.FC<TabScreenProps<Routes.home>> = ({ navigation, route }: any) => {
     return (
-        <>
-            <StatusBar backgroundColor="hsla(0, 0%, 100%, 1)" barStyle="dark-content" />
-            <SafeAreaView style={styles.container}>
-                <View style={styles.header}>
-                    <Text style={styles.title}>Balance detailes</Text>
-                    <TouchableOpacity onPress={() => navigation.goBack()} style={styles.notificationIcon}>
+        <View style={styles.wrapper}>
+            <StatusBar backgroundColor="#FFFFFF" barStyle="dark-content" />
+            
+            <View style={styles.header}>
+                <View style={styles.headerTop}>
+                    <TouchableOpacity 
+                        style={styles.backButton}
+                        onPress={() => navigation.goBack()}
+                    >
                         <SvgImage
                             source={require("../../../assets/svg/back/back.svg")}
                             height={14}
                             width={14}
                         />
                     </TouchableOpacity>
+                    <Text style={styles.headerTitle}>Balance details</Text>
                 </View>
+            </View>
 
+            <View style={styles.content}>
                 <View style={styles.contentWrapper}>
                     <CustomerCard item={route?.params?.item} detail={true} />
                     <View>
@@ -47,7 +49,7 @@ const HomeScreenDetail: React.FC<TabScreenProps> = ({ navigation, route }: any) 
                                     width={19}
                                 />
                                 <Text style={styles.orderText}>
-                                    Cofrontation
+                                    Confrontation
                                 </Text>
                             </TouchableOpacity>
                         </View>
@@ -75,51 +77,65 @@ const HomeScreenDetail: React.FC<TabScreenProps> = ({ navigation, route }: any) 
                         </View>
                     </View>
                 </View>
-            </SafeAreaView>
-        </>
+            </View>
+        </View>
     );
 };
 
 const styles = StyleSheet.create({
-    container: {
+    wrapper: {
         flex: 1,
-        backgroundColor: "hsla(240, 4%, 95%, 1)",
+        backgroundColor: '#F3F3F3',
     },
     header: {
+        flexDirection: 'column',
+        alignItems: 'stretch',
+        paddingHorizontal: 20,
+        paddingTop: Platform.OS === 'ios' ? 70 : 50,
+        backgroundColor: '#FFFFFF',
+        paddingBottom: 16,
+    },
+    headerTop: {
         flexDirection: 'row',
         alignItems: 'center',
+        width: '100%',
         justifyContent: 'center',
-        paddingHorizontal: 20,
-        marginBottom: 16,
         position: 'relative',
-        backgroundColor: "hsla(0, 0%, 100%, 1)",
-        height: 60
     },
-    title: {
+    headerTitle: {
         fontSize: 26,
-        fontWeight: '700',
-        color: 'hsla(254, 48%, 9%, 1)',
+        fontWeight: '600',
+        color: '#110C22',
         fontFamily: "Onest-Medium",
     },
-    notificationIcon: {
+    backButton: {
         position: 'absolute',
-        left: 20,
+        left: 0,
+        height: '100%',
+        justifyContent: 'center',
+        alignItems: 'center',
+        zIndex: 1,
+    },
+    content: {
+        flex: 1,
+        backgroundColor: '#F3F3F3',
     },
     contentWrapper: {
         paddingHorizontal: 20,
+        paddingTop: 16,
     },
     orderCard: {
         width: screenWidth*0.44,
         height: 96,
         borderRadius: 12,
-        backgroundColor: "hsla(0, 0%, 100%, 1)",
+        backgroundColor: "#FFFFFF",
         alignItems: "center",
         justifyContent: "center",
         gap: 10,
         marginTop: 10,
     },
     orderText: {
-        color: "hsla(254, 48%, 9%, 1)",
+        color: "#110C22",
         fontSize: 12,
     },
 });

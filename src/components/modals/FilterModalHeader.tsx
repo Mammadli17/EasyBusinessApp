@@ -5,7 +5,7 @@ interface FilterModalHeaderProps {
   onClose: () => void;
 }
 
-const FilterModalHeader: React.FC<FilterModalHeaderProps> = ({ onClose }) => {
+export const FilterModalHeader: React.FC<FilterModalHeaderProps> = ({ onClose }) => {
   return (
     <View style={styles.header}>
       <View style={styles.titleContainer}>
@@ -22,8 +22,7 @@ const styles = StyleSheet.create({
   header: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginVertical: 20,
-    marginBottom: 30,
+    marginBottom: 50,
     position: 'relative',
   },
   titleContainer: {
@@ -46,5 +45,3 @@ const styles = StyleSheet.create({
     color: '#666',
   },
 });
-
-export default FilterModalHeader;

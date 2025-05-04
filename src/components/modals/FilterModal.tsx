@@ -1,133 +1,167 @@
-import React, { useState } from 'react';
+import React, { useRef, useEffect, useState } from 'react';
 import {
   Modal,
   View,
   StyleSheet,
   TouchableOpacity,
+  Text,
   Animated,
   Dimensions,
-  Text,
+  StatusBar,
 } from 'react-native';
-import FilterModalHeader from './FilterModalHeader';
+import { useTranslation } from 'react-i18next';
+import { FilterModalHeader } from './FilterModalHeader';
 import { DateFilterSection } from '../filter/DateFilterSection';
 import { CompanyFilterSection } from '../filter/CompanyFilterSection';
 
+const { height } = Dimensions.get('window');
+
 export interface FilterOptions {
   dateRange?: {
-    start: Date | null;
-    end: Date | null;
+    start?: Date;
+    end?: Date;
   };
-  status?: string;
-  companies?: string[];
+  selectedCompanies?: string[];
 }
 
 interface FilterModalProps {
   visible: boolean;
   onClose: () => void;
-  onApplyFilters: (filters: FilterOptions) => void;
+  onApply: (filters: FilterOptions) => void;
+  initialFilters?: FilterOptions;
 }
 
-const { height } = Dimensions.get('window');
+export const FilterModal: React.FC<FilterModalProps> = ({
+  visible,
+  onClose,
+  onApply,
+  initialFilters = {},
+}) => {
+  const { t } = useTranslation();
+  const slideAnim = useRef(new Animated.Value(height)).current;
+  const fadeAnim = useRef(new Animated.Value(0)).current;
+  const [filters, setFilters] = useState<FilterOptions>(initialFilters);
 
-export const FilterModalComponent = ({ visible, onClose, onApplyFilters }: FilterModalProps) => {
-  const slideAnim = React.useRef(new Animated.Value(height)).current;
-  const [filters, setFilters] = useState<FilterOptions>({
-    dateRange: {
-      start: null,
-      end: null,
-    },
-    status: '',
-    companies: [],
-  });
-
-  React.useEffect(() => {
+  useEffect(() => {
     if (visible) {
-      Animated.spring(slideAnim, {
-        toValue: 0,
-        useNativeDriver: true,
-      }).start();
+      Animated.parallel([
+        Animated.spring(slideAnim, {
+          toValue: 0,
+          useNativeDriver: true,
+          damping: 20,
+          mass: 1.2,
+          stiffness: 100,
+        }),
+        Animated.timing(fadeAnim, {
+          toValue: 1,
+          duration: 250,
+          useNativeDriver: true,
+        })
+      ]).start();
     } else {
-      Animated.timing(slideAnim, {
-        toValue: height,
-        duration: 300,
-        useNativeDriver: true,
-      }).start();
+      Animated.parallel([
+        Animated.timing(slideAnim, {
+          toValue: height,
+          duration: 250,
+          useNativeDriver: true,
+        }),
+        Animated.timing(fadeAnim, {
+          toValue: 0,
+          duration: 200,
+          useNativeDriver: true,
+        })
+      ]).start();
     }
   }, [visible]);
 
-  const handleApply = () => {
-    onApplyFilters(filters);
-    onClose();
-  };
-
-  const handleClear = () => {
-    setFilters({
-      dateRange: {
-        start: null,
-        end: null,
-      },
-      status: '',
-      companies: [],
-    });
-  };
-
-  const handleCompanyToggle = (company: string) => {
-    setFilters(prev => ({
-      ...prev,
-      companies: prev.companies?.includes(company)
-        ? prev.companies.filter(c => c !== company)
-        : [...(prev.companies || []), company],
-    }));
+  const handleClearDates = () => {
+    setFilters(prev => ({ ...prev, dateRange: undefined }));
   };
 
   const handleDateChange = (type: 'start' | 'end', date: Date) => {
     setFilters(prev => ({
       ...prev,
       dateRange: {
-        start: type === 'start' ? date : prev.dateRange?.start ?? null,
-        end: type === 'end' ? date : prev.dateRange?.end ?? null,
-      }
+        ...prev.dateRange,
+        [type]: date,
+      },
     }));
   };
+
+  const handleClearCompanies = () => {
+    setFilters(prev => ({ ...prev, selectedCompanies: undefined }));
+  };
+
+  const handleCompanyToggle = (company: string) => {
+    setFilters(prev => {
+      const selectedCompanies = prev.selectedCompanies || [];
+      const isSelected = selectedCompanies.includes(company);
+      
+      return {
+        ...prev,
+        selectedCompanies: isSelected
+          ? selectedCompanies.filter(c => c !== company)
+          : [...selectedCompanies, company],
+      };
+    });
+  };
+
+  const handleApply = () => {
+    onApply(filters);
+    onClose();
+  };
+
+  if (!visible) return null;
 
   return (
     <Modal
       visible={visible}
       transparent
-      animationType="fade"
+      statusBarTranslucent
+      animationType="none"
       onRequestClose={onClose}
     >
-      <View style={styles.overlay}>
-        <TouchableOpacity style={styles.dismissArea} onPress={onClose} activeOpacity={1} />
+      <StatusBar backgroundColor="rgba(0, 0, 0, 0.5)" barStyle="light-content" />
+      <Animated.View style={[styles.overlay, { opacity: fadeAnim }]}>
+        <TouchableOpacity 
+          style={styles.dismissArea} 
+          onPress={onClose}
+          activeOpacity={1}
+        />
         <Animated.View
           style={[
             styles.modalContent,
             {
-              transform: [{ translateY: slideAnim }],
-            },
+              transform: [{ translateY: slideAnim }]
+            }
           ]}
         >
-          <View style={styles.contentContainer}>
+          <View style={styles.modalContainer}>
             <FilterModalHeader onClose={onClose} />
             
             <DateFilterSection
               filters={filters}
-              onClear={handleClear}
+              onClear={handleClearDates}
               onDateChange={handleDateChange}
             />
-
+            
             <CompanyFilterSection
               filters={filters}
-              onClear={handleClear}
+              onClear={handleClearCompanies}
               onCompanyToggle={handleCompanyToggle}
             />
-
-            <TouchableOpacity style={styles.saveButton} onPress={handleApply}>
-              <Text style={styles.saveButtonText}>Save</Text>
+            
+            <TouchableOpacity 
+              style={styles.applyButton}
+              onPress={handleApply}
+            >
+              <Text style={styles.applyButtonText}>
+                {t('Apply Filters')}
+              </Text>
             </TouchableOpacity>
           </View>
         </Animated.View>
-      </View>
+      </Animated.View>
     </Modal>
   );
 };
@@ -142,31 +176,26 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   modalContent: {
-    backgroundColor: 'white',
-    borderTopLeftRadius: 20,
-    borderTopRightRadius: 20,
-    minHeight: height * 0.8,
+    backgroundColor: '#FFFFFF',
+    borderTopLeftRadius: 16,
+    borderTopRightRadius: 16,
   },
-  contentContainer: {
-    flex: 1,
+  modalContainer: {
     padding: 20,
-    justifyContent: 'space-between',
-    marginBottom: 24,
+    paddingBottom: 34,
   },
-  saveButton: {
-    height: 48,
+  applyButton: {
     backgroundColor: '#015656',
+    height: 48,
     borderRadius: 12,
     alignItems: 'center',
     justifyContent: 'center',
-    marginTop: 'auto',
+    marginTop: 24,
   },
-  saveButtonText: {
-    fontSize: 16,
+  applyButtonText: {
     color: '#FFFFFF',
-    fontFamily: 'Onest-Medium',
+    fontSize: 16,
     fontWeight: '600',
+    fontFamily: "Onest-Medium",
   },
 });
-
-export default FilterModalComponent;

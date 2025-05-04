@@ -12,6 +12,7 @@ import {
   Platform,
   TouchableWithoutFeedback,
   Keyboard,
+  StatusBar,
 } from 'react-native';
 import { useTranslation } from 'react-i18next';
 
@@ -73,13 +74,17 @@ export const DeclineReasonModal: React.FC<DeclineReasonModalProps> = ({
     onConfirm(reason);
   };
 
+  if (!visible) return null;
+
   return (
     <Modal
       visible={visible}
       transparent
+      statusBarTranslucent
       animationType="none"
       onRequestClose={onClose}
     >
+      <StatusBar backgroundColor="rgba(0, 0, 0, 0.5)" barStyle="light-content" />
       <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
         <Animated.View style={[styles.overlay, { opacity: fadeAnim }]}>
           <TouchableOpacity 
@@ -101,7 +106,7 @@ export const DeclineReasonModal: React.FC<DeclineReasonModalProps> = ({
             >
               <View style={styles.modalContainer}>
                 <TouchableOpacity onPress={onClose} style={styles.closeButton}>
-                  <Text style={styles.closeButtonText}>✕</Text>
+                  <Text style={styles.closeButtonText}>×</Text>
                 </TouchableOpacity>
                 
                 <Text style={styles.modalTitle}>{t('Decline Reason')}</Text>
@@ -121,7 +126,7 @@ export const DeclineReasonModal: React.FC<DeclineReasonModalProps> = ({
                   returnKeyType="done"
                   onSubmitEditing={Keyboard.dismiss}
                 />
-
+                
                 <TouchableOpacity 
                   style={[styles.button, styles.confirmButton, !reason.trim() && styles.disabledButton]}
                   onPress={handleConfirm}
@@ -160,18 +165,22 @@ const styles = StyleSheet.create({
   },
   closeButton: {
     position: 'absolute',
-    right: 20,
-    top: 20,
+    right: 0,
+    width: 44,
+    height: 44,
+    alignItems: 'center',
+    justifyContent: 'center',
     zIndex: 1,
-    padding: 8,
   },
   closeButtonText: {
-    fontSize: 18,
+    fontSize: 26,
     color: '#B3B1B8',
+    textAlign: 'center',
+    lineHeight: 26,
   },
   modalTitle: {
-    fontSize: 18,
-    fontWeight: '700',
+    fontSize: 26,
+    fontWeight: '600',
     fontFamily: "Onest-Medium",
     color: 'hsla(254, 48%, 9%, 1)',
     textAlign: 'center',
@@ -180,7 +189,7 @@ const styles = StyleSheet.create({
   },
   modalDescription: {
     fontSize: 14,
-    color: 'hsla(254, 48%, 9%, 0.74)',
+    color: '#0000007A',
     textAlign: 'center',
     marginBottom: 20,
     fontFamily: "Onest-Medium",

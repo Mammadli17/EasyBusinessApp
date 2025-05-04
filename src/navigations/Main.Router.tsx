@@ -11,6 +11,8 @@ import NotficationsScreen from '../screens/main/notfications/NotficationsScreen'
 import NotficationDetail from '../screens/main/notfications/NotficationDetail';
 import PendingDetails from '../screens/main/confrontation/pending/pendingDetails/PendingDetails';
 import ConfrontationOtpScreen from '../screens/main/confrontation/pending/pendingDetails/ConfrontationOtpScreen';
+import LanguageScreen from '../screens/main/settings/LanguageScreen';
+import ChangePasswordScreen from '../screens/main/settings/ChangePasswordScreen';
 
 const MainStack = createNativeStackNavigator<RootStackParamList>();
 
@@ -25,6 +27,8 @@ export const MainRouter = () => {
             <MainStack.Screen name={Routes.notficationDetail} component={NotficationDetail} />
             <MainStack.Screen name={Routes.pendingDetails} component={PendingDetails} />
             <MainStack.Screen name={Routes.confrontationOtp} component={ConfrontationOtpScreen} />
+            <MainStack.Screen name={Routes.language} component={LanguageScreen} />
+            <MainStack.Screen name={Routes.changePassword} component={ChangePasswordScreen} />
         </MainStack.Navigator>
     );
 };

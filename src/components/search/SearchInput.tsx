@@ -2,14 +2,15 @@ import React, { useState } from 'react';
 import { View, TextInput, StyleSheet, TouchableOpacity } from 'react-native';
 import { SvgImage } from '../svgImage/SvgImage';
 import { useTranslation } from 'react-i18next';
-import { FilterModalComponent, FilterOptions } from '../modals/FilterModal';
+import { FilterModal, FilterOptions } from '../modals/FilterModal';
 
 interface SearchInputProps {
   onSearch: (query: string) => void;
   value: string;
+  onFilter?: (filters: FilterOptions) => void;
 }
 
-const SearchInput = ({ onSearch, value }: SearchInputProps) => {
+const SearchInput = ({ onSearch, value, onFilter }: SearchInputProps) => {
   const { t } = useTranslation();
   const [isFilterModalVisible, setIsFilterModalVisible] = useState(false);
   const [appliedFilters, setAppliedFilters] = useState<FilterOptions>({});
@@ -25,7 +26,7 @@ const SearchInput = ({ onSearch, value }: SearchInputProps) => {
 
   const handleApplyFilters = (filters: FilterOptions) => {
     setAppliedFilters(filters);
-    setIsFilterModalVisible(false);
+    onFilter?.(filters);
   };
 
   return (
@@ -38,7 +39,7 @@ const SearchInput = ({ onSearch, value }: SearchInputProps) => {
       />
       <TextInput
         style={styles.input}
-        placeholder={t('Axtar')}
+        placeholder={t('Axtar...')}
         placeholderTextColor="#B3B1B8"
         value={value}
         onChangeText={onSearch}
@@ -54,10 +55,11 @@ const SearchInput = ({ onSearch, value }: SearchInputProps) => {
         />
       </TouchableOpacity>
 
-      <FilterModalComponent
+      <FilterModal
         visible={isFilterModalVisible}
         onClose={handleCloseFilter}
-        onApplyFilters={handleApplyFilters}
+        onApply={handleApplyFilters}
+        initialFilters={appliedFilters}
       />
     </View>
   );

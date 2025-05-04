@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet, SafeAreaView, StatusBar, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, SafeAreaView, StatusBar, TouchableOpacity, Platform } from 'react-native';
 import React, { useState } from 'react';
 import { SvgImage } from '../../../../../components/svgImage/SvgImage';
 import { useTranslation } from 'react-i18next';
@@ -29,74 +29,90 @@ const ConfrontationOtpScreen = ({ route }: any) => {
     };
 
     return (
-        <>
+        <View style={styles.wrapper}>
             <StatusBar backgroundColor="#FFFFFF" barStyle="dark-content" />
-            <SafeAreaView style={styles.container}>
-                <View style={styles.header}>
-                    <Text style={styles.title}>{t('Üzləşmə')}</Text>
-                    <TouchableOpacity style={styles.backButton} onPress={() => navigation.goBack()}>
+            
+            <View style={styles.header}>
+                <View style={styles.headerTop}>
+                    <TouchableOpacity 
+                        style={styles.backButton}
+                        onPress={() => navigation.goBack()}
+                    >
                         <SvgImage
                             source={require("../../../../../assets/svg/back/back.svg")}
                             height={14}
                             width={14}
                         />
                     </TouchableOpacity>
+                    <Text style={styles.headerTitle}>{t('Üzləşmə')}</Text>
                 </View>
+            </View>
 
-                <View style={styles.content}>
-                    <Text style={styles.confirmationText}>
-                        {`"By entering the OTP, you confirm that you owe ${item?.name || 'the company'} ${item?.amount || '90 AZN'}."`}
+            <View style={styles.content}>
+                <Text style={styles.confirmationText}>
+                    {`"By entering the OTP, you confirm that you owe ${item?.name || 'the company'} ${item?.amount || '90 AZN'}."`}
+                </Text>
+                <OtpInput />
+                <View style={styles.resendContainer}>
+                    <Text style={styles.resendText}>
+                        {t('OTP kod almadınız?')}
+                        {isResendDisabled && ` (${timer}s)`}
                     </Text>
-                    <OtpInput />
-                    <View style={styles.resendContainer}>
-                        <Text style={styles.resendText}>
-                            {t('OTP kod almadınız?')}
-                            {isResendDisabled && ` (${timer}s)`}
+                    <TouchableOpacity
+                        onPress={handleResendOtp}
+                        disabled={isResendDisabled}
+                    >
+                        <Text style={[
+                            styles.resendButton,
+                            isResendDisabled && styles.resendButtonDisabled
+                        ]}>
+                            {t('OTP kodu yenidən göndər')}
                         </Text>
-                        <TouchableOpacity
-                            onPress={handleResendOtp}
-                            disabled={isResendDisabled}
-                        >
-                            <Text style={[
-                                styles.resendButton,
-                                isResendDisabled && styles.resendButtonDisabled
-                            ]}>
-                                {t('OTP kodu yenidən göndər')}
-                            </Text>
-                        </TouchableOpacity>
-                    </View>
+                    </TouchableOpacity>
                 </View>
-            </SafeAreaView>
-        </>
+            </View>
+        </View>
     );
 };
 
 const styles = StyleSheet.create({
-    container: {
+    wrapper: {
         flex: 1,
-        backgroundColor: "#F3F3F3",
+        backgroundColor: '#F3F3F3',
     },
     header: {
+        flexDirection: 'column',
+        alignItems: 'stretch',
+        paddingHorizontal: 20,
+        paddingTop: Platform.OS === 'ios' ? 70 : 50,
+        paddingBottom: 16,
+    },
+    headerTop: {
         flexDirection: 'row',
         alignItems: 'center',
+        width: '100%',
         justifyContent: 'center',
-        paddingHorizontal: 20,
-        marginBottom: 16,
         position: 'relative',
-        height: 60
     },
-    title: {
+    headerTitle: {
         fontSize: 26,
-        fontWeight: '700',
-        color: 'hsla(254, 48%, 9%, 1)',
+        fontWeight: '600',
+        color: '#110C22',
         fontFamily: "Onest-Medium",
     },
     backButton: {
         position: 'absolute',
-        left: 20,
+        left: 0,
+        height: '100%',
+        justifyContent: 'center',
+        alignItems: 'center',
+        zIndex: 1,
     },
     content: {
+        flex: 1,
+        backgroundColor: '#F3F3F3',
         paddingHorizontal: 20,
+        paddingTop: 20,
     },
     confirmationText: {
         fontSize: 14,

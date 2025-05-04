@@ -6,7 +6,8 @@ export enum Routes {
     home = 'home',
     confrontation = 'confrontation',
     tickets = 'tickets',
-    profile = 'profile'
+    profile = 'profile',
+    settings = 'settings',
 }
 
 export type RootStackParamList = {

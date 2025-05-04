@@ -10,8 +10,6 @@ import {
     Image,
 } from "react-native";
 import { SvgImage } from "../../../components/svgImage/SvgImage";
-import { TabScreenProps } from "../../../types/navigation.type";
-import { NotificationCard } from "../../../components/productList/NotficationCard.";
 
 
 
