@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, ScrollView, StatusBar, TouchableOpacity, Platform } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, StatusBar, TouchableOpacity, Platform, Image } from 'react-native';
 import Accordion, { InputField, ButtonField } from '../../../components/profile/Accordion';
 import CustomButton from '../../../components/button/CustomButton';
 import { SvgImage } from '../../../components/svgImage/SvgImage';
@@ -10,6 +10,8 @@ import { Routes } from '../../../navigations/routes';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../../../types/navigation.type';
 import { ConfirmationModal } from '../../../components/modals/ConfirmationModal';
+import { ImagePickerModal } from '../../../components/modals/ImagePickerModal';
+import { launchImageLibrary, launchCamera, ImagePickerResponse, CameraOptions, ImageLibraryOptions } from 'react-native-image-picker';
 
 type ProfileScreenNavigationProp = NativeStackNavigationProp<RootStackParamList>;
 
@@ -36,6 +38,8 @@ const ProfileScreen = () => {
   const [editingProfile, setEditingProfile] = useState(false);
   const [deleteModalVisible, setDeleteModalVisible] = useState(false);
   const [logoutModalVisible, setLogoutModalVisible] = useState(false);
+  const [profileImage, setProfileImage] = useState<string | null>(null);
+  const [imagePickerModalVisible, setImagePickerModalVisible] = useState(false);
   const { t, i18n } = useTranslation();
   const navigation = useNavigation<ProfileScreenNavigationProp>();
 
@@ -51,9 +55,48 @@ const ProfileScreen = () => {
     setEditingProfile(!editingProfile);
   };
 
+  const handleImagePickerResponse = (response: ImagePickerResponse) => {
+    if (response.didCancel) {
+      console.log('User cancelled image picker');
+    } else if (response.errorCode) {
+      console.log('ImagePicker Error: ', response.errorMessage);
+    } else if (response.assets && response.assets.length > 0) {
+      const asset = response.assets[0];
+      if (asset.uri) {
+        setProfileImage(asset.uri);
+        console.log('Image selected:', asset.uri);
+      }
+    }
+  };
+
+  const handleChooseFromLibrary = () => {
+    const options: ImageLibraryOptions = {
+      mediaType: 'photo',
+      maxWidth: 500,
+      maxHeight: 500,
+      quality: 0.8 as any,
+      selectionLimit: 1,
+    };
+
+    launchImageLibrary(options, handleImagePickerResponse);
+    setImagePickerModalVisible(false);
+  };
+
+  const handleTakePhoto = () => {
+    const options: CameraOptions = {
+      mediaType: 'photo',
+      maxWidth: 500,
+      maxHeight: 500,
+      quality: 0.8 as any,
+      saveToPhotos: true,
+    };
+
+    launchCamera(options, handleImagePickerResponse);
+    setImagePickerModalVisible(false);
+  };
+
   const handleChangePhoto = () => {
-    console.log('Change photo pressed');
-    // Here you would implement photo selection logic
+    setImagePickerModalVisible(true);
   };
 
   const handleDeletePhoto = () => {
@@ -61,14 +104,14 @@ const ProfileScreen = () => {
   };
 
   const handleConfirmDelete = () => {
+    setProfileImage(null);
     console.log('Photo deleted');
-    // Here implement the actual photo deletion logic
+    setDeleteModalVisible(false);
   };
 
   const handleEditEmail = () => {
     if (editingEmail) {
       console.log('Saving email:', emailValue);
-      // Here you would typically call an API to update the email
     }
     setEditingEmail(!editingEmail);
 
@@ -79,13 +122,10 @@ const ProfileScreen = () => {
 
   const handleEditLocation = () => {
     if (editingLocation) {
-      // Save changes when toggling from edit mode to view mode
       console.log('Saving location:', locationValue);
-      // Here you would typically call an API to update the location
     }
     setEditingLocation(!editingLocation);
 
-    // Auto-expand store section when editing starts
     if (!editingLocation) {
       setOpenSection('store');
     }
@@ -199,11 +239,15 @@ const ProfileScreen = () => {
             </>
           )}
           <View style={[styles.avatarWrapper, editingProfile && styles.avatarWrapperEditing]}>
-            <SvgImage
-              source={require('../../../assets/svg/profile/profile.svg')}
-              width={48}
-              height={48}
-            />
+            {profileImage ? (
+              <Image source={{ uri: profileImage }} style={styles.avatarImage} />
+            ) : (
+              <SvgImage
+                source={require('../../../assets/svg/profile/profile.svg')}
+                width={48}
+                height={48}
+              />
+            )}
           </View>
 
           {!editingProfile && (
@@ -283,6 +327,13 @@ const ProfileScreen = () => {
         cancelText={t('Ləğv et')}
         type="danger"
       />
+
+      <ImagePickerModal
+        visible={imagePickerModalVisible}
+        onClose={() => setImagePickerModalVisible(false)}
+        onTakePhoto={handleTakePhoto}
+        onChooseFromLibrary={handleChooseFromLibrary}
+      />
     </View>
   );
 };
@@ -341,6 +392,11 @@ const styles = StyleSheet.create({
   },
   avatarWrapperEditing: {
     marginTop: 12,
+  },
+  avatarImage: {
+    width: 72,
+    height: 72,
+    borderRadius: 36,
   },
   name: {
     ...TypographyStyles.LargeNoneMedium,
